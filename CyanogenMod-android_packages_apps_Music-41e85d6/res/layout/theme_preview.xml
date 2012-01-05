@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+	<TextView
+		android:id="@+id/ThemeTitle"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+	/>
+	<TextView
+		android:id="@+id/ThemeDescription"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+	/>
+	<ImageView
+		android:id="@+id/ThemeIcon"
+		android:src="@drawable/app_music"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+	/>
+	<Button
+		android:id="@+id/ThemeApply"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+	  	android:text="@string/pref_themes_apply_theme"
+	  	android:onClick="applyTheme"
+	/>
+	<Button
+		android:id="@+id/ThemeSearch"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+	  	android:text="@string/pref_themes_get_themes"
+	  	android:onClick="getThemes"
+	/>
+</LinearLayout>

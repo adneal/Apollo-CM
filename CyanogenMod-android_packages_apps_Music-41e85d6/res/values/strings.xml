@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+** Copyright 2007, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License"); 
+** you may not use this file except in compliance with the License. 
+** You may obtain a copy of the License at 
+**
+**     http://www.apache.org/licenses/LICENSE-2.0 
+**
+** Unless required by applicable law or agreed to in writing, software 
+** distributed under the License is distributed on an "AS IS" BASIS, 
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+** See the License for the specific language governing permissions and 
+** limitations under the License.
+*/
+-->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- used in various places to indicate there is one song for a given artist or album -->
+    <string name="onesong">1 song</string>
+    <!-- used in various places to indicate there is some number other than one songs for a given artist or album. -->
+    <plurals name="Nsongs">
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> songs</item>
+    </plurals>
+
+    <!-- shows how many songs on the album are by the selected artist, out of how many total, if those two numbers are different -->
+    <plurals name="Nsongscomp">
+        <item quantity="other"><xliff:g id="count_for_artist">%2$d</xliff:g> of <xliff:g id="total_count">%1$d</xliff:g> songs</item>
+    </plurals>
+
+    <!-- Used in artists list view, indicates how many albums exist for a given artist. -->
+    <plurals name="Nalbums">
+
+        <!-- number of albums is one -->
+        <item quantity="one">1 album</item>
+        <!-- number of albums is not equal to one -->
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> albums</item>
+    </plurals>
+
+    <!--
+    This string is used as the format string in a String.format call,
+    and 5 additional arguments are available for printing:
+    1 - hours
+    2 - minutes
+    3 - minutes%60
+    4 - seconds
+    5 - second%60
+    -->
+    <skip />
+    <!-- Do not translate. Duration format for duration < 1 hour -->
+    <string name="durationformatshort" translatable="false"><xliff:g id="format">%2$d:%5$02d</xliff:g></string>
+    <!-- Do not translate. Duration format for duration >= 1 hour -->
+    <string name="durationformatlong" translatable="false"><xliff:g id="format">%1$d:%3$02d:%5$02d</xliff:g></string>
+
+    <!-- Menu item that takes the user back to the top level screen of the music player -->
+    <string name="goto_start">Library</string>
+    <!-- Menu item that switches the music player in to party shuffle mode -->
+    <string name="party_shuffle">Party shuffle</string>
+    <!-- Menu item that switches the music player out of party shuffle mode -->
+    <string name="party_shuffle_off">Party shuffle off</string>
+    <string name="party_shuffle_on">Party shuffle on</string>
+
+    <!--
+         Menu item that deletes the currently selected item, which might be a single song, or a collection of songs.
+         The user will be prompted to confirm before deletion actually takes place
+    -->
+    <string name="delete_item">Delete</string>
+    <!-- Menu item to play back all the songs in the currently showing list in shuffle mode -->
+    <string name="shuffle_all">Shuffle all</string>
+    <!-- Menu item to play back all the songs in the currently showing list in list order -->
+    <string name="play_all">Play all</string>
+
+    <!-- Delete confirmation dialog when deleting an entire artist -->
+    <string name="delete_artist_desc">All songs by <xliff:g id="artist">%s</xliff:g> will be permanently deleted from the SD card.</string>
+    <!-- Delete confirmation dialog when deleting an entire artist -->
+    <string name="delete_artist_desc_nosdcard">All songs by <xliff:g id="artist">%s</xliff:g> will be permanently deleted from USB storage.</string>
+
+    <!-- Delete confirmation dialog when deleting an entire album -->
+    <string name="delete_album_desc">The entire album \"<xliff:g id="album">%s</xliff:g>\" will be permanently deleted from the SD card.</string>
+    <!-- Delete confirmation dialog when deleting an entire album -->
+    <string name="delete_album_desc_nosdcard">The entire album \"<xliff:g id="album">%s</xliff:g>\" will be permanently deleted from USB storage.</string>
+
+    <!-- Delete confirmation dialog when deleting a single song -->
+    <string name="delete_song_desc">\"<xliff:g id="song">%s</xliff:g>\" will be permanently deleted from the SD card.</string>
+    <!-- Delete confirmation dialog when deleting a single song -->
+    <string name="delete_song_desc_nosdcard">\"<xliff:g id="song">%s</xliff:g>\" will be permanently deleted from USB storage.</string>
+
+    <!-- Delete confirmation dialog, confirmation button text -->
+    <string name="delete_confirm_button_text">OK</string>
+    <!-- Toast confirming that song(s) was/were deleted. -->
+    <plurals name="NNNtracksdeleted">
+
+        <!-- delete confirmation message for 1 song -->
+        <item quantity="one">1 song was deleted.</item>
+        <!-- delete confirmation message for 0 or more than 1 songs -->
+        <item quantity="other"><xliff:g id="songs_to_delete">%d</xliff:g> songs were deleted.</item>
+    </plurals>
+
+    <!-- shown in dialog while the media scanner is starting up -->
+    <string name="scanning">Scanning SD card\u2026</string>
+    <!-- shown in dialog while the media scanner is starting up -->
+    <string name="scanning_nosdcard">Scanning USB storage\u2026</string>
+
+    <!-- title of the "current playlist" screen when not in party shuffle mode -->
+    <string name="nowplaying_title">Now playing</string>
+    <!-- Artist screen title -->
+    <string name="artists_title">Artists</string>
+    <!-- Category label on Library screen -->
+    <string name="albums_menu">Albums</string>
+    <!-- Albums screen title -->
+    <string name="albums_title">Albums</string>
+    <!-- Category label on Library screen -->
+    <string name="tracks_menu">Songs</string>
+    <!-- Songs screen title -->
+    <string name="tracks_title">Songs</string>
+    <!-- Category label on Library screen -->
+    <string name="playlists_menu">Playlists</string>
+    <!-- Playlists screen title -->
+    <string name="playlists_title">Playlists</string>
+    <!-- Videos screen title -->
+    <string name="videos_title">Videos</string>
+    <!-- All media screen title -->
+    <string name="all_title">All media</string>
+    <!-- Category label on Library screen -->
+    <string name="browse_menu">Artists</string>
+    <!-- Library screen, menu item -->
+    <string name="search_title">Search</string>
+    <!-- Title of screen when there are no songs, or if the SD card is busy -->
+    <string name="no_tracks_title">No songs</string>
+    <!-- Title of screen when there are no videos, or if the SD card is busy -->
+    <string name="no_videos_title">No videos</string>
+    <!-- Title of screen when there are no playlists, or if the SD card is busy -->
+    <string name="no_playlists_title">No playlists</string>
+    <!-- Playlist context menu item to delete the selected playlist. -->
+    <string name="delete_playlist_menu">Delete</string>
+    <!-- Playlist context menu item to edit the selected playlist -->
+    <string name="edit_playlist_menu">Edit</string>
+    <!-- Playlist context menu item to rename the selected playlist -->
+    <string name="rename_playlist_menu">Rename</string>
+    <!-- Transient popup message shown after deleting a playlist -->
+    <string name="playlist_deleted_message">Playlist deleted.</string>
+    <!-- Transient popup message shown after renaming a playlist -->
+    <string name="playlist_renamed_message">Playlist renamed.</string>
+    <!-- The name of the pseudo-playlist that holds all the recently added files, shown in list view -->
+    <string name="recentlyadded">Recently added</string>
+    <!-- The name of the pseudo-playlist that holds all the recently added files, shown in title bar of songs list -->
+    <string name="recentlyadded_title">Recently added</string>
+    <!-- The name of the pseudo-playlist that holds all the podcasts, shown in list view -->
+    <string name="podcasts_listitem">Podcasts</string>
+    <!-- The name of the pseudo-playlist that holds all the podcasts, shown in title bar of songs list -->
+    <string name="podcasts_title">Podcasts</string>
+    <!-- Title of screen when no sd card is present -->
+    <string name="sdcard_missing_title">No SD card</string>
+    <!-- Title of screen when no sd card is present -->
+    <string name="sdcard_missing_title_nosdcard">No USB storage</string>
+    <!-- label underneath icon used to indicate that no sd card is present -->
+    <string name="sdcard_missing_message">Your phone does not have an SD card inserted.</string>
+    <!-- label underneath icon used to indicate that no sd card is present -->
+    <string name="sdcard_missing_message_nosdcard">Your phone does not have USB storage.</string>
+    <!-- label underneath icon used to indicate that the sd card is present, but currently unavailable -->
+    <string name="sdcard_busy_title">SD card unavailable</string>
+    <!-- label underneath icon used to indicate that the sd card is present, but currently unavailable -->
+    <string name="sdcard_busy_title_nosdcard">USB storage unavailable</string>
+    <!-- label underneath icon used to indicate sd card is mounted to your computer via USB -->
+    <string name="sdcard_busy_message">Sorry, your SD card is busy.</string>
+    <!-- label underneath icon used to indicate sd card is mounted to your computer via USB -->
+    <string name="sdcard_busy_message_nosdcard">Sorry, your USB storage is busy.</string>
+    <!-- Title of screen when there was an error accessing the sd card -->
+    <string name="sdcard_error_title">SD card error</string>
+    <!-- Title of screen when there was an error accessing the sd card -->
+    <string name="sdcard_error_title_nosdcard">USB storage error</string>
+    <!-- label underneath icon used to indicate there was an error accessing the sd card -->
+    <string name="sdcard_error_message">An error was encountered on your SD card.</string>
+    <!-- label underneath icon used to indicate there was an error accessing the sd card -->
+    <string name="sdcard_error_message_nosdcard">An error was encountered on your USB storage.</string>
+    <!-- Default name of artist that doesn't have a name in the metadata -->
+    <string name="unknown_artist_name">Unknown artist</string>
+    <!-- Default name of album that doesn't have a name in the metadata -->
+    <string name="unknown_album_name">Unknown album</string>
+    <!-- Toast after turning shuffle on -->
+    <string name="shuffle_on_notif">Shuffle is on</string>
+    <!-- Toast after turning shuffle off -->
+    <string name="shuffle_off_notif">Shuffle is off</string>
+    <!-- Toast after turning repeat off -->
+    <string name="repeat_off_notif">Repeat is off</string>
+    <!-- Toast after turning single repeat on -->
+    <string name="repeat_current_notif">Repeating current song</string>
+    <!-- Toast after turning repeat all on -->
+    <string name="repeat_all_notif">Repeating all songs</string>
+    <!-- Individual song context menu item -->
+    <string name="ringtone_menu">Use as phone ringtone</string>
+    <!-- Menu item -->
+    <string name="ringtone_menu_short">Use as ringtone</string>
+    <!-- Toast after setting a song as phone ringtone -->
+    <string name="ringtone_set">\"<xliff:g id="name" example="Alarm Bell">%s</xliff:g>\" set as phone ringtone.</string>
+    <!-- Context menu item -->
+    <string name="play_selection">Play</string>
+    <!-- Context menu item -->
+    <string name="add_to_playlist">Add to playlist</string>
+    <!-- Context menu item -->
+    <string name="queue">Queue</string>
+    <!-- Context menu item -->
+    <string name="new_playlist">New playlist</string>
+        <!-- Context menu item -->
+    <string name="show_all">More by artist</string>
+    <!-- Template for newly created playlist name -->
+    <string name="new_playlist_name_template">New playlist <xliff:g id="number">%d</xliff:g></string>
+    <!-- Toasts after adding song(s) to playlists -->
+    <plurals name="NNNtrackstoplaylist">
+
+        <!-- message shown when one song was added -->
+        <item quantity="one">1 song added to playlist.</item>
+        <!-- message shown when zero or more than one song was added -->
+        <item quantity="other"><xliff:g id="number" example="27">%d</xliff:g> songs added to playlist.</item>
+    </plurals>
+    <!-- Toast after selecting an empty playlist -->
+    <string name="emptyplaylist">Selected playlist is empty.</string>
+    <!-- Button name when saving a playlist -->
+    <string name="create_playlist_create_text">Save</string>
+    <!-- Button name when saving a playlist and the new playlist will overwrite an existing one -->
+    <string name="create_playlist_overwrite_text">Overwrite</string>
+    <!-- Dialog box title -->
+    <string name="service_start_error_title">Playback problem</string>
+    <!-- Dialog box message -->
+    <string name="service_start_error_msg">Sorry, the song could not be played.</string>
+    <!-- Dialog box button -->
+    <string name="service_start_error_button">OK</string>
+    <!-- Time span edit options that appear when editing system playlist "Recently added" -->
+    <!-- Used to indicate the number of weeks the "recently added" playlist covers in a selector widget -->
+    <string-array name="weeklist">
+        <item>"1 week"</item>
+        <item>"2 weeks"</item>
+        <item>"3 weeks"</item>
+        <item>"4 weeks"</item>
+        <item>"5 weeks"</item>
+        <item>"6 weeks"</item>
+        <item>"7 weeks"</item>
+        <item>"8 weeks"</item>
+        <item>"9 weeks"</item>
+        <item>"10 weeks"</item>
+        <item>"11 weeks"</item>
+        <item>"12 weeks"</item>
+    </string-array>
+    <!-- Button name in time span picker -->
+    <string name="weekpicker_set">Done</string>
+    <!-- Title of time span picker -->
+    <string name="weekpicker_title">Set time</string>
+    <!-- Do not translate. Background color for currently dragged item in playlist edit mode. -->
+    <color name="dragndrop_background">#e0103010</color>
+    <!-- Do not translate. Background color for albums in the artists list view. -->
+    <color name="expanding_child_background">#ff404040</color>
+
+    <!-- menu item to save the current list as a new playlist -->
+    <string name="save_as_playlist">Save as playlist</string>
+    <!-- menu item to clear the current playlist -->
+    <string name="clear_playlist">Clear playlist</string>
+
+    <!-- Activity label. This might show up in the activity-picker -->
+    <string name="musicbrowserlabel">Music</string>
+    <!-- Activity label. This might show up in the activity-picker -->
+    <string name="musicshortcutlabel">Music playlist</string>
+    <!-- Activity label. This might show up in the activity-picker -->
+    <string name="mediaplaybacklabel">Music</string>
+    <!-- Activity label. This might show up in the activity-picker -->
+    <string name="videobrowserlabel">Videos</string>
+    <!-- Activity label. This might show up in the activity-picker -->
+    <string name="mediapickerlabel">Music</string>
+
+    <!-- Shown as a transient message whenever a file fails to play -->
+    <string name="playback_failed">Sorry, the player does not support this type of audio file.</string>
+
+    <!-- Text for the "cancel" button in the "delete" and "create playlist" confirmation dialogs -->
+    <string name="cancel">Cancel</string>
+
+    <!-- context menu item to remove the selected item from the playlist -->
+    <string name="remove_from_playlist">Remove from playlist</string>
+
+    <!-- shown when connecting to a music stream, before it starts playing -->
+    <string name="streamloadingtext">Connecting to <xliff:g id="host">%s</xliff:g></string>
+
+    <!-- title of contextual music search menu -->
+    <string name="mediasearch">Search for <xliff:g id="term" example="Beethoven">%s</xliff:g> using:</string>
+
+    <!-- Shown in the title bar while the list of artists is being retrieved in the background -->
+    <string name="working_artists">Artists\u2026</string>
+    <!-- Shown in the title bar while the list of albums is being retrieved in the background -->
+    <string name="working_albums">Albums\u2026</string>
+    <!-- Shown in the title bar while the list of songs is being retrieved in the background -->
+    <string name="working_songs">Songs\u2026</string>
+    <!-- Shown in the title bar while the list of playlists is being retrieved in the background -->
+    <string name="working_playlists">Playlists\u2026</string>
+
+    <!-- Shown in the music picker while loading the music database. -->
+    <string name="loading">Loading</string>
+    <!-- Menu in music picker to sort the list by track/song name. -->
+    <string name="sort_by_track">Tracks</string>
+    <!-- Menu in music picker to sort the list by album name. -->
+    <string name="sort_by_album">Albums</string>
+    <!-- Menu in music picker to sort the list by artist name. -->
+    <string name="sort_by_artist">Artists</string>
+    <!-- Title of the music picker activity. -->
+    <string name="music_picker_title">Select music track</string>
+
+    <!-- The string used to describe Music as a searchable item within system search settings. -->
+    <string name="search_settings_description">Artists, albums, and tracks</string>
+
+    <!-- Shown in the search box as a hint -->
+    <string name="search_hint">Search Music</string>
+
+    <!-- The fast scroll thumb will show one character from this string depending on the position in the list -->
+    <string name="fast_scroll_alphabet">\u0020ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+
+    <!-- Text shown on widget when first loaded -->
+    <string name="widget_initial_text">Touch to select music.</string>
+
+    <!-- Menu text for the item controlling the audio effects panel [CHAR LIMIT=15] -->
+    <!-- Extra Controls -->
+    <string name="shuffle_extra">Shuffle</string>
+    <string name="repeat_extra_one">Repeating one</string>
+    <string name="repeat_extra_all">Repeating all</string>
+    <string name="repeat_extra">Repeat</string>
+    <string name="share">Share track</string>
+    <string name="eq">Equalizer</string>
+    <string name="shop">Shop the Market</string>
+    <string name="shop_min">Shop Market</string>
+    <string name="set_ring">Set ringtone</string>
+    <string name="delete_track">Delete track</string>
+    <string name="audio_cat">Audio</string>
+    <string name="ui_cat">UI</string>
+    <string name="edit_gesture_summary">Haptic feedback, color picker, define gestures</string>
+    <string name="gesture_color_picker_title">Gesture Color Picker</string>
+    <string name="gesture_color_picker_summary">Change the color of the gesture overlay</string>
+    <string name="define_gestures">Define Gestures</string>
+    <string name="shake_action_title_bg">Send to Background</string>
+    <string name="shake_action_summary_bg">Shake actions will continue to work outside the app
+		or if screen is turned off</string>
+    <string name="customizations_title">Customization</string>
+    <string name="customizations_summary">Heavy modification</string>
+    <string name="small_np_window_title">Small Now Playing Window</string>
+    <string name="small_np_window_summary">Customize smaller now playing window</string>
+    <string name="small_np_ui">Small Window UI</string>
+    <string name="small_np_ui_summary">Media buttons, text views, font size</string>
+    <string name="np_media_play_title">Play and Pause</string>
+    <string name="np_media_next_title">Next Track</string>
+    <string name="np_media_prev_title">Previous Track</string>
+    <string name="np_media_search_title">Search Music</string>
+    <string name="np_media_playlist_title">Quick Playlist</string>
+    <string name="np_media_market_title">Market Search</string>
+    <string name="np_media_share_title">Share Track</string>
+    <string name="np_media_album_art_title">Album Art</string>
+    <string name="np_media_play_summary">Play and Pause music</string>
+    <string name="np_media_next_summary">Play next track</string>
+    <string name="np_media_prev_summary">Play previous track</string>
+    <string name="np_media_search_summary">Search your music</string>
+    <string name="np_media_playlist_summary">Create a Quick Playlist (Playlist tab only)</string>
+    <string name="np_media_market_summary">Search Market for currently playing artist</string>
+    <string name="np_media_share_summary">Show your current track</string>
+    <string name="np_media_album_art_summary">Show album art</string>
+    <string name="np_tv">	Small Now Playing Window Text Views</string>
+    <string name="np_tv_artist">Artist Name</string>
+    <string name="np_tv_album">Album Name</string>
+    <string name="np_tv_track">Track Name</string>
+    <string name="np_tv_artist_summary">Show artist name</string>
+    <string name="np_tv_album_summary">Show album name</string>
+    <string name="np_tv_track_summary">Show track name</string>
+    <string name="np_font_title">Font Size</string>
+    <string name="np_font_dialog_title">Now Playing Window Font Size</string>
+    <string name="np_font_summary">Choose your font size for artist, album, and track</string>
+    <string name="swipe_up_gesture">Swipe Up Gesture</string>
+    <string name="status_bar_ui_title">Status Bar UI</string>
+    <string name="status_bar_ui_summary">Customize the status bar</string>
+    <string name="status_bar_close">Stop Playback</string>
+    <string name="status_bar_close_summary">Cease all music</string>
+    <string name="status_bar_text_views">Status Bar Text Views</string>
+    <string name="status_bar_color_picker">Status Bar Text Color Picker</string>
+    <string name="status_bar_color_picker_summary">Change the color for album, artist, and track in
+		the status bar</string>
+    <string name="full_np_title">Enter Full Now Playing Screen</string>
+    <string name="full_np_summary">Enter into the full "Now Playing" screen when your
+		music starts</string>
+    <string name="charging_title">Screen On While Charging</string>
+    <string name="charging_summary">Keep the screen on while playing music and charging
+		your phone</string>
+    <string name="fullscreen_np_title">Now Playing Full Screen</string>
+    <string name="fullscreen_np_summary">Hide the status bar in the "Now Playing" screen</string>
+    <string name="lockscreen_controls_title">Use Lockscreen Controls</string>
+    <string name="lockscreen_controls_summary">Display lockscreen controls when your music is
+		playing</string>
+    <string name="album_art_anim_title">Now Playing Animations</string>
+    <string name="album_art_anim_summary">Animate the album art in the "Now Playing" screen</string>
+    <string name="tab_anim_title">Tab Animations</string>
+    <string name="tab_anim_summary">Select animation when swiping tabs</string>
+    <string name="status_bar_nonya_title">Minimal</string>
+    <string name="status_bar_nonya_summary">Remove the album art/status icon when the status bar is extended</string>
+    <string name="build_version">Build Version</string>
+    <string name="build_version_summary">Unknown</string>
+    <!-- Menu text for the item controlling the audio effects panel [CHAR LIMIT=15] -->
+    <string name="effectspanel">Sound effects</string>
+    <string name="effectspanel_summary">FX Booster, Bass boost, 3D effect, etc</string>
+
+    <!-- Menu text for the music settings item [CHAR LIMIT=15] -->
+    <string name="settings">Settings</string>
+
+    <!-- Title, summary, and entries for 'enable gestures' preference list -->
+    <string name="duck_attenuation_db_title">Duck attentuation</string>
+    <string name="duck_attenuation_db_summary">Select the amount by which to attenuate the volume
+		during focus loss</string>
+
+    <string-array name="duck_attenuation_db_entries">
+        <item>None</item>
+        <item>4 dB</item>
+        <item>8 dB (default)</item>
+        <item>12 dB</item>
+    </string-array>
+    <!-- Do not translate. Entry values for 'enable gestures' preference list -->
+    <string-array name="duck_attenuation_db_entryvalues" translatable="false">
+        <item>0</item>
+        <item>4</item>
+        <item>8</item>
+        <item>12</item>
+    </string-array>
+
+    <string name="back_button_action_title">Long Press Back Button Action</string>
+    <string name="back_button_action">Long Press Back Button</string>
+    <string name="back_button_action_summary">Select long-press action while in tabs</string>
+    <string name="np_swipe_gesture_title">Now Playing Gesture</string>
+    <string name="np_swipe_gesture_title_summary">Small now playing window gesture</string>
+
+    <string-array name="np_font_size_entries">
+        <item>Extra Small</item>
+        <item>Small</item>
+        <item>Normal</item>
+        <item>Large</item>
+        <item>Extra Large</item>
+    </string-array>
+    <string-array name="np_font_size_entrievalues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="np_swipe_gesture_entries">
+        <item>None</item>
+        <item>Play and Pause</item>
+        <item>Next</item>
+        <item>Prev</item>
+    </string-array>
+    <string-array name="np_swipe_gesture_entrievalues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="back_button_db_entries">
+        <item>None</item>
+        <item>Party Shuffle</item>
+        <item>Recently Added</item>
+        <item>Shuffle All</item>
+    </string-array>
+    <string-array name="back_button_db_entrievalues">
+        <item>3</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="artist_ui_title">Artist Animations</string>
+    <string name="artist_ui_summary">Select animation for the Artist tab</string>
+    <string name="album_ui_title">Album Animations</string>
+    <string name="album_ui_summary">Select animation for the Album tab</string>
+    <string name="song_ui_title">Song Animations</string>
+    <string name="song_ui_summary">Select animation for the Song tab</string>
+    <string name="playlist_ui_title">Playlist Animations</string>
+    <string name="playlist_ui_summary">Select animation for the Playlists tab</string>
+
+    <string-array name="animation_ui_db_entries">
+        <item>None</item>
+        <item>Eye Opener</item>
+        <item>Corkscrew</item>
+        <item>Diagonally</item>
+        <item>Expand</item>
+        <item>Stacked</item>
+        <item>Slide Right</item>
+        <item>Fade</item>
+    </string-array>
+    <string-array name="animation_ui_db_entrievalues">
+        <item>7</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string name="shaker_title_artist">Tab Shake Actions</string>
+    <string name="shaker_summary_artist">Shake action for each tab</string>
+    <string name="shaker_summary_playlist">Shake action for the Playlist tab</string>
+    <string name="shaker_title_nowplaying">Now Playing Shake Actions</string>
+    <string name="shaker_summary_nowplaying">Shake action for the Now Playing tab</string>
+    <string name="shaker_title">Shake Actions</string>
+    <string name="shaker_summary">Select your "shake" action</string>
+
+    <string-array name="shaker_db_entries_tabs">
+        <item>None</item>
+        <item>Play and Pause</item>
+        <item>Next</item>
+        <item>Prev</item>
+        <item>Shuffle</item>
+        <item>Party Shuffle</item>
+    </string-array>
+    <string-array name="shaker_db_entries">
+        <item>None</item>
+        <item>Play and Pause</item>
+        <item>Next</item>
+        <item>Prev</item>
+        <item>Shuffle</item>
+        <item>Party Shuffle</item>
+    </string-array>
+    <string-array name="shaker_db_entrievalues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string name="animation_ui_title">Animations</string>
+    <string name="animation_ui_summary">Customize your animations</string>
+
+    <!-- Category title for gestures in music settings -->
+    <string name="gestures_category_title">Gestures</string>
+
+    <!-- Title and summary for 'enable gestures' preference checkbox -->
+    <string name="enable_gestures_summary">Control music playback via gestures on the \"Now
+		playing\" screen</string>
+
+    <!-- Title and summary for 'enable haptic feedback' preference checkbox -->
+    <string name="enable_haptic_feedback_title">Haptic feedback</string>
+    <string name="enable_haptic_feedback_summary">Enable phone vibration in response to completed
+		gestures</string>
+
+    <!-- Title for 'edit gestures' preference screen and subsequent activity -->
+    <string name="edit_gestures_title">Edit gestures</string>
+
+    <!-- Titles and summaries for gestures when listed in 'edit gestures' activity -->
+    <string-array name="gesture_titles">
+        <item>Pause/Resume</item>
+        <item>Next</item>
+        <item>Previous</item>
+        <item>Shuffle</item>
+        <item>Repeat</item>
+    </string-array>
+    <string-array name="gesture_summaries">
+        <item>Pause current song or resume playback</item>
+        <item>Skip to next song on playlist</item>
+        <item>Restart current song or skip to previous song on playlist</item>
+        <item>Toggle shuffle on and off</item>
+        <item>Cycle through repeat modes</item>
+    </string-array>
+
+    <!-- Loading text for 'edit gestures' activity -->
+    <string name="gestures_loading">Loading gestures</string>
+
+    <!-- Context menu entries for 'edit gestures' activity -->
+    <string name="gestures_customize">Customize gesture</string>
+    <string name="gestures_reset">Reset to default</string>
+
+    <!-- Button text for 'edit gestures' activity -->
+    <string name="button_reload_gestures">Reload gestures</string>
+    <string name="button_reset_all_gestures">Default</string>
+
+    <!-- Alert dialog text to confirm desire to reset all gestures to default -->
+    <string name="gestures_reset_all_alert">Are you sure you want to reset all gestures to
+		default?</string>
+
+    <!-- Alert dialog 'yes' and 'no' button text -->
+    <string name="button_yes">Yes</string>
+    <string name="button_no">No</string>
+
+    <!-- Error messages for 'edit gestures' activity -->
+    <string name="gestures_error_loading">Could not load gesture library.</string>
+    <string name="gestures_error_library">Your custom gesture library is corrupted. Try
+		resetting all gestures to default.</string>
+
+    <!-- Title for 'customize gesture' activity -->
+    <string name="customize_gesture_title">Customize gesture</string>
+
+    <!-- Prompt and instructions for 'customize gesture' activity -->
+    <string name="custimize_gesture_prompt">Draw your desired gesture below. For compatibility
+		with playback controls, gestures cannot consist solely of a horizontal
+		swipe.</string>
+
+    <!-- Button text for 'customize gesture' activity -->
+    <string name="button_done">Done</string>
+    <string name="button_cancel">Cancel</string>
+
+    <!-- Theme preferences -->
+    <string name="pref_title_theme_settings">Themes Chooser</string>
+    <string name="pref_summary_theme_settings">Select themes for Music</string>
+    <string name="pref_title_theme_package">Select your theme</string>
+    <string name="pref_summary_theme_package">Choose your theme for fLockScreen</string>
+    <string name="pref_title_theme_preview">Theme Preview</string>
+    <string name="pref_summary_theme_preview">Preview of the selected theme</string>
+    <string name="pref_themes_apply_theme">Apply theme!</string>
+    <string name="pref_themes_get_themes">Get themes!</string>
+    <string name="activity_not_found">Android Market can\'t be found!</string>
+
+    <!-- Color Picker Dialog -->
+    <string name="settings_bg_color_confirm">Tap to confirm</string>
+    <string name="settings_default_color_confirm">Default Color</string>
+    <string name="settings_bg_color_dialog">Color Picker</string>
+    <!-- Sample time used in color picker -->
+    <string name="color_picker_sample">Music</string>
+
+    <!-- Labels for colors in color picker -->
+    <string name="color_picker_alpha">Transparency</string>
+    <string name="color_picker_red">Red</string>
+    <string name="color_picker_green">Green</string>
+    <string name="color_picker_blue">Blue</string>
+    
+
+</resources>

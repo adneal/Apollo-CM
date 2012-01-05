@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     /* * Copyright 2011, The CyanogenMod Project * * Licensed under the 
+	Apache License, Version 2.0 (the "License"); * you may not use this file 
+	except in compliance with the License. * You may obtain a copy of the License 
+	at * * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by 
+	applicable law or agreed to in writing, software * distributed under the 
+	License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. * See the License for the specific 
+	language governing permissions and * limitations under the License. */
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="settings"
+    android:title="@string/settings" >
+
+    <PreferenceCategory android:title="@string/audio_cat" >
+        <ListPreference
+            android:defaultValue="8"
+            android:dialogTitle="@string/duck_attenuation_db_title"
+            android:entries="@array/duck_attenuation_db_entries"
+            android:entryValues="@array/duck_attenuation_db_entryvalues"
+            android:key="duck_attenuation_db"
+            android:summary="@string/duck_attenuation_db_summary"
+            android:title="@string/duck_attenuation_db_title" />
+
+        <Preference
+            android:enabled="true"
+            android:key="eqEffects"
+            android:summary="@string/effectspanel_summary"
+            android:title="@string/effectspanel" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/ui_cat" >
+
+        <!--
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="enable_gestures"
+            android:summary="@string/enable_gestures_summary"
+            android:title="@string/gestures_category_title" />
+
+        <PreferenceScreen
+            android:dependency="enable_gestures"
+            android:summary="@string/edit_gesture_summary"
+            android:title="@string/edit_gestures_title" >
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:dependency="enable_gestures"
+                android:key="enable_haptic_feedback"
+                android:summary="@string/enable_haptic_feedback_summary"
+                android:title="@string/enable_haptic_feedback_title" />
+
+            <PreferenceScreen
+                android:dependency="enable_gestures"
+                android:key="color_picker"
+                android:summary="@string/gesture_color_picker_summary"
+                android:title="@string/gesture_color_picker_title" >
+                <intent
+                    android:action="com.android.music.GestureColorPicker"
+                    android.targetClass="com.android.music.GestureColorPicker"
+                    android:targetPackage="com.android.music" />
+            </PreferenceScreen>
+            <PreferenceScreen
+                android:dependency="enable_gestures"
+                android:key="edit_gestures"
+                android:title="@string/define_gestures" >
+                <intent
+                    android:targetClass="com.android.music.EditGesturesActivity"
+                    android:targetPackage="com.android.music" />
+            </PreferenceScreen>
+        </PreferenceScreen>
+        -->
+        <PreferenceScreen
+            android:summary="@string/shaker_summary"
+            android:title="@string/shaker_title" >
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="cbShake"
+                android:summary="@string/shake_action_summary_bg"
+                android:title="@string/shake_action_title_bg" />
+
+            <PreferenceCategory android:title="Actions" >
+                <ListPreference
+                    android:defaultValue="0"
+                    android:dialogTitle="@string/shaker_title_artist"
+                    android:entries="@array/shaker_db_entries_tabs"
+                    android:entryValues="@array/shaker_db_entrievalues"
+                    android:key="artist_shake_actions_db"
+                    android:summary="@string/shaker_summary_artist"
+                    android:title="@string/shaker_title_artist" />
+                <ListPreference
+                    android:defaultValue="0"
+                    android:dialogTitle="@string/shaker_title_nowplaying"
+                    android:entries="@array/shaker_db_entries"
+                    android:entryValues="@array/shaker_db_entrievalues"
+                    android:key="shake_actions_db"
+                    android:summary="@string/shaker_summary_nowplaying"
+                    android:title="@string/shaker_title_nowplaying" />
+            </PreferenceCategory>
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:summary="@string/customizations_summary"
+            android:title="@string/customizations_title" >
+            <PreferenceScreen
+                android:summary="@string/animation_ui_summary"
+                android:title="@string/animation_ui_title" >
+                <ListPreference
+                    android:defaultValue="7"
+                    android:dialogTitle="@string/artist_ui_title"
+                    android:entries="@array/animation_ui_db_entries"
+                    android:entryValues="@array/animation_ui_db_entrievalues"
+                    android:key="animation_ui_db"
+                    android:summary="@string/artist_ui_summary"
+                    android:title="@string/artist_ui_title" />
+                <ListPreference
+                    android:defaultValue="7"
+                    android:dialogTitle="@string/album_ui_title"
+                    android:entries="@array/animation_ui_db_entries"
+                    android:entryValues="@array/animation_ui_db_entrievalues"
+                    android:key="album_animation_ui_db"
+                    android:summary="@string/album_ui_summary"
+                    android:title="@string/album_ui_title" />
+                <ListPreference
+                    android:defaultValue="7"
+                    android:dialogTitle="@string/song_ui_title"
+                    android:entries="@array/animation_ui_db_entries"
+                    android:entryValues="@array/animation_ui_db_entrievalues"
+                    android:key="song_animation_ui_db"
+                    android:summary="@string/song_ui_summary"
+                    android:title="@string/song_ui_title" />
+                <ListPreference
+                    android:defaultValue="7"
+                    android:dialogTitle="@string/playlist_ui_title"
+                    android:entries="@array/animation_ui_db_entries"
+                    android:entryValues="@array/animation_ui_db_entrievalues"
+                    android:key="playlist_animation_ui_db"
+                    android:summary="@string/playlist_ui_summary"
+                    android:title="@string/playlist_ui_title" />
+                <ListPreference
+                    android:defaultValue="7"
+                    android:dialogTitle="Tab Animations"
+                    android:entries="@array/animation_ui_db_entries"
+                    android:entryValues="@array/animation_ui_db_entrievalues"
+                    android:key="tab_animation_ui_db"
+                    android:summary="@string/tab_anim_summary"
+                    android:title="@string/tab_anim_title" />
+                <ListPreference
+                    android:defaultValue="7"
+                    android:dialogTitle="Now Playing Animations"
+                    android:entries="@array/animation_ui_db_entries"
+                    android:entryValues="@array/animation_ui_db_entrievalues"
+                    android:key="np_animation_ui_db"
+                    android:summary="@string/album_art_anim_summary"
+                    android:title="@string/album_art_anim_title" />
+            </PreferenceScreen>
+            <PreferenceScreen
+                android:summary="@string/small_np_window_summary"
+                android:title="@string/small_np_window_title" >
+                <PreferenceScreen
+                    android:summary="@string/small_np_ui_summary"
+                    android:title="@string/small_np_ui" >
+                    <PreferenceCategory android:title="@string/small_np_ui" >
+                        <CheckBoxPreference
+                            android:defaultValue="false"
+                            android:key="cbPlay"
+                            android:summary="@string/np_media_play_summary"
+                            android:title="@string/np_media_play_title" />
+                        <CheckBoxPreference
+                            android:defaultValue="false"
+                            android:key="cbNext"
+                            android:summary="@string/np_media_next_summary"
+                            android:title="@string/np_media_next_title" />
+                        <CheckBoxPreference
+                            android:defaultValue="false"
+                            android:key="cbPrev"
+                            android:summary="@string/np_media_prev_summary"
+                            android:title="@string/np_media_prev_title" />
+                        <CheckBoxPreference
+                            android:defaultValue="true"
+                            android:key="cbSearch"
+                            android:summary="@string/np_media_search_summary"
+                            android:title="@string/np_media_search_title" />
+                        <CheckBoxPreference
+                            android:defaultValue="true"
+                            android:key="cbPlaylist"
+                            android:summary="@string/np_media_playlist_summary"
+                            android:title="@string/np_media_playlist_title" />
+                        <CheckBoxPreference
+                            android:defaultValue="false"
+                            android:key="cbMarket"
+                            android:summary="@string/np_media_market_summary"
+                            android:title="@string/np_media_market_title" />
+                        <CheckBoxPreference
+                            android:defaultValue="false"
+                            android:key="cbShare"
+                            android:summary="@string/np_media_share_summary"
+                            android:title="@string/np_media_share_title" />
+                        <CheckBoxPreference
+                            android:defaultValue="true"
+                            android:key="cbArt"
+                            android:summary="@string/np_media_album_art_summary"
+                            android:title="@string/np_media_album_art_title" />
+                    </PreferenceCategory>
+                    <PreferenceCategory android:title="@string/np_tv" >
+                        <CheckBoxPreference
+                            android:defaultValue="true"
+                            android:key="tvLine1"
+                            android:summary="@string/np_tv_track_summary"
+                            android:title="@string/np_tv_track" />
+                        <CheckBoxPreference
+                            android:defaultValue="true"
+                            android:key="tvLine2"
+                            android:summary="@string/np_tv_artist_summary"
+                            android:title="@string/np_tv_artist" />
+                        <CheckBoxPreference
+                            android:defaultValue="false"
+                            android:key="tvLine3"
+                            android:summary="@string/np_tv_album_summary"
+                            android:title="@string/np_tv_album" />
+
+                        <ListPreference
+                            android:defaultValue="2"
+                            android:dialogTitle="@string/np_font_dialog_title"
+                            android:entries="@array/np_font_size_entries"
+                            android:entryValues="@array/np_font_size_entrievalues"
+                            android:key="np_font_size"
+                            android:summary="@string/np_font_summary"
+                            android:title="@string/np_font_title" />
+                    </PreferenceCategory>
+                </PreferenceScreen>
+
+                <ListPreference
+                    android:defaultValue="2"
+                    android:dialogTitle="@string/np_swipe_gesture_title"
+                    android:entries="@array/np_swipe_gesture_entries"
+                    android:entryValues="@array/np_swipe_gesture_entrievalues"
+                    android:key="np_swipe_gesture"
+                    android:summary="@string/np_swipe_gesture_title_summary"
+                    android:title="@string/swipe_up_gesture" />
+            </PreferenceScreen>
+            <PreferenceScreen
+                android:summary="@string/status_bar_ui_summary"
+                android:title="@string/status_bar_ui_title" >
+                <PreferenceCategory android:title="@string/status_bar_ui_title" >
+                    <CheckBoxPreference
+                        android:defaultValue="false"
+                        android:key="cbStatusPlay"
+                        android:summary="@string/np_media_play_summary"
+                        android:title="@string/np_media_play_title" />
+                    <CheckBoxPreference
+                        android:defaultValue="false"
+                        android:key="cbStatusNext"
+                        android:summary="@string/np_media_next_summary"
+                        android:title="@string/np_media_next_title" />
+                    <CheckBoxPreference
+                        android:defaultValue="false"
+                        android:key="cbStatusPrev"
+                        android:summary="@string/np_media_prev_summary"
+                        android:title="@string/np_media_prev_title" />
+                    <CheckBoxPreference
+                        android:defaultValue="false"
+                        android:key="cbStatusCollapse"
+                        android:summary="@string/status_bar_close_summary"
+                        android:title="@string/status_bar_close" />
+                    <CheckBoxPreference
+                        android:defaultValue="true"
+                        android:key="cbStatusArt"
+                        android:summary="@string/np_media_album_art_summary"
+                        android:title="@string/np_media_album_art_title" />
+                    <CheckBoxPreference
+                        android:defaultValue="false"
+                        android:key="cbStatusNonya"
+                        android:summary="@string/status_bar_nonya_summary"
+                        android:title="@string/status_bar_nonya_title" />
+                </PreferenceCategory>
+                <PreferenceCategory android:title="@string/status_bar_text_views" >
+                    <CheckBoxPreference
+                        android:defaultValue="true"
+                        android:key="tvStatusLine1"
+                        android:summary="@string/np_tv_track_summary"
+                        android:title="@string/np_tv_track" />
+                    <CheckBoxPreference
+                        android:defaultValue="true"
+                        android:key="tvStatusLine2"
+                        android:summary="@string/np_tv_artist_summary"
+                        android:title="@string/np_tv_artist" />
+                    <CheckBoxPreference
+                        android:defaultValue="false"
+                        android:key="tvStatusLine3"
+                        android:summary="@string/np_tv_album_summary"
+                        android:title="@string/np_tv_album" />
+                    <CheckBoxPreference
+                        android:defaultValue="true"
+                        android:key="tvStatusColor"
+                        android:summary="Use the default text colors"
+                        android:title="Default Text Colors" />
+
+                    <PreferenceScreen
+                        android:key="color_picker"
+                        android:summary="@string/status_bar_color_picker_summary"
+                        android:title="@string/status_bar_color_picker" >
+                        <intent
+                            android:action="com.android.music.ColorPicker"
+                            android.targetClass="com.android.music.ColorPicker"
+                            android:targetPackage="com.android.music" />
+                    </PreferenceScreen>
+                </PreferenceCategory>
+            </PreferenceScreen>
+
+            <ListPreference
+                android:defaultValue="1"
+                android:dialogTitle="@string/back_button_action_title"
+                android:entries="@array/back_button_db_entries"
+                android:entryValues="@array/back_button_db_entrievalues"
+                android:key="back_button_db"
+                android:summary="@string/back_button_action_summary"
+                android:title="@string/back_button_action" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="cbEnterNowPlaying"
+                android:summary="@string/full_np_summary"
+                android:title="@string/full_np_title" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceScreen
+        android:key="themePrefences"
+        android:summary="@string/pref_summary_theme_settings"
+        android:title="@string/pref_title_theme_settings" >
+        <ListPreference
+            android:key="themePackageName"
+            android:summary="@string/pref_summary_theme_settings"
+            android:title="@string/pref_title_theme_package" />
+
+        <com.android.music.PreviewPreference
+            android:key="themePreview"
+            android:layout="@layout/theme_preview" />
+    </PreferenceScreen>
+
+    <Preference
+        style="?android:preferenceInformationStyle"
+        android:enabled="true"
+        android:key="build"
+        android:summary="@string/build_version_summary"
+        android:title="@string/build_version" />
+
+</PreferenceScreen>
