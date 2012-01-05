@@ -67,6 +67,7 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 	static final String KEY_COLOR_PREFERENCE_KEY = "color";
 	static final String KEY_ENABLE_STATUS_PLAY_BUTTON = "cbStatusPlay";
 	static final String KEY_ENABLE_SHARE_BUTTON = "cbShare";
+	static final String KEY_ENABLE_PROGRESS_BAR = "cbProgress";
 
 	static final String KEY_ENABLE_STATUS_NEXT_BUTTON = "cbStatusNext";
 	static final String KEY_ENABLE_STATUS_PREV_BUTTON = "cbStatusPrev";

@@ -204,7 +204,7 @@
     <string name="queue">Queue</string>
     <!-- Context menu item -->
     <string name="new_playlist">New playlist</string>
-        <!-- Context menu item -->
+    <!-- Context menu item -->
     <string name="show_all">More by artist</string>
     <!-- Template for newly created playlist name -->
     <string name="new_playlist_name_template">New playlist <xliff:g id="number">%d</xliff:g></string>
@@ -369,6 +369,8 @@
     <string name="np_font_title">Font Size</string>
     <string name="np_font_dialog_title">Now Playing Window Font Size</string>
     <string name="np_font_summary">Choose your font size for artist, album, and track</string>
+    <string name="np_progress_title">Progress bar</string>
+    <string name="np_progress_summary">Show a progress bar above your controls</string>
     <string name="swipe_up_gesture">Swipe Up Gesture</string>
     <string name="status_bar_ui_title">Status Bar UI</string>
     <string name="status_bar_ui_summary">Customize the status bar</string>
@@ -625,6 +627,5 @@
     <string name="color_picker_red">Red</string>
     <string name="color_picker_green">Green</string>
     <string name="color_picker_blue">Blue</string>
-    
 
 </resources>

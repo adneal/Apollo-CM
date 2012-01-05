@@ -67,6 +67,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -1378,6 +1379,7 @@ public class MusicUtils {
 	public static boolean mMediaPrev;
 	public static boolean mMediaShare;
 	public static boolean mAlbumText;
+	public static boolean mInfoDivider;
 
 	static boolean updateButtonBar(final Activity a, int highlight) {
 		final TabWidget ll = (TabWidget) a.findViewById(R.id.buttonbar);
@@ -1531,6 +1533,10 @@ public class MusicUtils {
 			}
 			if (true && MusicUtils.sService != null
 					&& MusicUtils.sService.getAudioId() != -1) {
+				ProgressBar mProgress = (ProgressBar) a
+						.findViewById(R.id.progress);
+				ImageView mDivider = (ImageView) a
+						.findViewById(R.id.info_divider);
 				ImageButton mMarket = (ImageButton) a
 						.findViewById(R.id.market_music);
 				ImageButton mPlay = (ImageButton) a
@@ -1564,6 +1570,7 @@ public class MusicUtils {
 					artistName = a.getString(R.string.unknown_artist_name);
 				}
 				artist.setText(artistName.toUpperCase());
+
 				// I have these set in updateNowPlaying() so everything will
 				// take effect without having to restart the app. The actions
 				// are set individually in each tab activity, however. That
@@ -1582,6 +1589,16 @@ public class MusicUtils {
 						MusicSettingsActivity.KEY_ENABLE_SHARE_BUTTON, false);
 				mAlbumText = mPreferences.getBoolean(
 						MusicSettingsActivity.KEY_ENABLE_ALBUM_TEXT, false);
+				mInfoDivider = mPreferences.getBoolean(
+						MusicSettingsActivity.KEY_ENABLE_PROGRESS_BAR, false);
+				if (mPreferences.getBoolean(
+						MusicSettingsActivity.KEY_ENABLE_PROGRESS_BAR, true)) {
+					mProgress.setVisibility(View.VISIBLE);
+					mDivider.setVisibility(View.GONE);
+				} else {
+					mProgress.setVisibility(View.GONE);
+					mDivider.setVisibility(View.VISIBLE);
+				}
 				if (mPreferences.getBoolean(
 						MusicSettingsActivity.KEY_ENABLE_ALBUM_ART, true)) {
 					albumart.setVisibility(View.VISIBLE);

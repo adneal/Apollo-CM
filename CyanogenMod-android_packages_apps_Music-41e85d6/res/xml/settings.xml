@@ -7,7 +7,7 @@
 	applicable law or agreed to in writing, software * distributed under the 
 	License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS 
 	OF ANY KIND, either express or implied. * See the License for the specific 
-	language governing permissions and * limitations under the License. */
+	language governing permissions and * limitations under the License. */
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
@@ -68,7 +68,7 @@
                     android:targetClass="com.android.music.EditGesturesActivity"
                     android:targetPackage="com.android.music" />
             </PreferenceScreen>
-        </PreferenceScreen>
+        </PreferenceScreen>
         -->
         <PreferenceScreen
             android:summary="@string/shaker_summary"
@@ -200,6 +200,11 @@
                             android:key="cbArt"
                             android:summary="@string/np_media_album_art_summary"
                             android:title="@string/np_media_album_art_title" />
+                        <CheckBoxPreference
+                            android:defaultValue="false"
+                            android:key="cbProgress"
+                            android:summary="@string/np_progress_summary"
+                            android:title="@string/np_progress_title" />
                     </PreferenceCategory>
                     <PreferenceCategory android:title="@string/np_tv" >
                         <CheckBoxPreference

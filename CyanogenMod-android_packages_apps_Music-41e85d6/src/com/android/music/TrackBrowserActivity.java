@@ -70,6 +70,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SectionIndexer;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -601,6 +602,7 @@ public class TrackBrowserActivity extends ListActivity implements
 				filename = uri.toString();
 			}
 			try {
+				refreshProgress();
 				mService.stop();
 				mService.openFile(filename);
 				mService.play();
@@ -740,6 +742,7 @@ public class TrackBrowserActivity extends ListActivity implements
 		IntentFilter f = new IntentFilter();
 		f.addAction(MediaPlaybackService.META_CHANGED);
 		f.addAction(MediaPlaybackService.QUEUE_CHANGED);
+		f.addAction(MediaPlaybackService.PROGRESSBAR_CHANGED);
 		if ("nowplaying".equals(mPlaylist)) {
 			try {
 				int cur = MusicUtils.sService.getQueuePosition();
@@ -942,6 +945,9 @@ public class TrackBrowserActivity extends ListActivity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			getListView().invalidateViews();
+			if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+				refreshProgress();
+			}
 			if (!mEditMode) {
 				MusicUtils.updateNowPlaying(TrackBrowserActivity.this);
 			}
@@ -2038,6 +2044,24 @@ public class TrackBrowserActivity extends ListActivity implements
 			}
 		} catch (RemoteException ex) {
 		}
+	}
+
+	private void refreshProgress() {
+		ProgressBar mProgress = (ProgressBar) findViewById(R.id.progress);
+		mProgress.setMax(1000);
+		try {
+			if ((MusicUtils.sService.position() >= 0)
+					&& (MusicUtils.sService.duration() > 0)) {
+				mProgress.setProgress((int) (1000 * MusicUtils.sService
+						.position() / MusicUtils.sService.duration()));
+			} else {
+				mProgress.setProgress(1000);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	private void doPrev() {

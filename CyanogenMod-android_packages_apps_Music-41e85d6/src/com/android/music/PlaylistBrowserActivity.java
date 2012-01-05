@@ -62,6 +62,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -507,6 +508,7 @@ public class PlaylistBrowserActivity extends ListActivity implements
 				filename = uri.toString();
 			}
 			try {
+				refreshProgress();
 				mService.stop();
 				mService.openFile(filename);
 				mService.play();
@@ -565,6 +567,7 @@ public class PlaylistBrowserActivity extends ListActivity implements
 		IntentFilter f = new IntentFilter();
 		f.addAction(MediaPlaybackService.META_CHANGED);
 		f.addAction(MediaPlaybackService.QUEUE_CHANGED);
+		f.addAction(MediaPlaybackService.PROGRESSBAR_CHANGED);
 		registerReceiver(mTrackListListener, f);
 		mTrackListListener.onReceive(null, null);
 
@@ -587,6 +590,9 @@ public class PlaylistBrowserActivity extends ListActivity implements
 		public void onReceive(Context context, Intent intent) {
 			getListView().invalidateViews();
 			MusicUtils.updateNowPlaying(PlaylistBrowserActivity.this);
+			if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+				refreshProgress();
+			}
 		}
 	};
 	private BroadcastReceiver mScanListener = new BroadcastReceiver() {
@@ -1071,6 +1077,24 @@ public class PlaylistBrowserActivity extends ListActivity implements
 			}
 		} catch (RemoteException ex) {
 		}
+	}
+
+	private void refreshProgress() {
+		ProgressBar mProgress = (ProgressBar) findViewById(R.id.progress);
+		mProgress.setMax(1000);
+		try {
+			if ((MusicUtils.sService.position() >= 0)
+					&& (MusicUtils.sService.duration() > 0)) {
+				mProgress.setProgress((int) (1000 * MusicUtils.sService
+						.position() / MusicUtils.sService.duration()));
+			} else {
+				mProgress.setProgress(1000);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	private void doPrev() {

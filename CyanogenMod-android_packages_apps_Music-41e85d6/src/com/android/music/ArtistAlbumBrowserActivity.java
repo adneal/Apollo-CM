@@ -64,6 +64,7 @@ import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SectionIndexer;
 import android.widget.SimpleCursorTreeAdapter;
 import android.widget.TextView;
@@ -462,6 +463,7 @@ public class ArtistAlbumBrowserActivity extends ExpandableListActivity
 				filename = uri.toString();
 			}
 			try {
+				refreshProgress();
 				mService.stop();
 				mService.openFile(filename);
 				mService.play();
@@ -511,6 +513,7 @@ public class ArtistAlbumBrowserActivity extends ExpandableListActivity
 		IntentFilter f = new IntentFilter();
 		f.addAction(MediaPlaybackService.META_CHANGED);
 		f.addAction(MediaPlaybackService.QUEUE_CHANGED);
+		f.addAction(MediaPlaybackService.PROGRESSBAR_CHANGED);
 		registerReceiver(mTrackListListener, f);
 		mTrackListListener.onReceive(null, null);
 		MusicUtils.setSpinnerState(this);
@@ -521,6 +524,9 @@ public class ArtistAlbumBrowserActivity extends ExpandableListActivity
 		public void onReceive(Context context, Intent intent) {
 			getExpandableListView().invalidateViews();
 			MusicUtils.updateNowPlaying(ArtistAlbumBrowserActivity.this);
+			if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+				refreshProgress();
+			}
 		}
 	};
 	private BroadcastReceiver mScanListener = new BroadcastReceiver() {
@@ -1296,8 +1302,6 @@ public class ArtistAlbumBrowserActivity extends ExpandableListActivity
 				} else {
 					mService.play();
 				}
-				// We don't need refreshNow() because we aren't in the now
-				// playing activity
 				setPauseButtonImage();
 			}
 		} catch (RemoteException ex) {
@@ -1313,6 +1317,24 @@ public class ArtistAlbumBrowserActivity extends ExpandableListActivity
 			}
 		} catch (RemoteException ex) {
 		}
+	}
+
+	private void refreshProgress() {
+		ProgressBar mProgress = (ProgressBar) findViewById(R.id.progress);
+		mProgress.setMax(1000);
+		try {
+			if ((MusicUtils.sService.position() >= 0)
+					&& (MusicUtils.sService.duration() > 0)) {
+				mProgress.setProgress((int) (1000 * MusicUtils.sService
+						.position() / MusicUtils.sService.duration()));
+			} else {
+				mProgress.setProgress(1000);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	private void doPrev() {
