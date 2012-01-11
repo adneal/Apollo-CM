@@ -35,6 +35,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.audiofx.AudioEffect;
 import android.net.Uri;
 import android.os.Build;
@@ -188,6 +190,10 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 				CheckBoxPreference cbp = (CheckBoxPreference) preference;
 				if (cbp.isChecked()) {
 					alert.show();
+				} else {
+					// We don't want the wall paper to remain the album art if
+					// they aren't using this.
+					setCustomBackground();
 				}
 				return true;
 			}
@@ -198,6 +204,7 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 				// This isn't a good practice, but we need to restart the
 				// service completely to see the change immediately
 				System.exit(0);
+
 				return true;
 			}
 		});
@@ -243,6 +250,24 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 		themeLp.setEntryValues(values);
 		PreviewPreference themePreview = (PreviewPreference) findPreference("themePreview");
 		themePreview.setTheme(themePackage);
+	}
+
+	// Set Custom Background Image
+	public void setCustomBackground() {
+
+		// now load the proper bg
+		String BG_FILE = getFilesDir().toString() + File.separator
+				+ MusicSettingsActivity.BG_PHOTO_FILE;
+		Bitmap bgBitmap = BitmapFactory.decodeFile(BG_FILE);
+
+		try {
+			setWallpaper(bgBitmap);
+			bgBitmap.recycle();
+			System.gc();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void pickImage() {

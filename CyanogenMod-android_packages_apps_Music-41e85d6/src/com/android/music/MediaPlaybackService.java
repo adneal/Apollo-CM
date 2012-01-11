@@ -1636,7 +1636,6 @@ public class MediaPlaybackService extends Service implements
 		synchronized (this) {
 			mMediaplayerHandler.removeMessages(FADEUP);
 			if (isPlaying()) {
-				setCustomBackground();
 				mPlayer.pause();
 				gotoIdleState();
 				stopProgressUpdate();
@@ -1654,7 +1653,6 @@ public class MediaPlaybackService extends Service implements
 		synchronized (this) {
 			mMediaplayerHandler.removeMessages(FADEUP);
 			if (isPlaying()) {
-				setCustomBackground();
 				mPlayer.pause();
 				gotoIdleState();
 				mIsSupposedToBePlaying = false;
@@ -1855,6 +1853,7 @@ public class MediaPlaybackService extends Service implements
 		Message msg = mDelayedStopHandler.obtainMessage();
 		mDelayedStopHandler.sendMessageDelayed(msg, IDLE_DELAY);
 		stopForeground(false);
+		setCustomBackground();
 		status.contentView.setImageViewResource(R.id.status_media_play,
 				isPlaying() ? R.drawable.ic_appwidget_music_play
 						: R.drawable.ic_appwidget_music_pause);
