@@ -176,8 +176,8 @@ public class MediaAppWidgetProvider4x1 extends AppWidgetProvider {
 		} else {
 			// No error, so show normal titles and artwork
 			views.setViewVisibility(R.id.title, View.VISIBLE);
-			views.setTextViewText(R.id.title, " " + titleName);
-			views.setTextViewText(R.id.artist, " " + artistName);
+			views.setTextViewText(R.id.title, titleName);
+			views.setTextViewText(R.id.artist, artistName);
 			views.setViewVisibility(R.id.albumart, View.VISIBLE);
 			views.setTextColor(R.id.title, SCREEN_SAVER_COLOR_DIM);
 			views.setTextColor(R.id.artist, SCREEN_SAVER_COLOR_DIM);

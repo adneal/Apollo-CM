@@ -71,11 +71,8 @@
         android:id="@+id/progress"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="8dip"
-        android:layout_below="@+id/info"
-        android:paddingLeft="2dip"
-        android:paddingRight="2dip"
-        android:paddingTop="1dip" />
+        android:layout_height="5dip"
+        android:layout_below="@+id/info" />
 
     <ImageView
         android:id="@+id/controls_info_divider"

@@ -16,9 +16,18 @@
 
 package com.android.music;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.List;
 
+import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -30,15 +39,19 @@ import android.media.audiofx.AudioEffect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.RemoteException;
+import android.os.Environment;
 import android.os.SystemClock;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -84,6 +97,8 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 	static final String SCREENSAVER_COLOR_BLUE = "screensaver_color_blue";
 	static final String KEY_ENTER_FULL_NOW_PLAYING = "cbEnterNowPlaying";
 	static final String KEY_ENABLE_STATUS_TEXT_COLOR = "tvStatusColor";
+	static final String KEY_ENABLE_HOME_ART = "cbHomeAlbumArt";
+	static final String KEY_LOCK = "cbLock";
 	public static final String THEME_DEFAULT = "Music";
 	static final String THEME_KEY = "themePackageName";
 
@@ -112,6 +127,7 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 	public static final String KEY_BUILD_VERSION = "build";
 	public static final String KEY_SOUND_EFFECT = "eqEffects";
 	public static final String KEY_FEEDBACK = "feedback";
+	public static final String KEY_FLIP = "cbFlip";
 
 	long[] mHits = new long[3];
 	private static final String LOG_TAG = "EasterEgg";
@@ -124,6 +140,8 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 	static final int DEFAULT_SCREENSAVER_COLOR_RED = 0;
 	static final int DEFAULT_SCREENSAVER_COLOR_GREEN = 192;
 	static final int DEFAULT_SCREENSAVER_COLOR_BLUE = 255;
+	static final String BG_PHOTO_FILE = "home_art";
+	static final String TEMP_PHOTO_FILE = "home";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +149,59 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 		PreferenceManager preferenceManager = getPreferenceManager();
 		preferenceManager.setSharedPreferencesName(PREFERENCES_FILE);
 		addPreferencesFromResource(R.xml.settings);
+
+		ActionBar bar = getActionBar();
+		bar.setDisplayHomeAsUpEnabled(true);
+
+		PreferenceScreen screen;
+		screen = getPreferenceScreen();
+
+		final CheckBoxPreference cp = (CheckBoxPreference) screen
+				.findPreference("cbHomeAlbumArt");
+
+		final CheckBoxPreference lk = (CheckBoxPreference) screen
+				.findPreference("cbLock");
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Set Wallpaper");
+		builder.setIcon(android.R.drawable.ic_menu_crop);
+		builder.setMessage(
+				"You should select a wallpaper to use when your music is paused.")
+				.setCancelable(false)
+				.setPositiveButton("Okay",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								pickImage();
+							}
+						})
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+								cp.setChecked(false);
+							}
+						});
+		final AlertDialog alert = builder.create();
+
+		cp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(final Preference preference) {
+				CheckBoxPreference cbp = (CheckBoxPreference) preference;
+				if (cbp.isChecked()) {
+					alert.show();
+				}
+				return true;
+			}
+		});
+
+		lk.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			public boolean onPreferenceClick(final Preference preference) {
+				// This isn't a good practice, but we need to restart the
+				// service completely to see the change immediately
+				System.exit(0);
+				return true;
+			}
+		});
+
 		try {
 			PackageInfo packageInfo = getPackageManager().getPackageInfo(
 					getPackageName(), 0);
@@ -174,6 +245,74 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 		themePreview.setTheme(themePackage);
 	}
 
+	private void pickImage() {
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		intent.setType("image/*");
+		intent.putExtra("crop", "true");
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, getTempUri());
+		startActivityForResult(intent, 0);
+	}
+
+	private Uri getTempUri() {
+		return Uri.fromFile(getTempFile());
+	}
+
+	private File getTempFile() {
+		if (isSDCARDMounted()) {
+
+			File f = new File(Environment.getExternalStorageDirectory(),
+					TEMP_PHOTO_FILE);
+			return f;
+		} else {
+			return null;
+		}
+	}
+
+	private boolean isSDCARDMounted() {
+		String status = Environment.getExternalStorageState();
+
+		if (status.equals(Environment.MEDIA_MOUNTED))
+			return true;
+		return false;
+	}
+
+	public static void copyFile(File src, File dst) throws IOException {
+		FileChannel inChannel = new FileInputStream(src).getChannel();
+		FileChannel outChannel = new FileOutputStream(dst).getChannel();
+
+		try {
+			inChannel.transferTo(0, inChannel.size(), outChannel);
+		} finally {
+
+			if (inChannel != null)
+				inChannel.close();
+			if (outChannel != null)
+				outChannel.close();
+		}
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 0) {
+			if (resultCode == RESULT_OK) {
+				try {
+
+					File src = getTempFile();
+					File dst = new File(getFilesDir(), BG_PHOTO_FILE);
+					copyFile(src, dst);
+					boolean deleted = src.delete();
+
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}
+	}
+
 	public void applyTheme(View v) {
 		PreviewPreference themePreview = (PreviewPreference) findPreference("themePreview");
 		String packageName = themePreview.getValue().toString();
@@ -207,6 +346,16 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 			Log.e("Music", "Get themes", e);
 		}
 		finish();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			super.onBackPressed();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -274,7 +423,7 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 				try {
 					i.putExtra(AudioEffect.EXTRA_AUDIO_SESSION,
 							MusicUtils.sService.getAudioSessionId());
-				} catch (RemoteException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -283,7 +432,7 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 		} catch (NullPointerException ee) {
 
 		}
-		return super.onPreferenceTreeClick(preferenceScreen, preference);
 
+		return super.onPreferenceTreeClick(preferenceScreen, preference);
 	}
 }

@@ -205,7 +205,7 @@
     <!-- Context menu item -->
     <string name="new_playlist">New playlist</string>
     <!-- Context menu item -->
-    <string name="show_all">More by artist</string>
+    <string name="show_all">Show All</string>
     <!-- Template for newly created playlist name -->
     <string name="new_playlist_name_template">New playlist <xliff:g id="number">%d</xliff:g></string>
     <!-- Toasts after adding song(s) to playlists -->
@@ -335,8 +335,7 @@
     <string name="gesture_color_picker_summary">Change the color of the gesture overlay</string>
     <string name="define_gestures">Define Gestures</string>
     <string name="shake_action_title_bg">Send to Background</string>
-    <string name="shake_action_summary_bg">Shake actions will continue to work outside the app
-		or if screen is turned off</string>
+    <string name="shake_action_summary_bg">The Tab action will continue working outside the app</string>
     <string name="customizations_title">Customization</string>
     <string name="customizations_summary">Heavy modification</string>
     <string name="small_np_window_title">Small Now Playing Window</string>
@@ -399,6 +398,12 @@
     <string name="status_bar_nonya_summary">Remove the album art/status icon when the status bar is extended</string>
     <string name="build_version">Build Version</string>
     <string name="build_version_summary">Unknown</string>
+    <string name="flip_to_pause">Flip To Pause</string>
+    <string name="flip_to_pause_summary">Flip your phone over to quickly pause your music then back up to resume</string>
+    <string name="home_art">Album Art As Wallpaper</string>
+    <string name="home_art_summary">Set your home screen wallpaper to the current album art while playing</string>
+    <string name="lock">Lock Screen Controls</string>
+    <string name="lock_summary">Enables lock screen controls</string>
     <!-- Menu text for the item controlling the audio effects panel [CHAR LIMIT=15] -->
     <string name="effectspanel">Sound effects</string>
     <string name="effectspanel_summary">FX Booster, Bass boost, 3D effect, etc</string>
@@ -414,7 +419,7 @@
     <string-array name="duck_attenuation_db_entries">
         <item>None</item>
         <item>4 dB</item>
-        <item>8 dB (default)</item>
+        <item>8 dB</item>
         <item>12 dB</item>
     </string-array>
     <!-- Do not translate. Entry values for 'enable gestures' preference list -->
@@ -505,8 +510,8 @@
     <string name="shaker_summary_playlist">Shake action for the Playlist tab</string>
     <string name="shaker_title_nowplaying">Now Playing Shake Actions</string>
     <string name="shaker_summary_nowplaying">Shake action for the Now Playing tab</string>
-    <string name="shaker_title">Shake Actions</string>
-    <string name="shaker_summary">Select your "shake" action</string>
+    <string name="shaker_title">Shake and Flip Actions</string>
+    <string name="shaker_summary">Select your "shake" and "flip" actions</string>
 
     <string-array name="shaker_db_entries_tabs">
         <item>None</item>

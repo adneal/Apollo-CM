@@ -568,8 +568,8 @@ public class PlaylistBrowserActivity extends ListActivity implements
 		f.addAction(MediaPlaybackService.META_CHANGED);
 		f.addAction(MediaPlaybackService.QUEUE_CHANGED);
 		f.addAction(MediaPlaybackService.PROGRESSBAR_CHANGED);
+		f.addAction(MediaPlaybackService.PLAYSTATE_CHANGED);
 		registerReceiver(mTrackListListener, f);
-		mTrackListListener.onReceive(null, null);
 
 		MusicUtils.setSpinnerState(this);
 	}
@@ -579,7 +579,11 @@ public class PlaylistBrowserActivity extends ListActivity implements
 		super.onPause();
 		unregisterReceiver(mTrackListListener);
 		mReScanHandler.removeCallbacksAndMessages(null);
-		if (!mShakeActions) {
+		if (mPreferences.getBoolean(
+				MusicSettingsActivity.KEY_ENABLE_BACKGROUND_SHAKE_ACTIONS,
+				false)) {
+			// this seems totally wrong, but it works pretty perfect
+		} else {
 			Playlistshaker.close();
 		}
 		super.onPause();
@@ -588,10 +592,14 @@ public class PlaylistBrowserActivity extends ListActivity implements
 	private BroadcastReceiver mTrackListListener = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
 			getListView().invalidateViews();
 			MusicUtils.updateNowPlaying(PlaylistBrowserActivity.this);
 			if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 				refreshProgress();
+				if (action.equals(MediaPlaybackService.PLAYSTATE_CHANGED)) {
+					setPauseButtonImage();
+				}
 			}
 		}
 	};
@@ -1060,9 +1068,9 @@ public class PlaylistBrowserActivity extends ListActivity implements
 				} else {
 					mService.play();
 				}
-				// We don't need refreshNow() because we aren't in the now
-				// playing activity
-				setPauseButtonImage();
+				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+					setPauseButtonImage();
+				}
 			}
 		} catch (RemoteException ex) {
 		}

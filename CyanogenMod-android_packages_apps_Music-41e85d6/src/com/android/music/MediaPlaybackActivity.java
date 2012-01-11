@@ -16,8 +16,6 @@
 
 package com.android.music;
 
-import java.util.ArrayList;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,12 +32,8 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.gesture.Gesture;
-import android.gesture.GestureLibraries;
 import android.gesture.GestureLibrary;
 import android.gesture.GestureOverlayView;
-import android.gesture.GestureOverlayView.OnGesturePerformedListener;
-import android.gesture.Prediction;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.AudioManager;
@@ -53,7 +47,6 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Audio.AudioColumns;
@@ -80,8 +73,7 @@ import android.widget.Toast;
 import com.android.music.MusicUtils.ServiceToken;
 
 public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
-		View.OnTouchListener, View.OnLongClickListener, Shaker.Callback,
-		OnGesturePerformedListener {
+		View.OnTouchListener, View.OnLongClickListener, Shaker.Callback {
 	private static final int USE_AS_RINGTONE = CHILD_MENU_BASE;
 
 	private SharedPreferences mPreferences;
@@ -144,7 +136,7 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 		mAlbumArtWorker = new Worker("album art worker");
 		mAlbumArtHandler = new AlbumArtHandler(mAlbumArtWorker.getLooper());
 
-		configureActivity();
+		setContentView(R.layout.player);
 
 		// Shake Action Sensitivity
 		shaker = new Shaker(this, 2.25d, 500, this);
@@ -247,61 +239,6 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 
 		mTouchSlop = ViewConfiguration.get(this).getScaledTouchSlop();
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-	}
-
-	private void configureActivity() {
-		mAlbumArtWorker = new Worker("album art worker");
-		mAlbumArtHandler = new AlbumArtHandler(mAlbumArtWorker.getLooper());
-		if (mPreferences.getBoolean(MusicSettingsActivity.KEY_ENABLE_GESTURES,
-				false)) {
-			loadGestureLibrary();
-			mGestureOverlayView = new GestureOverlayView(this);
-			View inflate = getLayoutInflater().inflate(R.layout.player, null);
-			mGestureOverlayView.addView(inflate);
-			mGestureOverlayView
-					.setOrientation(GestureOverlayView.ORIENTATION_HORIZONTAL);
-			mGestureOverlayView
-					.setGestureStrokeType(GestureOverlayView.GESTURE_STROKE_TYPE_MULTIPLE);
-			mGestureOverlayView.addOnGesturePerformedListener(this);
-			setContentView(mGestureOverlayView);
-			SharedPreferences mPrefs = PreferenceManager
-					.getDefaultSharedPreferences(this);
-
-			int aColor_gesture = new Integer(mPrefs.getInt(
-					MusicSettingsActivity.SCREENSAVER_COLOR_ALPHA_GESTURE,
-					MusicSettingsActivity.DEFAULT_SCREENSAVER_COLOR_ALPHA));
-			int rColor_gesture = new Integer(mPrefs.getInt(
-					MusicSettingsActivity.SCREENSAVER_COLOR_RED_GESTURE,
-					MusicSettingsActivity.DEFAULT_SCREENSAVER_COLOR_RED));
-			int gColor_gesture = new Integer(mPrefs.getInt(
-					MusicSettingsActivity.SCREENSAVER_COLOR_GREEN_GESTURE,
-					MusicSettingsActivity.DEFAULT_SCREENSAVER_COLOR_GREEN));
-			int bColor_gesture = new Integer(mPrefs.getInt(
-					MusicSettingsActivity.SCREENSAVER_COLOR_BLUE_GESTURE,
-					MusicSettingsActivity.DEFAULT_SCREENSAVER_COLOR_BLUE));
-
-			int SCREEN_SAVER_COLOR_DIM_GESTURE = Color.argb(aColor_gesture,
-					rColor_gesture, gColor_gesture, bColor_gesture);
-
-			mGestureOverlayView.setGestureColor(SCREEN_SAVER_COLOR_DIM_GESTURE);
-
-		} else {
-			setContentView(R.layout.player);
-		}
-	}
-
-	private void loadGestureLibrary() {
-		if (mPreferences.getBoolean(
-				MusicSettingsActivity.KEY_HAS_CUSTOM_GESTURES, false)) {
-			String fileName = EditGesturesActivity.LIBRARY_FILENAME;
-			mGestureLibrary = GestureLibraries.fromPrivateFile(this, fileName);
-		} else {
-			mGestureLibrary = GestureLibraries.fromRawResource(this,
-					R.raw.gestures);
-		}
-		if (!mGestureLibrary.load()) {
-			finish();
-		}
 	}
 
 	int mInitialX = -1;
@@ -771,6 +708,7 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 		f.addAction(MediaPlaybackService.PLAYSTATE_CHANGED);
 		f.addAction(MediaPlaybackService.META_CHANGED);
 		registerReceiver(mStatusListener, new IntentFilter(f));
+
 		updateTrackInfo();
 		long next = refreshNow();
 		queueNextRefresh(next);
@@ -783,14 +721,8 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 
 	@Override
 	public void onPause() {
-		if (mPreferences
-				.getBoolean(
-						MusicSettingsActivity.KEY_ENABLE_BACKGROUND_SHAKE_ACTIONS,
-						true)) {
-			// This is probably sketchy.
-		} else {
-			shaker.close();
-		}
+		shaker.close(); // The only shake actions to stay in the "background"
+						// are the tabs.
 		super.onPause();
 	}
 
@@ -1895,53 +1827,5 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 				android.R.anim.fade_out);
 		startActivity(intent);
 		finish();
-	}
-
-	enum GestureAction {
-		PAUSE, NEXT, PREV, SHUFFLE, REPEAT, INVALID;
-
-		static GestureAction toGestureAction(String str) {
-			try {
-				return valueOf(str);
-			} catch (IllegalArgumentException ex) {
-				return INVALID;
-			}
-		}
-	}
-
-	public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
-		ArrayList<Prediction> predictions = mGestureLibrary.recognize(gesture);
-		// for (Prediction prediction : predictions) {
-		// Log.d("Music","Gesture prediction: " + prediction.name + " score: " +
-		// prediction.score);
-		// }
-		Prediction bestPrediction = predictions.get(0);
-		if (bestPrediction.score > 2.0) {
-			switch (GestureAction.toGestureAction(bestPrediction.name)) {
-			case PAUSE:
-				doPauseResume();
-				break;
-			case NEXT:
-				doNext();
-				break;
-			case PREV:
-				doPrev();
-				break;
-			case SHUFFLE:
-				toggleShuffle();
-				break;
-			case REPEAT:
-				cycleRepeat();
-				break;
-			case INVALID:
-				Log.e("MediaPlaybackActivity", "Invalid gesture name: "
-						+ bestPrediction.name);
-				break;
-			}
-			if (mPreferences.getBoolean(
-					MusicSettingsActivity.KEY_ENABLE_HAPTIC_FEEDBACK, false)) {
-				mVibrator.vibrate(100);
-			}
-		}
 	}
 }

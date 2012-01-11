@@ -36,8 +36,9 @@
         android:background="@drawable/btn_bg"
         android:clickable="true"
         android:focusable="true"
-        android:gravity="center|left"
-        android:orientation="vertical" >
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="4dip" >
 
         <TextView
             android:id="@+id/title"

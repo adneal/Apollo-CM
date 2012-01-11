@@ -35,7 +35,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -160,9 +159,7 @@ public class AlbumBrowserActivity extends ListActivity implements
 		lv = (ListView) findViewById(android.R.id.list);
 		lv.setTextFilterEnabled(true);
 		lv.setOnCreateContextMenuListener(this);
-		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		lv.setMultiChoiceModeListener(new ModeCallback());
-		lv.setBackgroundColor(Color.TRANSPARENT);
 
 		mToken = MusicUtils.bindToService(this, osc);
 
@@ -266,6 +263,7 @@ public class AlbumBrowserActivity extends ListActivity implements
 
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 			if (mMultiSelectActionBarView == null) {
+
 				ViewGroup v = (ViewGroup) LayoutInflater.from(
 						AlbumBrowserActivity.this).inflate(
 						R.layout.action_menu_layout, null);
@@ -273,6 +271,7 @@ public class AlbumBrowserActivity extends ListActivity implements
 
 				mSelectedConvCount = (TextView) v
 						.findViewById(R.id.selected_conv_count);
+
 			}
 			return true;
 		}
@@ -305,7 +304,6 @@ public class AlbumBrowserActivity extends ListActivity implements
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-
 		}
 
 		public void onItemCheckedStateChanged(ActionMode mode, int position,
@@ -313,13 +311,7 @@ public class AlbumBrowserActivity extends ListActivity implements
 			ListView listView = getListView();
 			final int checkedCount = listView.getCheckedItemCount();
 			mSelectedConvCount.setText(Integer.toString(checkedCount));
-			if (checked) {
-				String name = mAlbumCursor.getString(mAlbumCursor
-						.getColumnIndexOrThrow(AlbumColumns.ALBUM));
-				String displayname = name;
-				((TextView) mMultiSelectActionBarView.findViewById(R.id.title))
-						.setText(displayname);
-			}
+
 		}
 	}
 
@@ -609,8 +601,8 @@ public class AlbumBrowserActivity extends ListActivity implements
 		f.addAction(MediaPlaybackService.META_CHANGED);
 		f.addAction(MediaPlaybackService.QUEUE_CHANGED);
 		f.addAction(MediaPlaybackService.PROGRESSBAR_CHANGED);
+		f.addAction(MediaPlaybackService.PLAYSTATE_CHANGED);
 		registerReceiver(mTrackListListener, f);
-		mTrackListListener.onReceive(null, null);
 
 		MusicUtils.setSpinnerState(this);
 	}
@@ -618,10 +610,14 @@ public class AlbumBrowserActivity extends ListActivity implements
 	private BroadcastReceiver mTrackListListener = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
 			getListView().invalidateViews();
 			MusicUtils.updateNowPlaying(AlbumBrowserActivity.this);
 			if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 				refreshProgress();
+				if (action.equals(MediaPlaybackService.PLAYSTATE_CHANGED)) {
+					setPauseButtonImage();
+				}
 			}
 		}
 	};
@@ -649,7 +645,11 @@ public class AlbumBrowserActivity extends ListActivity implements
 	public void onPause() {
 		unregisterReceiver(mTrackListListener);
 		mReScanHandler.removeCallbacksAndMessages(null);
-		if (!mShakeActions) {
+		if (mPreferences.getBoolean(
+				MusicSettingsActivity.KEY_ENABLE_BACKGROUND_SHAKE_ACTIONS,
+				false)) {
+			// this seems totally wrong, but it works pretty perfect
+		} else {
 			Albumshaker.close();
 		}
 		super.onPause();
@@ -1157,9 +1157,9 @@ public class AlbumBrowserActivity extends ListActivity implements
 				} else {
 					mService.play();
 				}
-				// We don't need refreshNow() because we aren't in the now
-				// playing activity
-				setPauseButtonImage();
+				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+					setPauseButtonImage();
+				}
 			}
 		} catch (RemoteException ex) {
 		}

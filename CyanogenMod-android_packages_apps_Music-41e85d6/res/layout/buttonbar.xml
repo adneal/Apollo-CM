@@ -14,7 +14,7 @@
     android:id="@+id/buttonbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#80000000"
+    android:background="#000000"
     android:tabStripEnabled="false" >
 
     <TextView

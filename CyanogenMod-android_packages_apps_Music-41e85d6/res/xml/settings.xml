@@ -7,7 +7,7 @@
 	applicable law or agreed to in writing, software * distributed under the 
 	License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS 
 	OF ANY KIND, either express or implied. * See the License for the specific 
-	language governing permissions and * limitations under the License. */
+	language governing permissions and * limitations under the License. */
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
@@ -31,45 +31,6 @@
             android:title="@string/effectspanel" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/ui_cat" >
-
-        <!--
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="enable_gestures"
-            android:summary="@string/enable_gestures_summary"
-            android:title="@string/gestures_category_title" />
-
-        <PreferenceScreen
-            android:dependency="enable_gestures"
-            android:summary="@string/edit_gesture_summary"
-            android:title="@string/edit_gestures_title" >
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:dependency="enable_gestures"
-                android:key="enable_haptic_feedback"
-                android:summary="@string/enable_haptic_feedback_summary"
-                android:title="@string/enable_haptic_feedback_title" />
-
-            <PreferenceScreen
-                android:dependency="enable_gestures"
-                android:key="color_picker"
-                android:summary="@string/gesture_color_picker_summary"
-                android:title="@string/gesture_color_picker_title" >
-                <intent
-                    android:action="com.android.music.GestureColorPicker"
-                    android.targetClass="com.android.music.GestureColorPicker"
-                    android:targetPackage="com.android.music" />
-            </PreferenceScreen>
-            <PreferenceScreen
-                android:dependency="enable_gestures"
-                android:key="edit_gestures"
-                android:title="@string/define_gestures" >
-                <intent
-                    android:targetClass="com.android.music.EditGesturesActivity"
-                    android:targetPackage="com.android.music" />
-            </PreferenceScreen>
-        </PreferenceScreen>
-        -->
         <PreferenceScreen
             android:summary="@string/shaker_summary"
             android:title="@string/shaker_title" >
@@ -96,6 +57,12 @@
                     android:key="shake_actions_db"
                     android:summary="@string/shaker_summary_nowplaying"
                     android:title="@string/shaker_title_nowplaying" />
+
+                <CheckBoxPreference
+                    android:defaultValue="true"
+                    android:key="cbFlip"
+                    android:summary="@string/flip_to_pause_summary"
+                    android:title="@string/flip_to_pause" />
             </PreferenceCategory>
         </PreferenceScreen>
         <PreferenceScreen
@@ -104,46 +71,6 @@
             <PreferenceScreen
                 android:summary="@string/animation_ui_summary"
                 android:title="@string/animation_ui_title" >
-                <ListPreference
-                    android:defaultValue="7"
-                    android:dialogTitle="@string/artist_ui_title"
-                    android:entries="@array/animation_ui_db_entries"
-                    android:entryValues="@array/animation_ui_db_entrievalues"
-                    android:key="animation_ui_db"
-                    android:summary="@string/artist_ui_summary"
-                    android:title="@string/artist_ui_title" />
-                <ListPreference
-                    android:defaultValue="7"
-                    android:dialogTitle="@string/album_ui_title"
-                    android:entries="@array/animation_ui_db_entries"
-                    android:entryValues="@array/animation_ui_db_entrievalues"
-                    android:key="album_animation_ui_db"
-                    android:summary="@string/album_ui_summary"
-                    android:title="@string/album_ui_title" />
-                <ListPreference
-                    android:defaultValue="7"
-                    android:dialogTitle="@string/song_ui_title"
-                    android:entries="@array/animation_ui_db_entries"
-                    android:entryValues="@array/animation_ui_db_entrievalues"
-                    android:key="song_animation_ui_db"
-                    android:summary="@string/song_ui_summary"
-                    android:title="@string/song_ui_title" />
-                <ListPreference
-                    android:defaultValue="7"
-                    android:dialogTitle="@string/playlist_ui_title"
-                    android:entries="@array/animation_ui_db_entries"
-                    android:entryValues="@array/animation_ui_db_entrievalues"
-                    android:key="playlist_animation_ui_db"
-                    android:summary="@string/playlist_ui_summary"
-                    android:title="@string/playlist_ui_title" />
-                <ListPreference
-                    android:defaultValue="7"
-                    android:dialogTitle="Tab Animations"
-                    android:entries="@array/animation_ui_db_entries"
-                    android:entryValues="@array/animation_ui_db_entrievalues"
-                    android:key="tab_animation_ui_db"
-                    android:summary="@string/tab_anim_summary"
-                    android:title="@string/tab_anim_title" />
                 <ListPreference
                     android:defaultValue="7"
                     android:dialogTitle="Now Playing Animations"
@@ -326,6 +253,18 @@
                 android:key="cbEnterNowPlaying"
                 android:summary="@string/full_np_summary"
                 android:title="@string/full_np_title" />
+            
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="cbLock"
+                android:summary="@string/lock_summary"
+                android:title="@string/lock" />
+            
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="cbHomeAlbumArt"
+                android:summary="@string/home_art_summary"
+                android:title="@string/home_art" />
         </PreferenceScreen>
     </PreferenceCategory>
 

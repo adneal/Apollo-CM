@@ -16,6 +16,7 @@
 
 package com.android.music;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,7 +44,12 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.media.MediaMetadataRetriever;
@@ -73,7 +79,8 @@ import android.widget.Toast;
  * Provides "background" audio playback capabilities, allowing the user to
  * switch between activities without stopping playback.
  */
-public class MediaPlaybackService extends Service {
+public class MediaPlaybackService extends Service implements
+		SensorEventListener {
 	/**
 	 * used to specify whether enqueue() should start playing the new list of
 	 * files right away, next or once all the currently queued files have been
@@ -170,6 +177,19 @@ public class MediaPlaybackService extends Service {
 	private boolean mQueueIsSaveable = true;
 	// used to track what type of audio focus loss caused the playback to pause
 	private boolean mPausedByTransientLossOfFocus = false;
+
+	// Flip action
+	public static int ROLL_LOVER = -25;
+	public static int ROLL_UPER = 25;
+	public static int PITCH_LOVER = -160;
+	public static int PITCH_UPER = 160;
+	public static int SENSIVITY = 0;
+	public static int VIBRATORDURATION = 50;
+	private SensorManager sensorMan = null;
+	private float PITCH;
+	private float ROLL;
+	private boolean IsWorked = false;
+	private boolean IsVibrate = false;
 
 	private SharedPreferences mPreferences;
 	// We use this to distinguish between different cards when saving/restoring
@@ -420,6 +440,12 @@ public class MediaPlaybackService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
+		// Flip action
+		sensorMan = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		sensorMan.registerListener(this,
+				sensorMan.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+				SensorManager.SENSOR_DELAY_UI);
+
 		mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		ComponentName rec = new ComponentName(getPackageName(),
 				MediaButtonIntentReceiver.class.getName());
@@ -430,7 +456,6 @@ public class MediaPlaybackService extends Service {
 				getApplicationContext(), 0, mediaButtonIntent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		mRemoteControlClient = new RemoteControlClient(mediaPendingIntent);
-		mAudioManager.registerRemoteControlClient(mRemoteControlClient);
 
 		int flags = RemoteControlClient.FLAG_KEY_MEDIA_PREVIOUS
 				| RemoteControlClient.FLAG_KEY_MEDIA_NEXT
@@ -442,6 +467,13 @@ public class MediaPlaybackService extends Service {
 
 		mPreferences = getSharedPreferences("Music", MODE_WORLD_READABLE
 				| MODE_WORLD_WRITEABLE);
+
+		SharedPreferences preferences = getSharedPreferences(
+				MusicSettingsActivity.PREFERENCES_FILE, MODE_PRIVATE);
+
+		if (preferences.getBoolean(MusicSettingsActivity.KEY_LOCK, true)) {
+			mAudioManager.registerRemoteControlClient(mRemoteControlClient);
+		}
 		mCardId = MusicUtils.getCardId(this);
 
 		registerExternalStorageListener();
@@ -481,6 +513,8 @@ public class MediaPlaybackService extends Service {
 
 	@Override
 	public void onDestroy() {
+		sensorMan.unregisterListener(this);
+
 		// Check that we're not being destroyed while something is still
 		// playing.
 		if (isPlaying()) {
@@ -915,6 +949,55 @@ public class MediaPlaybackService extends Service {
 		}
 	}
 
+	// Set Custom Background Image
+	public void setCustomBackground() {
+
+		SharedPreferences preferences = getSharedPreferences(
+				MusicSettingsActivity.PREFERENCES_FILE, MODE_PRIVATE);
+
+		mPreferences.getBoolean(MusicSettingsActivity.KEY_ENABLE_HOME_ART,
+				false);
+
+		// now load the proper bg
+		String BG_FILE = getFilesDir().toString() + File.separator
+				+ MusicSettingsActivity.BG_PHOTO_FILE;
+		Bitmap bgBitmap = BitmapFactory.decodeFile(BG_FILE);
+
+		try {
+			if (preferences.getBoolean(
+					MusicSettingsActivity.KEY_ENABLE_HOME_ART, false)) {
+				setWallpaper(bgBitmap);
+				bgBitmap.recycle();
+				System.gc();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	// Set launcher wallpaper as album art
+	private void setArtwork() {
+		SharedPreferences preferences = getSharedPreferences(
+				MusicSettingsActivity.PREFERENCES_FILE, MODE_PRIVATE);
+
+		mPreferences.getBoolean(MusicSettingsActivity.KEY_ENABLE_HOME_ART,
+				false);
+		Bitmap b = MusicUtils
+				.getArtwork(this, getAudioId(), getAlbumId(), true);
+		try {
+			if (preferences.getBoolean(
+					MusicSettingsActivity.KEY_ENABLE_HOME_ART, false)) {
+				setWallpaper(b);
+				b.recycle();
+				System.gc();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Notify the change-receivers that something has changed. The intent that
 	 * is sent contains the following data for the currently playing track: "id"
@@ -938,13 +1021,16 @@ public class MediaPlaybackService extends Service {
 		i.putExtra("playing", isPlaying());
 		i.putExtra("pos", position());
 		i.putExtra("dur", duration());
+		i.putExtra("albumLong", getAlbumId());
+		i.putExtra("trackLong", getAudioId());
 		sendStickyBroadcast(i);
-
 		if (what.equals(PLAYSTATE_CHANGED)) {
 			mRemoteControlClient
 					.setPlaybackState(isPlaying() ? RemoteControlClient.PLAYSTATE_PLAYING
 							: RemoteControlClient.PLAYSTATE_PAUSED);
 		} else if (what.equals(META_CHANGED)) {
+			Bitmap b = MusicUtils.getArtwork(this, getAudioId(), getAlbumId(),
+					true);
 			RemoteControlClient.MetadataEditor ed = mRemoteControlClient
 					.editMetadata(true);
 			ed.putString(MediaMetadataRetriever.METADATA_KEY_TITLE,
@@ -954,14 +1040,11 @@ public class MediaPlaybackService extends Service {
 			ed.putString(MediaMetadataRetriever.METADATA_KEY_ARTIST,
 					getArtistName());
 			ed.putLong(MediaMetadataRetriever.METADATA_KEY_DURATION, duration());
-			Bitmap b = MusicUtils.getArtwork(this, getAudioId(), getAlbumId(),
-					true);
-			if (b != null) {
-				ed.putBitmap(MetadataEditor.BITMAP_KEY_ARTWORK, b);
-			}
+
+			ed.putBitmap(MetadataEditor.BITMAP_KEY_ARTWORK, b);
+
 			ed.apply();
 		}
-
 		if (what.equals(QUEUE_CHANGED)) {
 			saveQueue(true);
 		} else {
@@ -1269,6 +1352,8 @@ public class MediaPlaybackService extends Service {
 	 * Starts playback of a previously opened file.
 	 */
 	public void play() {
+		setArtwork();
+
 		TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		if (telephonyManager.getCallState() == TelephonyManager.CALL_STATE_OFFHOOK) {
 			return;
@@ -1551,6 +1636,7 @@ public class MediaPlaybackService extends Service {
 		synchronized (this) {
 			mMediaplayerHandler.removeMessages(FADEUP);
 			if (isPlaying()) {
+				setCustomBackground();
 				mPlayer.pause();
 				gotoIdleState();
 				stopProgressUpdate();
@@ -1562,12 +1648,13 @@ public class MediaPlaybackService extends Service {
 		}
 	}
 
-	// I made this so that the notification won't clear if you pause from the
-	// status bar.
+	// This is so the notification won't clear immediately if you pause from the
+	// status bar
 	public void pauseDummy() {
 		synchronized (this) {
 			mMediaplayerHandler.removeMessages(FADEUP);
 			if (isPlaying()) {
+				setCustomBackground();
 				mPlayer.pause();
 				gotoIdleState();
 				mIsSupposedToBePlaying = false;
@@ -2525,8 +2612,11 @@ public class MediaPlaybackService extends Service {
 		timer.scheduleAtFixedRate(new TimerTask() {
 
 			public void run() {
+				try {
+					notifyChange(PROGRESSBAR_CHANGED);
+				} catch (NullPointerException e) {
 
-				notifyChange(PROGRESSBAR_CHANGED);
+				}
 
 			}
 
@@ -2560,4 +2650,59 @@ public class MediaPlaybackService extends Service {
 	}
 
 	private final IBinder mBinder = new ServiceStub(this);
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void onSensorChanged(SensorEvent event) {
+
+		SharedPreferences preferences = getSharedPreferences(
+				MusicSettingsActivity.PREFERENCES_FILE, MODE_PRIVATE);
+		mPreferences.getBoolean(MusicSettingsActivity.KEY_FLIP, false);
+
+		float vals[] = event.values;
+		PITCH = vals[1];// Pitch
+		ROLL = vals[2];// Roll
+
+		// Log.d("RD Mute Service", "PITCH : " + PITCH);
+		// Log.d("RD Mute Service", "ROLL : " + ROLL);
+
+		int nPITCH_UPER = PITCH_UPER;
+		int nPITCH_LOVER = PITCH_LOVER;
+		int nROLL_UPER = ROLL_UPER;
+		int nROLL_LOVER = ROLL_LOVER;
+
+		if (SENSIVITY != 0) {
+			nPITCH_UPER = PITCH_UPER - SENSIVITY;
+			nPITCH_LOVER = PITCH_LOVER + SENSIVITY;
+			nROLL_UPER = ROLL_UPER + SENSIVITY;
+			nROLL_LOVER = ROLL_LOVER - SENSIVITY;
+		}
+		if (preferences.getBoolean(MusicSettingsActivity.KEY_FLIP, false)) {
+			if (PITCH > nPITCH_UPER || PITCH < nPITCH_LOVER) {
+				if (ROLL < nROLL_UPER && ROLL > nROLL_LOVER) {
+					if (isPlaying()) {
+						pause();
+						IsWorked = true;
+					}
+				} else if (PITCH > nPITCH_UPER || PITCH < nPITCH_LOVER) {
+					if (IsWorked) {
+						if (!isPlaying()) {
+							play();
+							IsWorked = false;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public static void setSensivity(int sensivity) {
+		// Log.d("RD Mute Service", "SENSIVITY : " + sensivity);
+		SENSIVITY = sensivity - 10;
+		// Log.d("RD Mute Service", "SENSIVITY NEW : " + SENSIVITY);
+	}
 }

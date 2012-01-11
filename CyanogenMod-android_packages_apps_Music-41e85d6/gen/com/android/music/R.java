@@ -114,95 +114,75 @@ public final class R {
         public static final int ic_appwidget_music_prev=0x7f020024;
         public static final int ic_launcher_market_holo=0x7f020025;
         public static final int ic_launcher_shortcut_music_playlist=0x7f020026;
-        public static final int ic_market=0x7f020027;
-        public static final int ic_media_next=0x7f020028;
-        public static final int ic_media_pause=0x7f020029;
-        public static final int ic_media_play=0x7f02002a;
-        public static final int ic_media_previous=0x7f02002b;
-        public static final int ic_menu_add=0x7f02002c;
-        public static final int ic_menu_add_playlist=0x7f02002d;
-        public static final int ic_menu_delete=0x7f02002e;
-        public static final int ic_menu_eq=0x7f02002f;
-        public static final int ic_menu_share=0x7f020030;
-        public static final int ic_mp_album_playback=0x7f020031;
+        public static final int ic_lock_idle_alarm=0x7f020027;
+        public static final int ic_market=0x7f020028;
+        public static final int ic_media_next=0x7f020029;
+        public static final int ic_media_pause=0x7f02002a;
+        public static final int ic_media_play=0x7f02002b;
+        public static final int ic_media_previous=0x7f02002c;
+        public static final int ic_menu_add=0x7f02002d;
+        public static final int ic_menu_add_playlist=0x7f02002e;
+        public static final int ic_menu_delete=0x7f02002f;
+        public static final int ic_menu_eq=0x7f020030;
+        public static final int ic_menu_share=0x7f020031;
         public static final int ic_mp_artist_list=0x7f020032;
-        public static final int ic_mp_artist_playback=0x7f020033;
-        public static final int ic_mp_partyshuffle_on_btn=0x7f020034;
-        public static final int ic_mp_playlist_list=0x7f020035;
-        public static final int ic_mp_playlist_recently_added_list=0x7f020036;
-        public static final int ic_mp_repeat_all_btn=0x7f020037;
-        public static final int ic_mp_repeat_off_btn=0x7f020038;
-        public static final int ic_mp_repeat_once_btn=0x7f020039;
-        public static final int ic_mp_sd_card=0x7f02003a;
-        public static final int ic_mp_shuffle_off_btn=0x7f02003b;
-        public static final int ic_mp_shuffle_on_btn=0x7f02003c;
-        public static final int ic_mp_song_list=0x7f02003d;
-        public static final int ic_mp_song_playback=0x7f02003e;
-        public static final int ic_ring=0x7f02003f;
-        public static final int ic_search_category_music_song=0x7f020040;
-        public static final int ic_slide_keyboard=0x7f020041;
-        public static final int ic_tab_albums=0x7f020042;
-        public static final int ic_tab_albums_selected=0x7f020043;
-        public static final int ic_tab_albums_unselected=0x7f020044;
-        public static final int ic_tab_artists=0x7f020045;
-        public static final int ic_tab_artists_selected=0x7f020046;
-        public static final int ic_tab_artists_unselected=0x7f020047;
-        public static final int ic_tab_playback=0x7f020048;
-        public static final int ic_tab_playback_selected=0x7f020049;
-        public static final int ic_tab_playback_unselected=0x7f02004a;
-        public static final int ic_tab_playlists=0x7f02004b;
-        public static final int ic_tab_playlists_selected=0x7f02004c;
-        public static final int ic_tab_playlists_unselected=0x7f02004d;
-        public static final int ic_tab_songs=0x7f02004e;
-        public static final int ic_tab_songs_selected=0x7f02004f;
-        public static final int ic_tab_songs_unselected=0x7f020050;
-        public static final int indicator_ic_mp_playing_large=0x7f020051;
-        public static final int indicator_ic_mp_playing_list=0x7f020052;
-        public static final int indicator_playing_peak_meter_0=0x7f020053;
-        public static final int indicator_playing_peak_meter_1=0x7f020054;
-        public static final int indicator_playing_peak_meter_2=0x7f020055;
-        public static final int indicator_playing_peak_meter_3=0x7f020056;
-        public static final int indicator_playing_peak_meter_4=0x7f020057;
-        public static final int indicator_playing_peak_meter_5=0x7f020058;
-        public static final int list_selector=0x7f020059;
-        public static final int list_selector_background=0x7f02005a;
-        public static final int list_selector_background_transition=0x7f02005b;
-        public static final int media_next_normal=0x7f02005c;
-        public static final int media_previous_normal=0x7f02005d;
-        public static final int midi=0x7f02005e;
-        public static final int movie=0x7f02005f;
-        public static final int music_bottom_playback_bg=0x7f020060;
-        public static final int notify_panel_notification_icon_bg=0x7f020061;
-        public static final int now_playing_bg=0x7f020062;
-        public static final int now_playing_progress_handle_normal=0x7f020063;
-        public static final int now_playing_progress_handle_pressed=0x7f020064;
-        public static final int now_playing_progress_handle_selected=0x7f020065;
-        public static final int now_playing_selector=0x7f020066;
-        public static final int np_bg=0x7f020067;
-        public static final int panel_now_playing_progress_bg=0x7f020068;
-        public static final int pickerbox_background=0x7f020069;
-        public static final int pickerbox_selected=0x7f02006a;
-        public static final int pickerbox_unselected=0x7f02006b;
-        public static final int player_background=0x7f02006c;
-        public static final int playlist_tile=0x7f02006d;
-        public static final int playlist_tile_drag=0x7f02006e;
-        public static final int playlist_tile_longpress=0x7f02006f;
-        public static final int playlist_tile_normal=0x7f020070;
-        public static final int playlist_tile_pressed=0x7f020071;
-        public static final int playlist_tile_selected=0x7f020072;
-        public static final int progress_bg_holo_dark=0x7f020073;
-        public static final int progress_horizontal=0x7f020074;
-        public static final int progress_primary_holo_dark=0x7f020075;
-        public static final int progress_secondary_holo_dark=0x7f020076;
-        public static final int seek_thumb=0x7f020077;
-        public static final int solid_dark_pressed=0x7f020078;
-        public static final int stat_notify_musicplayer=0x7f020079;
-        public static final int status_bg=0x7f02007a;
-        public static final int status_next=0x7f02007b;
-        public static final int status_pause=0x7f02007c;
-        public static final int status_play=0x7f02007d;
-        public static final int status_prev=0x7f02007e;
-        public static final int tabs_bg=0x7f02007f;
+        public static final int ic_mp_partyshuffle_on_btn=0x7f020033;
+        public static final int ic_mp_playlist_list=0x7f020034;
+        public static final int ic_mp_playlist_recently_added_list=0x7f020035;
+        public static final int ic_mp_repeat_all_btn=0x7f020036;
+        public static final int ic_mp_repeat_off_btn=0x7f020037;
+        public static final int ic_mp_repeat_once_btn=0x7f020038;
+        public static final int ic_mp_sd_card=0x7f020039;
+        public static final int ic_mp_shuffle_off_btn=0x7f02003a;
+        public static final int ic_mp_shuffle_on_btn=0x7f02003b;
+        public static final int ic_mp_song_list=0x7f02003c;
+        public static final int ic_ring=0x7f02003d;
+        public static final int ic_slide_keyboard=0x7f02003e;
+        public static final int indicator_playing_peak_meter_0=0x7f02003f;
+        public static final int indicator_playing_peak_meter_1=0x7f020040;
+        public static final int indicator_playing_peak_meter_2=0x7f020041;
+        public static final int indicator_playing_peak_meter_3=0x7f020042;
+        public static final int indicator_playing_peak_meter_4=0x7f020043;
+        public static final int indicator_playing_peak_meter_5=0x7f020044;
+        public static final int list_selector=0x7f020045;
+        public static final int list_selector_background=0x7f020046;
+        public static final int list_selector_background_transition=0x7f020047;
+        public static final int media_next_normal=0x7f020048;
+        public static final int media_previous_normal=0x7f020049;
+        public static final int midi=0x7f02004a;
+        public static final int movie=0x7f02004b;
+        public static final int music_bottom_playback_bg=0x7f02004c;
+        public static final int notify_panel_notification_icon_bg=0x7f02004d;
+        public static final int now_playing_bg=0x7f02004e;
+        public static final int now_playing_progress_handle_normal=0x7f02004f;
+        public static final int now_playing_progress_handle_pressed=0x7f020050;
+        public static final int now_playing_progress_handle_selected=0x7f020051;
+        public static final int now_playing_selector=0x7f020052;
+        public static final int np_bg=0x7f020053;
+        public static final int panel_now_playing_progress_bg=0x7f020054;
+        public static final int pickerbox_background=0x7f020055;
+        public static final int pickerbox_selected=0x7f020056;
+        public static final int pickerbox_unselected=0x7f020057;
+        public static final int player_background=0x7f020058;
+        public static final int playlist_tile=0x7f020059;
+        public static final int playlist_tile_drag=0x7f02005a;
+        public static final int playlist_tile_longpress=0x7f02005b;
+        public static final int playlist_tile_normal=0x7f02005c;
+        public static final int playlist_tile_pressed=0x7f02005d;
+        public static final int playlist_tile_selected=0x7f02005e;
+        public static final int progress_bg_holo_dark=0x7f02005f;
+        public static final int progress_horizontal=0x7f020060;
+        public static final int progress_primary_holo_dark=0x7f020061;
+        public static final int progress_secondary_holo_dark=0x7f020062;
+        public static final int seek_thumb=0x7f020063;
+        public static final int solid_dark_pressed=0x7f020064;
+        public static final int stat_notify_musicplayer=0x7f020065;
+        public static final int status_bg=0x7f020066;
+        public static final int status_next=0x7f020067;
+        public static final int status_pause=0x7f020068;
+        public static final int status_play=0x7f020069;
+        public static final int status_prev=0x7f02006a;
+        public static final int tabs_bg=0x7f02006b;
     }
     public static final class id {
         public static final int CM=0x7f0d0080;
@@ -400,14 +380,14 @@ public final class R {
         public static final int gestures=0x7f060000;
     }
     public static final class string {
-        public static final int activity_not_found=0x7f0900ea;
+        public static final int activity_not_found=0x7f0900f0;
         /**  Context menu item 
          */
         public static final int add_to_playlist=0x7f090042;
         public static final int album_art_anim_summary=0x7f0900ad;
         public static final int album_art_anim_title=0x7f0900ac;
-        public static final int album_ui_summary=0x7f0900c1;
-        public static final int album_ui_title=0x7f0900c0;
+        public static final int album_ui_summary=0x7f0900c7;
+        public static final int album_ui_title=0x7f0900c6;
         /**  Category label on Library screen 
          */
         public static final int albums_menu=0x7f090015;
@@ -416,38 +396,38 @@ public final class R {
         public static final int albums_title=0x7f090016;
         /**  Do not translate. This is the separator character used when building the string that shows number of albums and songs. 
          */
-        public static final int albumsongseparator=0x7f0900f7;
+        public static final int albumsongseparator=0x7f0900fd;
         /**  All media screen title 
          */
         public static final int all_title=0x7f09001c;
-        public static final int animation_ui_summary=0x7f0900ce;
-        public static final int animation_ui_title=0x7f0900cd;
-        public static final int artist_ui_summary=0x7f0900bf;
-        public static final int artist_ui_title=0x7f0900be;
+        public static final int animation_ui_summary=0x7f0900d4;
+        public static final int animation_ui_title=0x7f0900d3;
+        public static final int artist_ui_summary=0x7f0900c5;
+        public static final int artist_ui_title=0x7f0900c4;
         /**  Artist screen title 
          */
         public static final int artists_title=0x7f090014;
         public static final int audio_cat=0x7f090072;
-        public static final int back_button_action=0x7f0900ba;
-        public static final int back_button_action_summary=0x7f0900bb;
-        public static final int back_button_action_title=0x7f0900b9;
+        public static final int back_button_action=0x7f0900c0;
+        public static final int back_button_action_summary=0x7f0900c1;
+        public static final int back_button_action_title=0x7f0900bf;
         /**  Category label on Library screen 
          */
         public static final int browse_menu=0x7f09001d;
         public static final int build_version=0x7f0900b2;
         public static final int build_version_summary=0x7f0900b3;
-        public static final int button_cancel=0x7f0900e1;
+        public static final int button_cancel=0x7f0900e7;
         /**  Button text for 'customize gesture' activity 
          */
-        public static final int button_done=0x7f0900e0;
-        public static final int button_no=0x7f0900db;
+        public static final int button_done=0x7f0900e6;
+        public static final int button_no=0x7f0900e1;
         /**  Button text for 'edit gestures' activity 
          */
-        public static final int button_reload_gestures=0x7f0900d7;
-        public static final int button_reset_all_gestures=0x7f0900d8;
+        public static final int button_reload_gestures=0x7f0900dd;
+        public static final int button_reset_all_gestures=0x7f0900de;
         /**  Alert dialog 'yes' and 'no' button text 
          */
-        public static final int button_yes=0x7f0900da;
+        public static final int button_yes=0x7f0900e0;
         /**  Text for the "cancel" button in the "delete" and "create playlist" confirmation dialogs 
          */
         public static final int cancel=0x7f090057;
@@ -458,31 +438,31 @@ public final class R {
         public static final int clear_playlist=0x7f090050;
         /**  Labels for colors in color picker 
          */
-        public static final int color_picker_alpha=0x7f0900ef;
-        public static final int color_picker_blue=0x7f0900f2;
-        public static final int color_picker_green=0x7f0900f1;
-        public static final int color_picker_red=0x7f0900f0;
+        public static final int color_picker_alpha=0x7f0900f5;
+        public static final int color_picker_blue=0x7f0900f8;
+        public static final int color_picker_green=0x7f0900f7;
+        public static final int color_picker_red=0x7f0900f6;
         /**  Sample time used in color picker 
          */
-        public static final int color_picker_sample=0x7f0900ee;
+        public static final int color_picker_sample=0x7f0900f4;
         /**  Button name when saving a playlist 
          */
         public static final int create_playlist_create_text=0x7f090048;
         /**  Prompt in dialog when creating a playlist. The user will enter the name of the playlist in a textfield underneath this prompt. 
  Prompt in dialog when creating a playlist and the keyboard is closed. 
          */
-        public static final int create_playlist_create_text_prompt=0x7f0900f3;
+        public static final int create_playlist_create_text_prompt=0x7f0900f9;
         /**  Button name when saving a playlist and the new playlist will overwrite an existing one 
          */
         public static final int create_playlist_overwrite_text=0x7f090049;
         /**  Prompt and instructions for 'customize gesture' activity 
          */
-        public static final int custimize_gesture_prompt=0x7f0900df;
+        public static final int custimize_gesture_prompt=0x7f0900e5;
         public static final int customizations_summary=0x7f09007b;
         public static final int customizations_title=0x7f09007a;
         /**  Title for 'customize gesture' activity 
          */
-        public static final int customize_gesture_title=0x7f0900de;
+        public static final int customize_gesture_title=0x7f0900e4;
         public static final int define_gestures=0x7f090077;
         /**  Delete confirmation dialog when deleting an entire album 
          */
@@ -515,10 +495,10 @@ public final class R {
          */
         public static final int delete_song_desc_nosdcard=0x7f09000f;
         public static final int delete_track=0x7f090071;
-        public static final int duck_attenuation_db_summary=0x7f0900b8;
+        public static final int duck_attenuation_db_summary=0x7f0900be;
         /**  Title, summary, and entries for 'enable gestures' preference list 
          */
-        public static final int duck_attenuation_db_title=0x7f0900b7;
+        public static final int duck_attenuation_db_title=0x7f0900bd;
         /**  Do not translate. Duration format for duration >= 1 hour 
          */
         public static final int durationformatlong=0x7f090002;
@@ -528,28 +508,30 @@ public final class R {
         public static final int edit_gesture_summary=0x7f090074;
         /**  Title for 'edit gestures' preference screen and subsequent activity 
          */
-        public static final int edit_gestures_title=0x7f0900d3;
+        public static final int edit_gestures_title=0x7f0900d9;
         /**  Playlist context menu item to edit the selected playlist 
          */
         public static final int edit_playlist_menu=0x7f090023;
         /**  Menu text for the item controlling the audio effects panel [CHAR LIMIT=15] 
          */
-        public static final int effectspanel=0x7f0900b4;
-        public static final int effectspanel_summary=0x7f0900b5;
+        public static final int effectspanel=0x7f0900ba;
+        public static final int effectspanel_summary=0x7f0900bb;
         /**  Toast after selecting an empty playlist 
          */
         public static final int emptyplaylist=0x7f090047;
         /**  Title and summary for 'enable gestures' preference checkbox 
          */
-        public static final int enable_gestures_summary=0x7f0900d0;
-        public static final int enable_haptic_feedback_summary=0x7f0900d2;
+        public static final int enable_gestures_summary=0x7f0900d6;
+        public static final int enable_haptic_feedback_summary=0x7f0900d8;
         /**  Title and summary for 'enable haptic feedback' preference checkbox 
          */
-        public static final int enable_haptic_feedback_title=0x7f0900d1;
+        public static final int enable_haptic_feedback_title=0x7f0900d7;
         public static final int eq=0x7f09006d;
         /**  The fast scroll thumb will show one character from this string depending on the position in the list 
          */
         public static final int fast_scroll_alphabet=0x7f090066;
+        public static final int flip_to_pause=0x7f0900b4;
+        public static final int flip_to_pause_summary=0x7f0900b5;
         public static final int full_np_summary=0x7f0900a5;
         public static final int full_np_title=0x7f0900a4;
         public static final int fullscreen_np_summary=0x7f0900a9;
@@ -558,27 +540,31 @@ public final class R {
         public static final int gesture_color_picker_title=0x7f090075;
         /**  Category title for gestures in music settings 
          */
-        public static final int gestures_category_title=0x7f0900cf;
+        public static final int gestures_category_title=0x7f0900d5;
         /**  Context menu entries for 'edit gestures' activity 
          */
-        public static final int gestures_customize=0x7f0900d5;
-        public static final int gestures_error_library=0x7f0900dd;
+        public static final int gestures_customize=0x7f0900db;
+        public static final int gestures_error_library=0x7f0900e3;
         /**  Error messages for 'edit gestures' activity 
          */
-        public static final int gestures_error_loading=0x7f0900dc;
+        public static final int gestures_error_loading=0x7f0900e2;
         /**  Loading text for 'edit gestures' activity 
          */
-        public static final int gestures_loading=0x7f0900d4;
-        public static final int gestures_reset=0x7f0900d6;
+        public static final int gestures_loading=0x7f0900da;
+        public static final int gestures_reset=0x7f0900dc;
         /**  Alert dialog text to confirm desire to reset all gestures to default 
          */
-        public static final int gestures_reset_all_alert=0x7f0900d9;
+        public static final int gestures_reset_all_alert=0x7f0900df;
         /**  Menu item that takes the user back to the top level screen of the music player 
          */
         public static final int goto_start=0x7f090003;
+        public static final int home_art=0x7f0900b6;
+        public static final int home_art_summary=0x7f0900b7;
         /**  Shown in the music picker while loading the music database. 
          */
         public static final int loading=0x7f09005f;
+        public static final int lock=0x7f0900b8;
+        public static final int lock_summary=0x7f0900b9;
         public static final int lockscreen_controls_summary=0x7f0900ab;
         public static final int lockscreen_controls_title=0x7f0900aa;
         /**  Activity label. This might show up in the activity-picker 
@@ -616,7 +602,7 @@ public final class R {
         public static final int no_videos_title=0x7f090020;
         /**  Used for the 2nd and 3rd line (artist and album) in the notification area item for the music app 
          */
-        public static final int notification_artist_album=0x7f0900f8;
+        public static final int notification_artist_album=0x7f0900fe;
         /**  title of the "current playlist" screen when not in party shuffle mode 
          */
         public static final int nowplaying_title=0x7f090013;
@@ -641,8 +627,8 @@ public final class R {
         public static final int np_media_share_title=0x7f090086;
         public static final int np_progress_summary=0x7f09009b;
         public static final int np_progress_title=0x7f09009a;
-        public static final int np_swipe_gesture_title=0x7f0900bc;
-        public static final int np_swipe_gesture_title_summary=0x7f0900bd;
+        public static final int np_swipe_gesture_title=0x7f0900c2;
+        public static final int np_swipe_gesture_title_summary=0x7f0900c3;
         public static final int np_tv=0x7f090090;
         public static final int np_tv_album=0x7f090092;
         public static final int np_tv_album_summary=0x7f090095;
@@ -660,7 +646,7 @@ public final class R {
          */
         public static final int party_shuffle_off=0x7f090005;
         public static final int party_shuffle_on=0x7f090006;
-        public static final int partyshuffle_title=0x7f0900f6;
+        public static final int partyshuffle_title=0x7f0900fc;
         /**  Menu item to play back all the songs in the currently showing list in list order 
          */
         public static final int play_all=0x7f090009;
@@ -676,8 +662,8 @@ public final class R {
         /**  Transient popup message shown after renaming a playlist 
          */
         public static final int playlist_renamed_message=0x7f090026;
-        public static final int playlist_ui_summary=0x7f0900c5;
-        public static final int playlist_ui_title=0x7f0900c4;
+        public static final int playlist_ui_summary=0x7f0900cb;
+        public static final int playlist_ui_title=0x7f0900ca;
         /**  Category label on Library screen 
          */
         public static final int playlists_menu=0x7f090019;
@@ -690,16 +676,16 @@ public final class R {
         /**  The name of the pseudo-playlist that holds all the podcasts, shown in title bar of songs list 
          */
         public static final int podcasts_title=0x7f09002a;
-        public static final int pref_summary_theme_package=0x7f0900e5;
-        public static final int pref_summary_theme_preview=0x7f0900e7;
-        public static final int pref_summary_theme_settings=0x7f0900e3;
-        public static final int pref_themes_apply_theme=0x7f0900e8;
-        public static final int pref_themes_get_themes=0x7f0900e9;
-        public static final int pref_title_theme_package=0x7f0900e4;
-        public static final int pref_title_theme_preview=0x7f0900e6;
+        public static final int pref_summary_theme_package=0x7f0900eb;
+        public static final int pref_summary_theme_preview=0x7f0900ed;
+        public static final int pref_summary_theme_settings=0x7f0900e9;
+        public static final int pref_themes_apply_theme=0x7f0900ee;
+        public static final int pref_themes_get_themes=0x7f0900ef;
+        public static final int pref_title_theme_package=0x7f0900ea;
+        public static final int pref_title_theme_preview=0x7f0900ec;
         /**  Theme preferences 
          */
-        public static final int pref_title_theme_settings=0x7f0900e2;
+        public static final int pref_title_theme_settings=0x7f0900e8;
         /**  Context menu item 
          */
         public static final int queue=0x7f090043;
@@ -715,14 +701,14 @@ public final class R {
         /**  Prompt in dialog when renaming a playlist, used when the current name the new name are different. The user will enter the new name of the playlist in a textfield underneath this prompt. 
  Prompt in dialog when renaming a playlist, and the entered name is different from the old one. 
          */
-        public static final int rename_playlist_diff_prompt=0x7f0900f5;
+        public static final int rename_playlist_diff_prompt=0x7f0900fb;
         /**  Playlist context menu item to rename the selected playlist 
          */
         public static final int rename_playlist_menu=0x7f090024;
         /**  Prompt in dialog when renaming a playlist, used when the current name and the new name are the same. The user will enter the new name of the playlist in a textfield underneath this prompt. 
  Prompt in dialog when renaming a playlist, and the entered name is the same as the old one. 
          */
-        public static final int rename_playlist_same_prompt=0x7f0900f4;
+        public static final int rename_playlist_same_prompt=0x7f0900fa;
         /**  Toast after turning repeat all on 
          */
         public static final int repeat_all_notif=0x7f09003d;
@@ -810,21 +796,21 @@ public final class R {
         public static final int set_ring=0x7f090070;
         /**  Menu text for the music settings item [CHAR LIMIT=15] 
          */
-        public static final int settings=0x7f0900b6;
+        public static final int settings=0x7f0900bc;
         /**  Color Picker Dialog 
          */
-        public static final int settings_bg_color_confirm=0x7f0900eb;
-        public static final int settings_bg_color_dialog=0x7f0900ed;
-        public static final int settings_default_color_confirm=0x7f0900ec;
+        public static final int settings_bg_color_confirm=0x7f0900f1;
+        public static final int settings_bg_color_dialog=0x7f0900f3;
+        public static final int settings_default_color_confirm=0x7f0900f2;
         public static final int shake_action_summary_bg=0x7f090079;
         public static final int shake_action_title_bg=0x7f090078;
-        public static final int shaker_summary=0x7f0900cc;
-        public static final int shaker_summary_artist=0x7f0900c7;
-        public static final int shaker_summary_nowplaying=0x7f0900ca;
-        public static final int shaker_summary_playlist=0x7f0900c8;
-        public static final int shaker_title=0x7f0900cb;
-        public static final int shaker_title_artist=0x7f0900c6;
-        public static final int shaker_title_nowplaying=0x7f0900c9;
+        public static final int shaker_summary=0x7f0900d2;
+        public static final int shaker_summary_artist=0x7f0900cd;
+        public static final int shaker_summary_nowplaying=0x7f0900d0;
+        public static final int shaker_summary_playlist=0x7f0900ce;
+        public static final int shaker_title=0x7f0900d1;
+        public static final int shaker_title_artist=0x7f0900cc;
+        public static final int shaker_title_nowplaying=0x7f0900cf;
         public static final int share=0x7f09006c;
         public static final int shop=0x7f09006e;
         public static final int shop_min=0x7f09006f;
@@ -848,8 +834,8 @@ public final class R {
         public static final int small_np_ui_summary=0x7f09007f;
         public static final int small_np_window_summary=0x7f09007d;
         public static final int small_np_window_title=0x7f09007c;
-        public static final int song_ui_summary=0x7f0900c3;
-        public static final int song_ui_title=0x7f0900c2;
+        public static final int song_ui_summary=0x7f0900c9;
+        public static final int song_ui_title=0x7f0900c8;
         /**  Menu in music picker to sort the list by album name. 
          */
         public static final int sort_by_album=0x7f090061;

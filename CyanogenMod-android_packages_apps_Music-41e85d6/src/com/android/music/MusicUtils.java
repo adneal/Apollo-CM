@@ -946,7 +946,7 @@ public class MusicUtils {
 						.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				context.startActivity(intent);
 			} else {
-
+				// Sketch
 			}
 		}
 	}
@@ -1475,49 +1475,6 @@ public class MusicUtils {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		a.startActivity(intent);
 		a.finish();
-		mPreferences = a.getSharedPreferences(
-				MusicSettingsActivity.PREFERENCES_FILE, a.MODE_PRIVATE);
-		tab_animation_ui_db = mPreferences
-				.getString("tab_animation_ui_db", "0");
-		if (tab_animation_ui_db.equals("0")) {
-			a.overridePendingTransition(R.anim.anim_0, R.anim.anim_0);
-		}
-		tab_animation_ui_db = mPreferences
-				.getString("tab_animation_ui_db", "1");
-		if (tab_animation_ui_db.equals("1")) {
-			a.overridePendingTransition(R.anim.anim_1, R.anim.anim_1);
-		}
-		tab_animation_ui_db = mPreferences
-				.getString("tab_animation_ui_db", "2");
-		if (tab_animation_ui_db.equals("2")) {
-			a.overridePendingTransition(R.anim.anim_2, R.anim.anim_2);
-		}
-		tab_animation_ui_db = mPreferences
-				.getString("tab_animation_ui_db", "3");
-		if (tab_animation_ui_db.equals("3")) {
-			a.overridePendingTransition(R.anim.anim_3, R.anim.anim_3);
-		}
-		tab_animation_ui_db = mPreferences
-				.getString("tab_animation_ui_db", "4");
-		if (tab_animation_ui_db.equals("4")) {
-			a.overridePendingTransition(R.anim.anim_4, R.anim.anim_4);
-		}
-		tab_animation_ui_db = mPreferences
-				.getString("tab_animation_ui_db", "5");
-		if (tab_animation_ui_db.equals("5")) {
-			a.overridePendingTransition(R.anim.anim_5, R.anim.anim_5);
-		}
-		tab_animation_ui_db = mPreferences
-				.getString("tab_animation_ui_db", "6");
-		if (tab_animation_ui_db.equals("6")) {
-			a.overridePendingTransition(R.anim.fade_in_fast,
-					R.anim.fade_out_fast);
-		}
-		tab_animation_ui_db = mPreferences
-				.getString("tab_animation_ui_db", "7");
-		if (tab_animation_ui_db.equals("7")) {
-			a.overridePendingTransition(0, 0);
-		}
 	}
 
 	static void updateNowPlaying(final Activity a) {
