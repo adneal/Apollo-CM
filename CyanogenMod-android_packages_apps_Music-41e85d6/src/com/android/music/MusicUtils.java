@@ -38,6 +38,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -940,14 +942,19 @@ public class MusicUtils {
 			sService.play();
 		} catch (RemoteException ex) {
 		} finally {
-			if (mPreferences.getBoolean(
-					MusicSettingsActivity.KEY_ENTER_FULL_NOW_PLAYING, true)) {
-				Intent intent = new Intent("com.android.music.PLAYBACK_VIEWER")
-						.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				context.startActivity(intent);
-			} else {
-				// Sketch
+			Intent intent = new Intent("com.android.music.PLAYBACK_VIEWER")
+					.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			try {
+				if (mPreferences
+						.getBoolean(
+								MusicSettingsActivity.KEY_ENTER_FULL_NOW_PLAYING,
+								false)) {
+					context.startActivity(intent);
+				}
+			} catch (NullPointerException e) {
+
 			}
+
 		}
 	}
 
@@ -1295,6 +1302,21 @@ public class MusicUtils {
 		return null;
 	}
 
+	public static String getThemePackageName(Context context,
+			String default_theme) {
+		SharedPreferences sp = context.getSharedPreferences(
+				MusicSettingsActivity.PREFERENCES_FILE, Context.MODE_PRIVATE);
+		return sp.getString("themePackageName", default_theme);
+	}
+
+	public static void setThemePackageName(Context context, String packageName) {
+		SharedPreferences sp = context.getSharedPreferences(
+				MusicSettingsActivity.PREFERENCES_FILE, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sp.edit();
+		editor.putString("themePackageName", packageName);
+		editor.commit();
+	}
+
 	static int getIntPref(Context context, String name, int def) {
 		SharedPreferences prefs = context.getSharedPreferences(
 				context.getPackageName(), Context.MODE_PRIVATE);
@@ -1380,6 +1402,7 @@ public class MusicUtils {
 	public static boolean mMediaShare;
 	public static boolean mAlbumText;
 	public static boolean mInfoDivider;
+	public static boolean mOverFlow;
 
 	static boolean updateButtonBar(final Activity a, int highlight) {
 		final TabWidget ll = (TabWidget) a.findViewById(R.id.buttonbar);
@@ -1483,6 +1506,21 @@ public class MusicUtils {
 		if (nowPlayingView == null) {
 			return;
 		}
+		// ADW: Load the specified theme
+		String themePackage = MusicUtils.getThemePackageName(a,
+				MusicSettingsActivity.THEME_DEFAULT);
+		PackageManager pm = a.getPackageManager();
+		Resources themeResources = null;
+		if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+			try {
+				themeResources = pm.getResourcesForApplication(themePackage);
+			} catch (NameNotFoundException e) {
+				// ADW The saved theme was uninstalled so we save the
+				// default one
+				MusicUtils.setThemePackageName(a,
+						MusicSettingsActivity.THEME_DEFAULT);
+			}
+		}
 		try {
 			Intent intent = a.getIntent();
 			if (intent != null) {
@@ -1494,6 +1532,7 @@ public class MusicUtils {
 						.findViewById(R.id.progress);
 				ImageView mDivider = (ImageView) a
 						.findViewById(R.id.info_divider);
+				ImageButton mFlow = (ImageButton) a.findViewById(R.id.overFlow);
 				ImageButton mMarket = (ImageButton) a
 						.findViewById(R.id.market_music);
 				ImageButton mPlay = (ImageButton) a
@@ -1528,12 +1567,43 @@ public class MusicUtils {
 				}
 				artist.setText(artistName.toUpperCase());
 
+				if (themeResources != null) {
+					int titleColor = themeResources.getIdentifier(
+							"snp_track_name_color", "color", themePackage);
+					if (titleColor != 0) {
+						title.setTextColor(themeResources.getColor(titleColor));
+					}
+					int artistColor = themeResources.getIdentifier(
+							"snp_artist_name_color", "color", themePackage);
+					if (artistColor != 0) {
+						artist.setTextColor(themeResources
+								.getColor(artistColor));
+					}
+					int albumColor = themeResources.getIdentifier(
+							"snp_album_name_color", "color", themePackage);
+					if (albumColor != 0) {
+						albumname.setTextColor(themeResources
+								.getColor(albumColor));
+						int seeker = themeResources.getIdentifier(
+								"snp_progress_horizontal", "drawable",
+								themePackage);
+						if (seeker != 0) {
+							mProgress.setProgressDrawable(themeResources
+									.getDrawable(seeker));
+						}
+					}
+				}
+
 				// I have these set in updateNowPlaying() so everything will
 				// take effect without having to restart the app. The actions
 				// are set individually in each tab activity, however. That
 				// should be cleaned up and unified.
 				mPreferences = a.getSharedPreferences(
 						MusicSettingsActivity.PREFERENCES_FILE, a.MODE_PRIVATE);
+				mMarketSearch = mPreferences
+						.getBoolean(
+								MusicSettingsActivity.KEY_ENTER_FULL_NOW_PLAYING,
+								false);
 				mMarketSearch = mPreferences.getBoolean(
 						MusicSettingsActivity.KEY_ENABLE_MARKET_SERACH, false);
 				mMediaPlay = mPreferences.getBoolean(
@@ -1548,8 +1618,16 @@ public class MusicUtils {
 						MusicSettingsActivity.KEY_ENABLE_ALBUM_TEXT, false);
 				mInfoDivider = mPreferences.getBoolean(
 						MusicSettingsActivity.KEY_ENABLE_PROGRESS_BAR, false);
+				mOverFlow = mPreferences.getBoolean(
+						MusicSettingsActivity.KEY_ENABLE_PROGRESS_BAR, false);
 				if (mPreferences.getBoolean(
-						MusicSettingsActivity.KEY_ENABLE_PROGRESS_BAR, true)) {
+						MusicSettingsActivity.KEY_ENABLE_OVER_FLOW, false)) {
+					mFlow.setVisibility(View.VISIBLE);
+				} else {
+					mFlow.setVisibility(View.GONE);
+				}
+				if (mPreferences.getBoolean(
+						MusicSettingsActivity.KEY_ENABLE_PROGRESS_BAR, false)) {
 					mProgress.setVisibility(View.VISIBLE);
 					mDivider.setVisibility(View.GONE);
 				} else {

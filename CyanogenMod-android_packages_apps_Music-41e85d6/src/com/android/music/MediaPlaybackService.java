@@ -208,14 +208,15 @@ public class MediaPlaybackService extends Service implements
 			.getInstance();
 
 	// interval after which we stop the service when idle
-	private static final int IDLE_DELAY = 60000;
+	private static final int IDLE_DELAY = 6000;
+
+	// used to track current volume
+	private float mCurrentVolume = 1.0f;
 
 	private RemoteControlClient mRemoteControlClient;
 	private Timer timer = new Timer();
 
 	private Handler mMediaplayerHandler = new Handler() {
-		float mCurrentVolume = 1.0f;
-
 		@Override
 		public void handleMessage(Message msg) {
 			MusicUtils
@@ -1023,6 +1024,10 @@ public class MediaPlaybackService extends Service implements
 		i.putExtra("dur", duration());
 		i.putExtra("albumLong", getAlbumId());
 		i.putExtra("trackLong", getAudioId());
+		if (mPlayList != null)
+			i.putExtra("ListSize", Long.valueOf(mPlayList.length));
+		else
+			i.putExtra("ListSize", Long.valueOf(mPlayListLen));
 		sendStickyBroadcast(i);
 		if (what.equals(PLAYSTATE_CHANGED)) {
 			mRemoteControlClient
@@ -1438,6 +1443,7 @@ public class MediaPlaybackService extends Service implements
 					MusicSettingsActivity.KEY_ENABLE_STATUS_PREV_BUTTON, false);
 			mPreferences.getBoolean(
 					MusicSettingsActivity.KEY_ENABLE_STATUS_PLAY_BUTTON, false);
+			mPreferences.getBoolean(MusicSettingsActivity.KEY_TICK, false);
 			if (preferences.getBoolean(
 					MusicSettingsActivity.KEY_ENABLE_STATUS_PREV_BUTTON, false)) {
 
@@ -1568,6 +1574,9 @@ public class MediaPlaybackService extends Service implements
 			status.contentView = views;
 			status.flags |= Notification.FLAG_ONGOING_EVENT;
 			status.icon = R.drawable.stat_notify_musicplayer;
+			if (preferences.getBoolean(MusicSettingsActivity.KEY_TICK, true)) {
+				status.tickerText = getTrackName() + " by " + getArtistName();
+			}
 			status.contentIntent = PendingIntent.getActivity(this, 0,
 					new Intent("com.android.music.PLAYBACK_VIEWER")
 							.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), 0);
@@ -2435,6 +2444,7 @@ public class MediaPlaybackService extends Service implements
 
 		public void setVolume(float vol) {
 			mMediaPlayer.setVolume(vol, vol);
+			mCurrentVolume = vol;
 		}
 
 		public void setAudioSessionId(int sessionId) {

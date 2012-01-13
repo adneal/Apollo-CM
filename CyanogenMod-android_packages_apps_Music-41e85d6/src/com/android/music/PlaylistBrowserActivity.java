@@ -30,7 +30,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
@@ -61,9 +64,12 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,7 +95,20 @@ public class PlaylistBrowserActivity extends ListActivity implements
 	private ServiceToken mOSC;
 	private IMediaPlaybackService mService = null;
 	private SharedPreferences mPreferences;
+	// Artist tab layout
+	public LinearLayout mPlaylistTab;
+	public TabWidget mButtonBar;
+	public TextView mButtonBarArtist;
+	public TextView mButtonBarAlbum;
+	public TextView mButtonBarSong;
+	public TextView mButtonBarPlaylist;
+	public TextView mButtonBarNP;
+	public RelativeLayout mGroup;
+	public RelativeLayout mChild;
 	// Smaller now playing window buttons
+	private LinearLayout mNowPlaying;
+	private ImageView mInfoDivider;
+	private ProgressBar mProgress;
 	private ImageButton mDoSearch;
 	private ImageButton mMarket;
 	private ImageButton mNext;
@@ -97,6 +116,7 @@ public class PlaylistBrowserActivity extends ListActivity implements
 	private ImageButton mPlusPlaylist;
 	private ImageButton mPrev;
 	private ImageButton mShare;
+	private ImageButton mFlow;
 	// Shake actions
 	public Shaker Playlistshaker;
 	private String artist_shake_actions_db;
@@ -111,6 +131,10 @@ public class PlaylistBrowserActivity extends ListActivity implements
 	private String np_swipe_gesture_db;
 	// Swipe tabs
 	private GestureDetector swipetabs;
+	// ADW Theme constants
+	public static final int THEME_ITEM_BACKGROUND = 0;
+	public static final int THEME_ITEM_FOREGROUND = 1;
+	public static final int THEME_ITEM_TEXT_DRAWABLE = 2;
 
 	public PlaylistBrowserActivity() {
 	}
@@ -135,6 +159,7 @@ public class PlaylistBrowserActivity extends ListActivity implements
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		mOSC = MusicUtils.bindToService(this, osc);
 		mToken = MusicUtils.bindToService(this, new ServiceConnection() {
 			public void onServiceConnected(ComponentName classname, IBinder obj) {
 				if (Intent.ACTION_VIEW.equals(action)) {
@@ -243,6 +268,7 @@ public class PlaylistBrowserActivity extends ListActivity implements
 		mMarket = (ImageButton) findViewById(R.id.market_music);
 		mDoSearch = (ImageButton) findViewById(R.id.doSearch);
 		mPlusPlaylist = (ImageButton) findViewById(R.id.plus_playlist);
+		mFlow = (ImageButton) findViewById(R.id.overFlow);
 		// I found that without setting the onClickListeners in Portrait mode
 		// only, flipping into Landscape force closes.
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -254,6 +280,7 @@ public class PlaylistBrowserActivity extends ListActivity implements
 			mNext.setOnClickListener(mMediaNext);
 			mPrev.setOnClickListener(mMediaPrev);
 			mShare.setOnClickListener(mShareSong);
+			mFlow.setOnClickListener(mOverFlow);
 			// I only want this to show in the Playlist activity
 			if (mPreferences.getBoolean(
 					MusicSettingsActivity.KEY_ENABLE_NEW_PLAYLIST_BUTTON, true)) {
@@ -269,6 +296,102 @@ public class PlaylistBrowserActivity extends ListActivity implements
 					return false;
 				}
 			});
+		}
+		// ADW: Load the specified theme
+		String themePackage = MusicUtils.getThemePackageName(this,
+				MusicSettingsActivity.THEME_DEFAULT);
+		PackageManager pm = getPackageManager();
+		Resources themeResources = null;
+		if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+			try {
+				themeResources = pm.getResourcesForApplication(themePackage);
+			} catch (NameNotFoundException e) {
+				// ADW The saved theme was uninstalled so we save the
+				// default one
+				MusicUtils.setThemePackageName(this,
+						MusicSettingsActivity.THEME_DEFAULT);
+			}
+		}
+		// Set Views for themes
+		if (themeResources != null) {
+			// Artist tab
+			mPlaylistTab = (LinearLayout) findViewById(R.id.album_tab);
+			mButtonBar = (TabWidget) findViewById(R.id.buttonbar);
+			mButtonBarArtist = (TextView) findViewById(R.id.artisttab);
+			mButtonBarAlbum = (TextView) findViewById(R.id.albumtab);
+			mButtonBarSong = (TextView) findViewById(R.id.songtab);
+			mButtonBarPlaylist = (TextView) findViewById(R.id.playlisttab);
+			mButtonBarNP = (TextView) findViewById(R.id.nowplayingtab);
+			mGroup = (RelativeLayout) findViewById(R.id.group_item);
+			mChild = (RelativeLayout) findViewById(R.id.child_item);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "tab_playlist", mPlaylistTab,
+					THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "group_bg", mGroup, THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "child_bg", mChild, THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "buttonbar", mButtonBar,
+					THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "tab_bg_artist", mButtonBarArtist,
+					THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "tab_bg_album", mButtonBarAlbum,
+					THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "tab_bg_song", mButtonBarSong,
+					THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "tab_bg_playlist", mButtonBarPlaylist,
+					THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "tab_bg_nowplaying", mButtonBarNP,
+					THEME_ITEM_BACKGROUND);
+			// Small now playing window
+			mNowPlaying = (LinearLayout) findViewById(R.id.nowplaying);
+			mInfoDivider = (ImageView) findViewById(R.id.info_divider);
+			mProgress = (ProgressBar) findViewById(R.id.progress);
+			mShare = (ImageButton) findViewById(R.id.share_song);
+			mPlay = (ImageButton) findViewById(R.id.media_play);
+			mNext = (ImageButton) findViewById(R.id.media_next);
+			mPrev = (ImageButton) findViewById(R.id.media_prev);
+			mMarket = (ImageButton) findViewById(R.id.market_music);
+			mDoSearch = (ImageButton) findViewById(R.id.doSearch);
+			mFlow = (ImageButton) findViewById(R.id.overFlow);
+			mPlusPlaylist = (ImageButton) findViewById(R.id.plus_playlist);
+			if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "snp_background", mNowPlaying,
+						THEME_ITEM_BACKGROUND);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "snp_progress", mProgress,
+						THEME_ITEM_BACKGROUND);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "snp_info_divider", mInfoDivider,
+						THEME_ITEM_BACKGROUND);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "snp_share", mShare,
+						THEME_ITEM_FOREGROUND);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "snp_play", mPlay, THEME_ITEM_FOREGROUND);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "snp_next", mNext, THEME_ITEM_FOREGROUND);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "snp_prev", mPrev, THEME_ITEM_FOREGROUND);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "snp_market", mMarket,
+						THEME_ITEM_FOREGROUND);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "snp_search", mDoSearch,
+						THEME_ITEM_FOREGROUND);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "snp_flow", mFlow, THEME_ITEM_FOREGROUND);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "snp_plus_playlist", mPlusPlaylist,
+						THEME_ITEM_FOREGROUND);
+			}
 		}
 	}
 
@@ -431,7 +554,11 @@ public class PlaylistBrowserActivity extends ListActivity implements
 			;
 		}
 	};
-
+	private View.OnClickListener mOverFlow = new View.OnClickListener() {
+		public void onClick(View v) {
+			openOptionsMenu();
+		}
+	};
 	private View.OnClickListener mDoSearchListener = new View.OnClickListener() {
 		public void onClick(View v) {
 			onSearchRequested();
@@ -551,14 +678,6 @@ public class PlaylistBrowserActivity extends ListActivity implements
 			mService = null;
 		}
 	};
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		// This is needed to allow the media buttons on the small now playing
-		// window to be controlled.
-		mOSC = MusicUtils.bindToService(this, osc);
-	}
 
 	@Override
 	public void onResume() {
@@ -1001,6 +1120,23 @@ public class PlaylistBrowserActivity extends ListActivity implements
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
 
+			// ADW: Load the specified theme
+			String themePackage = MusicUtils.getThemePackageName(context,
+					MusicSettingsActivity.THEME_DEFAULT);
+			PackageManager pm = context.getPackageManager();
+			Resources themeResources = null;
+			if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+				try {
+					themeResources = pm
+							.getResourcesForApplication(themePackage);
+				} catch (NameNotFoundException e) {
+					// ADW The saved theme was uninstalled so we save the
+					// default one
+					MusicUtils.setThemePackageName(context,
+							MusicSettingsActivity.THEME_DEFAULT);
+				}
+			}
+
 			TextView tv = (TextView) view.findViewById(R.id.line1);
 
 			String name = cursor.getString(mTitleIdx);
@@ -1011,8 +1147,19 @@ public class PlaylistBrowserActivity extends ListActivity implements
 			ImageView iv = (ImageView) view.findViewById(R.id.icon);
 			if (id == RECENTLY_ADDED_PLAYLIST) {
 				iv.setImageResource(R.drawable.ic_mp_playlist_recently_added_list);
+				if (themeResources != null) {
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage,
+							"playlist_recently_added", iv,
+							THEME_ITEM_FOREGROUND);
+				}
 			} else {
 				iv.setImageResource(R.drawable.ic_mp_playlist_list);
+				if (themeResources != null) {
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage, "playlist_list", iv,
+							THEME_ITEM_FOREGROUND);
+				}
 			}
 			ViewGroup.LayoutParams p = iv.getLayoutParams();
 			p.width = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -1027,6 +1174,15 @@ public class PlaylistBrowserActivity extends ListActivity implements
 					.findViewById(R.id.second_column_icon);
 			iv.setVisibility(View.GONE);
 			mContextMenu.setOnClickListener(mCML);
+			if (themeResources != null) {
+
+				int line1 = themeResources.getIdentifier(
+						"playlist_tab_playlist_name_color", "color",
+						themePackage);
+				if (line1 != 0) {
+					tv.setTextColor(themeResources.getColor(line1));
+				}
+			}
 		}
 
 		@Override
@@ -1077,11 +1233,30 @@ public class PlaylistBrowserActivity extends ListActivity implements
 	}
 
 	private void setPauseButtonImage() {
+		// ADW: Load the specified theme
+		String themePackage = MusicUtils.getThemePackageName(this,
+				MusicSettingsActivity.THEME_DEFAULT);
+		PackageManager pm = getPackageManager();
+		Resources themeResources = null;
+		if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+			try {
+				themeResources = pm.getResourcesForApplication(themePackage);
+			} catch (NameNotFoundException e) {
+				// ADW The saved theme was uninstalled so we save the
+				// default one
+				MusicUtils.setThemePackageName(this,
+						MusicSettingsActivity.THEME_DEFAULT);
+			}
+		}
 		try {
 			if (mService != null && mService.isPlaying()) {
 				mPlay.setImageResource(R.drawable.ic_media_pause);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "np_pause", mPlay, THEME_ITEM_FOREGROUND);
 			} else {
 				mPlay.setImageResource(R.drawable.ic_appwidget_music_play);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "np_play", mPlay, THEME_ITEM_FOREGROUND);
 			}
 		} catch (RemoteException ex) {
 		}

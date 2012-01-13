@@ -83,6 +83,7 @@
         android:visibility="gone" >
 
         <ImageButton
+            android:id="@+id/shop_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -113,6 +114,7 @@
         android:visibility="gone" >
 
         <ImageButton
+            android:id="@+id/ring_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -204,6 +206,7 @@
         android:visibility="gone" >
 
         <ImageButton
+            android:id="@+id/delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"

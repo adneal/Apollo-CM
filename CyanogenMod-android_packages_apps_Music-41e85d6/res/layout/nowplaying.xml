@@ -19,7 +19,9 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="5dip"
-        android:layout_below="@+id/info_divider" />
+        android:progressDrawable="@drawable/progress_horizontal"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -142,6 +144,15 @@
             android:layout_gravity="center|right"
             android:background="@drawable/btn_bg"
             android:src="@drawable/ic_ab_search_holo_dark" />
+
+        <ImageButton
+            android:id="@+id/overFlow"
+            android:layout_width="56dip"
+            android:layout_height="match_parent"
+            android:layout_gravity="center|right"
+            android:background="@drawable/btn_bg"
+            android:src="@drawable/ic_menu_moreoverflow_normal_holo_dark"
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>

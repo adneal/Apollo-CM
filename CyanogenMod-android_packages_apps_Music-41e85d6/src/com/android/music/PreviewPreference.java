@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.android.music.R;
 
 public class PreviewPreference extends Preference {
 	private CharSequence themeName;

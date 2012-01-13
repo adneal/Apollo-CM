@@ -23,6 +23,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
@@ -217,6 +219,34 @@ public class MediaAppWidgetProvider4x1 extends AppWidgetProvider {
 	 */
 	private void linkButtons(Context context, RemoteViews views,
 			boolean playerActive) {
+
+		// ADW: Load the specified theme
+		String themePackage = MusicUtils.getThemePackageName(context,
+				MusicSettingsActivity.THEME_DEFAULT);
+		PackageManager pm = context.getPackageManager();
+		Resources themeResources = null;
+		if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+			try {
+				themeResources = pm.getResourcesForApplication(themePackage);
+			} catch (NameNotFoundException e) {
+				// ADW The saved theme was uninstalled so we save the
+				// default one
+				MusicUtils.setThemePackageName(context,
+						MusicSettingsActivity.THEME_DEFAULT);
+			}
+			int trackName = themeResources.getIdentifier(
+					"four_by_one_track_name", "color", themePackage);
+			if (trackName != 0) {
+				views.setTextColor(R.id.trackname,
+						themeResources.getColor(trackName));
+			}
+			int artistName = themeResources.getIdentifier(
+					"four_by_one_artist_name", "color", themePackage);
+			if (artistName != 0) {
+				views.setTextColor(R.id.artistname,
+						themeResources.getColor(artistName));
+			}
+		}
 		// Connect up various buttons and touch events
 		Intent intent;
 		PendingIntent pendingIntent;

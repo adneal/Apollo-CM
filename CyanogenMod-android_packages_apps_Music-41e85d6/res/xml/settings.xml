@@ -7,7 +7,7 @@
 	applicable law or agreed to in writing, software * distributed under the 
 	License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS 
 	OF ANY KIND, either express or implied. * See the License for the specific 
-	language governing permissions and * limitations under the License. */
+	language governing permissions and * limitations under the License. */
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
@@ -132,6 +132,11 @@
                             android:key="cbProgress"
                             android:summary="@string/np_progress_summary"
                             android:title="@string/np_progress_title" />
+                        <CheckBoxPreference
+                            android:defaultValue="false"
+                            android:key="cbFlow"
+                            android:summary="@string/flow_summary"
+                            android:title="@string/flow" />
                     </PreferenceCategory>
                     <PreferenceCategory android:title="@string/np_tv" >
                         <CheckBoxPreference
@@ -204,6 +209,11 @@
                         android:key="cbStatusNonya"
                         android:summary="@string/status_bar_nonya_summary"
                         android:title="@string/status_bar_nonya_title" />
+                    <CheckBoxPreference
+                        android:defaultValue="true"
+                        android:key="cbStatusTicker"
+                        android:summary="@string/tick_summary"
+                        android:title="@string/tick" />
                 </PreferenceCategory>
                 <PreferenceCategory android:title="@string/status_bar_text_views" >
                     <CheckBoxPreference
@@ -249,17 +259,15 @@
                 android:title="@string/back_button_action" />
 
             <CheckBoxPreference
-                android:defaultValue="true"
+                android:defaultValue="false"
                 android:key="cbEnterNowPlaying"
                 android:summary="@string/full_np_summary"
                 android:title="@string/full_np_title" />
-            
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="cbLock"
                 android:summary="@string/lock_summary"
                 android:title="@string/lock" />
-            
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="cbHomeAlbumArt"

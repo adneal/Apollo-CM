@@ -30,7 +30,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.gesture.GestureLibrary;
 import android.gesture.GestureOverlayView;
@@ -107,6 +110,10 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	private LinearLayout mEQButton;
 	private ImageButton mRepeatNormal;
 	private ImageButton mShuffleNormal;
+	private ImageButton mDeleteButton;
+	private ImageButton mEQ;
+	private ImageButton mShopButton;
+	private ImageButton mRingButton;
 	private LinearLayout mRingtone;
 	private LinearLayout mShop;
 	private LinearLayout mDelete;
@@ -117,6 +124,10 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	private String shake_actions_db;
 	// Animations
 	private String np_animation_ui_db;
+	// ADW Theme constants
+	public static final int THEME_ITEM_BACKGROUND = 0;
+	public static final int THEME_ITEM_FOREGROUND = 1;
+	public static final int THEME_ITEM_TEXT_DRAWABLE = 2;
 
 	public MediaPlaybackActivity() {
 	}
@@ -239,6 +250,94 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 
 		mTouchSlop = ViewConfiguration.get(this).getScaledTouchSlop();
 		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+		// ADW: Load the specified theme
+		String themePackage = MusicUtils.getThemePackageName(this,
+				MusicSettingsActivity.THEME_DEFAULT);
+		PackageManager pm = getPackageManager();
+		Resources themeResources = null;
+		if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+			try {
+				themeResources = pm.getResourcesForApplication(themePackage);
+			} catch (NameNotFoundException e) {
+				// ADW The saved theme was uninstalled so we save the
+				// default one
+				MusicUtils.setThemePackageName(this,
+						MusicSettingsActivity.THEME_DEFAULT);
+			}
+		}
+		// Set Views for themes
+		if (themeResources != null) {
+			mShuffleButton = ((LinearLayout) findViewById(R.id.shuffle));
+			mShuffleButtonText = (TextView) findViewById(R.id.shuffle_text);
+			mRepeatButton = ((LinearLayout) findViewById(R.id.repeat));
+			mRepeatButtonText = (TextView) findViewById(R.id.repeat_text);
+			mShareButton = (LinearLayout) findViewById(R.id.share_extra);
+			mEQButton = (LinearLayout) findViewById(R.id.eq_extra);
+			mShuffleButtonImage = (ImageButton) findViewById(R.id.shuffle_extra_image);
+			mRepeatButtonImage = (ImageButton) findViewById(R.id.repeat_extra_image);
+			mEffectsButtonImage = (ImageButton) findViewById(R.id.eq_extra_image);
+			mShareButtonImage = (ImageButton) findViewById(R.id.share_extra_image);
+			mRingtone = (LinearLayout) findViewById(R.id.ringtone);
+			mShop = (LinearLayout) findViewById(R.id.shop);
+			mDelete = (LinearLayout) findViewById(R.id.delete_extra);
+			mNextButton = (RepeatingImageButton) findViewById(R.id.next);
+			mPrevButton = (RepeatingImageButton) findViewById(R.id.prev);
+			mRepeatNormal = (ImageButton) findViewById(R.id.repeat_normal);
+			mShuffleNormal = (ImageButton) findViewById(R.id.shuffle_normal);
+			mShopButton = (ImageButton) findViewById(R.id.shop_button);
+			mEQ = (ImageButton) findViewById(R.id.eq_extra_image);
+			mRingButton = (ImageButton) findViewById(R.id.ring_button);
+			mDeleteButton = (ImageButton) findViewById(R.id.delete_button);
+			SeekBar seekBar = (SeekBar) findViewById(android.R.id.progress);
+			// Extra Controls background
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "np_shuffle_bg", mShuffleButton,
+					THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "np_repeat_bg", mRepeatButton,
+					THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "np_share_bg", mShareButton,
+					THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "np_market_bg", mShop, THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "np_ring_bg", mRingtone,
+					THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "np_delete_bg", mDelete,
+					THEME_ITEM_BACKGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "np_eq_bg", mEQButton, THEME_ITEM_BACKGROUND);
+			// Extra Controls ImageButtons
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "np_market", mShopButton,
+					THEME_ITEM_FOREGROUND);
+			ArtistAlbumBrowserActivity
+					.loadThemeResource(themeResources, themePackage, "np_ring",
+							mRingButton, THEME_ITEM_FOREGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "np_share", mShareButton,
+					THEME_ITEM_FOREGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "np_eq", mEQ, THEME_ITEM_FOREGROUND);
+			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+					themePackage, "np_delete", mDeleteButton,
+					THEME_ITEM_FOREGROUND);
+			ArtistAlbumBrowserActivity
+					.loadThemeResource(themeResources, themePackage, "np_prev",
+							mNextButton, THEME_ITEM_FOREGROUND);
+			ArtistAlbumBrowserActivity
+					.loadThemeResource(themeResources, themePackage, "np_next",
+							mPrevButton, THEME_ITEM_FOREGROUND);
+			int seeker = themeResources.getIdentifier("progress_horizontal",
+					"drawable", themePackage);
+			if (seeker != 0) {
+				seekBar.setProgressDrawable(themeResources.getDrawable(seeker));
+			}
+
+		}
 	}
 
 	int mInitialX = -1;
@@ -1253,6 +1352,7 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 		try {
 			int shuffle = mService.getShuffleMode();
 			if (shuffle == MediaPlaybackService.SHUFFLE_NONE) {
+				;
 				mService.setShuffleMode(MediaPlaybackService.SHUFFLE_NORMAL);
 				if (mService.getRepeatMode() == MediaPlaybackService.REPEAT_CURRENT) {
 					mService.setRepeatMode(MediaPlaybackService.REPEAT_ALL);
@@ -1373,6 +1473,21 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	};
 
 	private void setRepeatButtonImage() {
+		// ADW: Load the specified theme
+		String themePackage = MusicUtils.getThemePackageName(this,
+				MusicSettingsActivity.THEME_DEFAULT);
+		PackageManager pm = getPackageManager();
+		Resources themeResources = null;
+		if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+			try {
+				themeResources = pm.getResourcesForApplication(themePackage);
+			} catch (NameNotFoundException e) {
+				// ADW The saved theme was uninstalled so we save the
+				// default one
+				MusicUtils.setThemePackageName(this,
+						MusicSettingsActivity.THEME_DEFAULT);
+			}
+		}
 		if (mService == null)
 			return;
 		try {
@@ -1384,6 +1499,21 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 				mRepeatButtonText.setText(R.string.repeat_extra_all);
 				mRepeatButtonText.setTextColor(getResources().getColor(
 						R.color.ics));
+				if (themeResources != null) {
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage,
+							"np_repeat_all_extra", mRepeatButtonImage,
+							THEME_ITEM_FOREGROUND);
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage, "np_repeat_all",
+							mRepeatNormal, THEME_ITEM_FOREGROUND);
+					int textColorId = themeResources.getIdentifier(
+							"repeat_all", "color", themePackage);
+					if (textColorId != 0) {
+						mRepeatButtonText.setTextColor(themeResources
+								.getColor(textColorId));
+					}
+				}
 				break;
 			case MediaPlaybackService.REPEAT_CURRENT:
 				mRepeatNormal
@@ -1393,6 +1523,23 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 				mRepeatButtonText.setText(R.string.repeat_extra_one);
 				mRepeatButtonText.setTextColor(getResources().getColor(
 						R.color.android));
+				if (themeResources != null) {
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage,
+							"np_repeat_one_extra", mRepeatButtonImage,
+							THEME_ITEM_FOREGROUND);
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage, "np_repeat_one",
+							mRepeatNormal, THEME_ITEM_FOREGROUND);
+					int textColorId = themeResources.getIdentifier(
+							"repeat_one", "color", themePackage);
+					if (textColorId != 0) {
+						mRepeatButtonText.setTextColor(themeResources
+								.getColor(textColorId));
+					}
+
+				}
+
 				break;
 			default:
 				mRepeatNormal.setImageResource(R.drawable.ic_mp_repeat_off_btn);
@@ -1400,6 +1547,21 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 						.setImageResource(R.drawable.ic_mp_repeat_off_btn);
 				mRepeatButtonText.setText(R.string.repeat_extra);
 				mRepeatButtonText.setTextColor(Color.WHITE);
+				if (themeResources != null) {
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage,
+							"np_repeat_off_extra", mRepeatButtonImage,
+							THEME_ITEM_FOREGROUND);
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage, "np_repeat_off",
+							mRepeatNormal, THEME_ITEM_FOREGROUND);
+					int textColorId = themeResources.getIdentifier(
+							"repeat_off", "color", themePackage);
+					if (textColorId != 0) {
+						mRepeatButtonText.setTextColor(themeResources
+								.getColor(textColorId));
+					}
+				}
 				break;
 			}
 		} catch (RemoteException ex) {
@@ -1407,6 +1569,21 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	}
 
 	private void setShuffleButtonImage() {
+		// ADW: Load the specified theme
+		String themePackage = MusicUtils.getThemePackageName(this,
+				MusicSettingsActivity.THEME_DEFAULT);
+		PackageManager pm = getPackageManager();
+		Resources themeResources = null;
+		if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+			try {
+				themeResources = pm.getResourcesForApplication(themePackage);
+			} catch (NameNotFoundException e) {
+				// ADW The saved theme was uninstalled so we save the
+				// default one
+				MusicUtils.setThemePackageName(this,
+						MusicSettingsActivity.THEME_DEFAULT);
+			}
+		}
 		if (mService == null)
 			return;
 		try {
@@ -1418,6 +1595,21 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 						.setImageResource(R.drawable.ic_mp_shuffle_off_btn);
 				mShuffleButtonText.setTextColor(Color.WHITE);
 				mShuffleButtonText.setText(R.string.shuffle_extra);
+				if (themeResources != null) {
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage,
+							"np_shuffle_extra_off", mShuffleButtonImage,
+							THEME_ITEM_FOREGROUND);
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage, "np_shuffle_off",
+							mShuffleNormal, THEME_ITEM_FOREGROUND);
+					int textColorId = themeResources.getIdentifier(
+							"shuffle_off", "color", themePackage);
+					if (textColorId != 0) {
+						mShuffleButtonText.setTextColor(themeResources
+								.getColor(textColorId));
+					}
+				}
 				break;
 			case MediaPlaybackService.SHUFFLE_AUTO:
 				mShuffleNormal
@@ -1427,6 +1619,21 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 				mShuffleButtonText.setTextColor(getResources().getColor(
 						R.color.android));
 				mShuffleButtonText.setText(R.string.party_shuffle);
+				if (themeResources != null) {
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage,
+							"np_party_shuffle_extra", mShuffleButtonImage,
+							THEME_ITEM_FOREGROUND);
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage, "np_party_shuffle",
+							mShuffleNormal, THEME_ITEM_FOREGROUND);
+					int textColorId = themeResources.getIdentifier(
+							"party_shuffle", "color", themePackage);
+					if (textColorId != 0) {
+						mShuffleButtonText.setTextColor(themeResources
+								.getColor(textColorId));
+					}
+				}
 				break;
 			default:
 				mShuffleNormal
@@ -1436,6 +1643,21 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 				mShuffleButtonText.setTextColor(getResources().getColor(
 						R.color.ics));
 				mShuffleButtonText.setText(R.string.shuffle_on_notif);
+				if (themeResources != null) {
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage,
+							"np_shuffle_extra_on", mShuffleButtonImage,
+							THEME_ITEM_FOREGROUND);
+					ArtistAlbumBrowserActivity.loadThemeResource(
+							themeResources, themePackage, "np_shuffle_on",
+							mShuffleNormal, THEME_ITEM_FOREGROUND);
+					int textColorId = themeResources.getIdentifier(
+							"shuffle_on", "color", themePackage);
+					if (textColorId != 0) {
+						mShuffleButtonText.setTextColor(themeResources
+								.getColor(textColorId));
+					}
+				}
 
 				break;
 			}
@@ -1446,12 +1668,33 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	}
 
 	private void setPauseButtonImage() {
+		// ADW: Load the specified theme
+		String themePackage = MusicUtils.getThemePackageName(this,
+				MusicSettingsActivity.THEME_DEFAULT);
+		PackageManager pm = getPackageManager();
+		Resources themeResources = null;
+		if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+			try {
+				themeResources = pm.getResourcesForApplication(themePackage);
+			} catch (NameNotFoundException e) {
+				// ADW The saved theme was uninstalled so we save the
+				// default one
+				MusicUtils.setThemePackageName(this,
+						MusicSettingsActivity.THEME_DEFAULT);
+			}
+		}
 		try {
 			if (mService != null && mService.isPlaying()) {
 				mPauseButton.setImageResource(R.drawable.ic_media_pause);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "np_pause", mPauseButton,
+						THEME_ITEM_FOREGROUND);
 			} else {
 				mPauseButton
 						.setImageResource(R.drawable.ic_appwidget_music_play);
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "np_play", mPauseButton,
+						THEME_ITEM_FOREGROUND);
 			}
 		} catch (RemoteException ex) {
 		}
@@ -1485,6 +1728,21 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	}
 
 	private long refreshNow() {
+		// ADW: Load the specified theme
+		String themePackage = MusicUtils.getThemePackageName(this,
+				MusicSettingsActivity.THEME_DEFAULT);
+		PackageManager pm = getPackageManager();
+		Resources themeResources = null;
+		if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+			try {
+				themeResources = pm.getResourcesForApplication(themePackage);
+			} catch (NameNotFoundException e) {
+				// ADW The saved theme was uninstalled so we save the
+				// default one
+				MusicUtils.setThemePackageName(this,
+						MusicSettingsActivity.THEME_DEFAULT);
+			}
+		}
 		if (mService == null)
 			return 500;
 		try {
@@ -1496,6 +1754,21 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 
 				if (mService.isPlaying()) {
 					mCurrentTime.setTextColor(Color.WHITE);
+					if (themeResources != null) {
+						int textColorId = themeResources.getIdentifier(
+								"current_time_color", "color", themePackage);
+						if (textColorId != 0) {
+							mCurrentTime.setTextColor(themeResources
+									.getColor(textColorId));
+						}
+						int totalColor = themeResources.getIdentifier(
+								"remaining_time_color", "color", themePackage);
+						if (totalColor != 0) {
+							mTotalTime.setTextColor(themeResources
+									.getColor(totalColor));
+						}
+					}
+
 				} else {
 
 					// blink the counter
@@ -1503,6 +1776,22 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 					mCurrentTime
 							.setTextColor(col == Color.WHITE ? getResources()
 									.getColor(R.color.ics) : Color.WHITE);
+					if (themeResources != null) {
+						int textColorId = themeResources.getIdentifier(
+								"current_time_color_paused", "color",
+								themePackage);
+						if (textColorId != 0) {
+							mCurrentTime.setTextColor(themeResources
+									.getColor(textColorId));
+						}
+						int totalColor = themeResources.getIdentifier(
+								"remaining_time_color_paused", "color",
+								themePackage);
+						if (totalColor != 0) {
+							mTotalTime.setTextColor(themeResources
+									.getColor(totalColor));
+						}
+					}
 					remaining = 500;
 				}
 
@@ -1639,6 +1928,21 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	}
 
 	private void updateTrackInfo() {
+		// ADW: Load the specified theme
+		String themePackage = MusicUtils.getThemePackageName(this,
+				MusicSettingsActivity.THEME_DEFAULT);
+		PackageManager pm = getPackageManager();
+		Resources themeResources = null;
+		if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+			try {
+				themeResources = pm.getResourcesForApplication(themePackage);
+			} catch (NameNotFoundException e) {
+				// ADW The saved theme was uninstalled so we save the
+				// default one
+				MusicUtils.setThemePackageName(this,
+						MusicSettingsActivity.THEME_DEFAULT);
+			}
+		}
 		if (mService == null) {
 			return;
 		}
@@ -1683,6 +1987,50 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 				mAlbumArtHandler.removeMessages(GET_ALBUM_ART);
 				mAlbumArtHandler.obtainMessage(GET_ALBUM_ART,
 						new AlbumSongIdWrapper(albumid, songid)).sendToTarget();
+
+				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+					if (themeResources != null) {
+						int trackColor = themeResources.getIdentifier(
+								"track_color_land", "color", themePackage);
+						if (trackColor != 0) {
+							mTrackName.setTextColor(themeResources
+									.getColor(trackColor));
+						}
+						int artistColor = themeResources.getIdentifier(
+								"artist_color_land", "color", themePackage);
+						if (artistColor != 0) {
+							mArtistName.setTextColor(themeResources
+									.getColor(artistColor));
+						}
+						int albumColor = themeResources.getIdentifier(
+								"album_color_land", "color", themePackage);
+						if (albumColor != 0) {
+							mAlbumName.setTextColor(themeResources
+									.getColor(albumColor));
+						}
+					}
+				} else {
+					if (themeResources != null) {
+						int trackColor = themeResources.getIdentifier(
+								"track_name_color", "color", themePackage);
+						if (trackColor != 0) {
+							mTrackName.setTextColor(themeResources
+									.getColor(trackColor));
+						}
+						int artistColor = themeResources.getIdentifier(
+								"artist_name_color", "color", themePackage);
+						if (artistColor != 0) {
+							mArtistName.setTextColor(themeResources
+									.getColor(artistColor));
+						}
+						int albumColor = themeResources.getIdentifier(
+								"album_name_color", "color", themePackage);
+						if (albumColor != 0) {
+							mAlbumName.setTextColor(themeResources
+									.getColor(albumColor));
+						}
+					}
+				}
 			}
 			mDuration = mService.duration();
 			mTotalTime.setText(MusicUtils

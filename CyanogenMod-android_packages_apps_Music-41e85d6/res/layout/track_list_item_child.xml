@@ -17,6 +17,7 @@
 */
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/child_item"
     android:layout_width="match_parent"
     android:layout_height="64dip"
     android:background="@drawable/bg_stripes_repeat"

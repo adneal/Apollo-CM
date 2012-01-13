@@ -404,6 +404,10 @@
     <string name="home_art_summary">Set your home screen wallpaper to the current album art while playing</string>
     <string name="lock">Lock Screen Controls</string>
     <string name="lock_summary">Enables lock screen controls</string>
+    <string name="flow">Menu Button</string>
+    <string name="flow_summary">Courtesy for Galaxy Nexus users</string>
+    <string name="tick">Ticker Text</string>
+    <string name="tick_summary">Display a short preview of your notification\'s content </string>
     <!-- Menu text for the item controlling the audio effects panel [CHAR LIMIT=15] -->
     <string name="effectspanel">Sound effects</string>
     <string name="effectspanel_summary">FX Booster, Bass boost, 3D effect, etc</string>

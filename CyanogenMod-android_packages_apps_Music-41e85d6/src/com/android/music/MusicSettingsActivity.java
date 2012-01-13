@@ -35,6 +35,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.audiofx.AudioEffect;
@@ -83,6 +84,7 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 	static final String KEY_ENABLE_STATUS_PLAY_BUTTON = "cbStatusPlay";
 	static final String KEY_ENABLE_SHARE_BUTTON = "cbShare";
 	static final String KEY_ENABLE_PROGRESS_BAR = "cbProgress";
+	static final String KEY_ENABLE_OVER_FLOW = "cbFlow";
 
 	static final String KEY_ENABLE_STATUS_NEXT_BUTTON = "cbStatusNext";
 	static final String KEY_ENABLE_STATUS_PREV_BUTTON = "cbStatusPrev";
@@ -130,6 +132,7 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 	public static final String KEY_SOUND_EFFECT = "eqEffects";
 	public static final String KEY_FEEDBACK = "feedback";
 	public static final String KEY_FLIP = "cbFlip";
+	public static final String KEY_TICK = "cbStatusTicker";
 
 	long[] mHits = new long[3];
 	private static final String LOG_TAG = "EasterEgg";
@@ -145,9 +148,12 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 	static final String BG_PHOTO_FILE = "home_art";
 	static final String TEMP_PHOTO_FILE = "home";
 
+	public AlertDialog themeAlert;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		PreferenceManager preferenceManager = getPreferenceManager();
 		preferenceManager.setSharedPreferencesName(PREFERENCES_FILE);
 		addPreferencesFromResource(R.xml.settings);
@@ -185,6 +191,35 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 						});
 		final AlertDialog alert = builder.create();
 
+		AlertDialog.Builder lock = new AlertDialog.Builder(this);
+		lock.setTitle("Requires Restart");
+		lock.setIcon(R.drawable.ic_dialog_alert_holo_dark);
+		lock.setMessage(
+				"Music needs to stop completely and restart to let the changes take effect")
+				.setCancelable(false)
+				.setPositiveButton("Okay",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// This isn't a good practice, but we need to
+								// restart the
+								// service completely to see the change
+								// immediately
+								System.exit(0);
+							}
+						})
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+								if (lk.isChecked()) {
+									lk.setChecked(false);
+								} else {
+									lk.setChecked(true);
+								}
+							}
+						});
+		final AlertDialog lockAlert = lock.create();
+
 		cp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(final Preference preference) {
 				CheckBoxPreference cbp = (CheckBoxPreference) preference;
@@ -201,10 +236,7 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 
 		lk.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			public boolean onPreferenceClick(final Preference preference) {
-				// This isn't a good practice, but we need to restart the
-				// service completely to see the change immediately
-				System.exit(0);
-
+				lockAlert.show();
 				return true;
 			}
 		});
@@ -219,8 +251,7 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 		}
 		// ADW: theme settings
 		SharedPreferences sp = getPreferenceManager().getSharedPreferences();
-		final String themePackage = sp.getString(THEME_KEY,
-				MusicSettingsActivity.THEME_DEFAULT);
+		final String themePackage = sp.getString(THEME_KEY, THEME_DEFAULT);
 		ListPreference themeLp = (ListPreference) findPreference(THEME_KEY);
 		themeLp.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference,
@@ -343,17 +374,46 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 		String packageName = themePreview.getValue().toString();
 		// this time we really save the themepackagename
 		SharedPreferences sp = getPreferenceManager().getSharedPreferences();
-		SharedPreferences.Editor editor = sp.edit();
+		final SharedPreferences.Editor editor = sp.edit();
 		editor.putString("themePackageName", packageName);
 		// and update the preferences from the theme
 		// TODO:ADW maybe this should be optional for the user
 		if (!packageName.equals(MusicSettingsActivity.THEME_DEFAULT)) {
-			// Add stuff
+			Resources themeResources = null;
+			try {
+				themeResources = getPackageManager()
+						.getResourcesForApplication(packageName.toString());
+			} catch (NameNotFoundException e) {
+				// e.printStackTrace();
+			}
 		} else {
-			// Add stuff
+
 		}
-		editor.commit();
-		finish();
+		AlertDialog.Builder theme = new AlertDialog.Builder(this);
+		theme.setTitle("Requires Restart");
+		theme.setIcon(R.drawable.ic_dialog_alert_holo_dark);
+		theme.setMessage(
+				"Music needs to stop completely and restart to let the changes take effect")
+				.setCancelable(false)
+				.setPositiveButton("Okay",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								editor.commit();
+								// This isn't a good practice, but we need to
+								// restart the
+								// service completely to see the change
+								// immediately
+								System.exit(0);
+							}
+						})
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
+		themeAlert = theme.create();
+		themeAlert.show();
 	}
 
 	public void getThemes(View v) {

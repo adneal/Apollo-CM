@@ -12,11 +12,11 @@
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
-     limitations under the License.
+     limitations under the License.
 -->
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android" >
-
+
     <SeekBar
         android:id="@android:id/progress"
         style="?android:attr/progressBarStyleHorizontal"
@@ -61,7 +61,8 @@
         <com.android.music.RepeatingImageButton
             android:id="@+id/prev"
             style="@android:style/MediaButton.Previous"
-            android:background="@drawable/btn_bg" />
+            android:background="@drawable/btn_bg"
+            android:src="@drawable/ic_appwidget_music_prev" />
 
         <ImageButton
             android:id="@+id/pause"
@@ -71,7 +72,8 @@
         <com.android.music.RepeatingImageButton
             android:id="@+id/next"
             style="@android:style/MediaButton.Next"
-            android:background="@drawable/btn_bg" />
+            android:background="@drawable/btn_bg"
+            android:src="@drawable/ic_appwidget_music_next" />
 
         <ImageButton
             android:id="@+id/repeat_normal"

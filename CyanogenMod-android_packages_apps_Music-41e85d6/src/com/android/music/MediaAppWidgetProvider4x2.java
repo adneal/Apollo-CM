@@ -23,6 +23,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
@@ -40,6 +42,9 @@ public class MediaAppWidgetProvider4x2 extends AppWidgetProvider {
 
 	public static final String CMDAPPWIDGETUPDATE = "appwidgetupdate4x2";
 
+	// ADW Theme constants
+	public static final int THEME_ITEM_BACKGROUND = 0;
+	public static final int THEME_ITEM_FOREGROUND = 1;
 	private static MediaAppWidgetProvider4x2 sInstance;
 
 	static synchronized MediaAppWidgetProvider4x2 getInstance() {
@@ -249,6 +254,7 @@ public class MediaAppWidgetProvider4x2 extends AppWidgetProvider {
 		linkButtons(service, views, playing);
 
 		pushUpdate(service, appWidgetIds, views);
+
 	}
 
 	/**
@@ -261,6 +267,41 @@ public class MediaAppWidgetProvider4x2 extends AppWidgetProvider {
 	 */
 	private void linkButtons(Context context, RemoteViews views,
 			boolean playerActive) {
+
+		// ADW: Load the specified theme
+		String themePackage = MusicUtils.getThemePackageName(context,
+				MusicSettingsActivity.THEME_DEFAULT);
+		PackageManager pm = context.getPackageManager();
+		Resources themeResources = null;
+		if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+			try {
+				themeResources = pm.getResourcesForApplication(themePackage);
+			} catch (NameNotFoundException e) {
+				// ADW The saved theme was uninstalled so we save the
+				// default one
+				MusicUtils.setThemePackageName(context,
+						MusicSettingsActivity.THEME_DEFAULT);
+			}
+			int albumName = themeResources.getIdentifier(
+					"four_by_two_album_name", "color", themePackage);
+			if (albumName != 0) {
+				views.setTextColor(R.id.albumname,
+						themeResources.getColor(albumName));
+			}
+			int trackName = themeResources.getIdentifier(
+					"four_by_two_track_name", "color", themePackage);
+			if (trackName != 0) {
+				views.setTextColor(R.id.trackname,
+						themeResources.getColor(trackName));
+			}
+			int artistName = themeResources.getIdentifier(
+					"four_by_two_artist_name", "color", themePackage);
+			if (artistName != 0) {
+				views.setTextColor(R.id.artistname,
+						themeResources.getColor(artistName));
+			}
+		}
+
 		// Connect up various buttons and touch events
 		Intent intent;
 		PendingIntent pendingIntent;
