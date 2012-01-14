@@ -26,6 +26,7 @@ import java.util.List;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -147,8 +148,10 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 	static final int DEFAULT_SCREENSAVER_COLOR_BLUE = 255;
 	static final String BG_PHOTO_FILE = "home_art";
 	static final String TEMP_PHOTO_FILE = "home";
+	private Bitmap bgBitmap = null;
 
 	public AlertDialog themeAlert;
+	public CheckBoxPreference cp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -164,8 +167,7 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 		PreferenceScreen screen;
 		screen = getPreferenceScreen();
 
-		final CheckBoxPreference cp = (CheckBoxPreference) screen
-				.findPreference("cbHomeAlbumArt");
+		cp = (CheckBoxPreference) screen.findPreference("cbHomeAlbumArt");
 
 		final CheckBoxPreference lk = (CheckBoxPreference) screen
 				.findPreference("cbLock");
@@ -283,29 +285,16 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 		themePreview.setTheme(themePackage);
 	}
 
-	// Set Custom Background Image
-	public void setCustomBackground() {
-
-		// now load the proper bg
-		String BG_FILE = getFilesDir().toString() + File.separator
-				+ MusicSettingsActivity.BG_PHOTO_FILE;
-		Bitmap bgBitmap = BitmapFactory.decodeFile(BG_FILE);
-
-		try {
-			setWallpaper(bgBitmap);
-			bgBitmap.recycle();
-			System.gc();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	private void pickImage() {
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 		intent.setType("image/*");
+
 		intent.putExtra("crop", "true");
+		intent.putExtra("scale", true);
+		intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, getTempUri());
+		intent.putExtra("noFaceDetection", true);
+
 		startActivityForResult(intent, 0);
 	}
 
@@ -318,6 +307,14 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 
 			File f = new File(Environment.getExternalStorageDirectory(),
 					TEMP_PHOTO_FILE);
+			// try {
+			// f.createNewFile();
+			// } catch (IOException e) {
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+			// Toast.makeText(this, "Something Fucked Up",
+			// Toast.LENGTH_LONG).show();
+			// }
 			return f;
 		} else {
 			return null;
@@ -355,7 +352,6 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 					File src = getTempFile();
 					File dst = new File(getFilesDir(), BG_PHOTO_FILE);
 					copyFile(src, dst);
-					boolean deleted = src.delete();
 
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -364,8 +360,35 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
+		}
+	}
+
+	// Set Custom Background Image
+	public void setCustomBackground() {
+
+		SharedPreferences preferences = getSharedPreferences(
+				MusicSettingsActivity.PREFERENCES_FILE, MODE_PRIVATE);
+
+		preferences
+				.getBoolean(MusicSettingsActivity.KEY_ENABLE_HOME_ART, false);
+
+		// First clean our old data
+		if (bgBitmap != null) {
+			bgBitmap.recycle();
+			bgBitmap = null;
+			System.gc();
+		}
+		// now load the proper bg
+		String BG_FILE = getFilesDir().toString() + File.separator
+				+ MusicSettingsActivity.BG_PHOTO_FILE;
+		bgBitmap = BitmapFactory.decodeFile(BG_FILE);
+
+		try {
+			WallpaperManager.getInstance(this).setBitmap(bgBitmap);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

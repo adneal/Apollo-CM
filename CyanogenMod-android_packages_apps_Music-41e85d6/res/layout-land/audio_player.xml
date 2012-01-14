@@ -34,7 +34,6 @@
             android:layout_width="196dip"
             android:layout_height="match_parent"
             android:scaleType="fitXY" />
-
         <ImageView
             android:id="@+id/album_dummy"
             android:layout_width="196dip"

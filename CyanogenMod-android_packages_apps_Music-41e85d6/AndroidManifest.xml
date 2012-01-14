@@ -24,8 +24,7 @@
 
     <uses-sdk
         android:maxSdkVersion="15"
-        android:minSdkVersion="14"
-        android:targetSdkVersion="15" />
+        android:minSdkVersion="14" />
 
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -88,17 +87,6 @@
             android:theme="@android:style/Theme.Holo.Dialog" >
             <intent-filter>
                 <action android:name="com.android.music.ColorPicker" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.android.music.GestureColorPicker"
-            android:excludeFromRecents="true"
-            android:taskAffinity=""
-            android:theme="@android:style/Theme.Holo.Dialog" >
-            <intent-filter>
-                <action android:name="com.android.music.GestureColorPicker" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

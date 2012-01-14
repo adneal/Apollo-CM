@@ -41,6 +41,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -315,10 +316,8 @@ public class QueryBrowserActivity extends ListActivity implements
 		if (filter == null) {
 			filter = "";
 		}
-		String[] ccols = new String[] {
-				BaseColumns._ID, // this will be the artist, album or track ID
-				MediaStore.Audio.Media.MIME_TYPE, // mimetype of audio file, or
-													// "artist" or "album"
+		String[] ccols = new String[] { BaseColumns._ID,
+				MediaStore.Audio.Media.MIME_TYPE,
 				MediaStore.Audio.Artists.ARTIST, MediaStore.Audio.Albums.ALBUM,
 				MediaStore.Audio.Media.TITLE, "data1", "data2" };
 
@@ -373,6 +372,9 @@ public class QueryBrowserActivity extends ListActivity implements
 			TextView tv1 = (TextView) view.findViewById(R.id.line1);
 			TextView tv2 = (TextView) view.findViewById(R.id.line2);
 			ImageView iv = (ImageView) view.findViewById(R.id.icon);
+			FrameLayout fl = (FrameLayout) view
+					.findViewById(R.id.second_column_icon);
+			fl.setVisibility(View.GONE);
 			ViewGroup.LayoutParams p = iv.getLayoutParams();
 			if (p == null) {
 				// seen this happen, not sure why

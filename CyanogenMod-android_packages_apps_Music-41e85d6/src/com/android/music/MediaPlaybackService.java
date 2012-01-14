@@ -30,6 +30,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -190,6 +191,8 @@ public class MediaPlaybackService extends Service implements
 	private float ROLL;
 	private boolean IsWorked = false;
 	private boolean IsVibrate = false;
+	// Wallpaper Bitmap
+	private Bitmap bgBitmap = null;
 
 	private SharedPreferences mPreferences;
 	// We use this to distinguish between different cards when saving/restoring
@@ -959,17 +962,21 @@ public class MediaPlaybackService extends Service implements
 		mPreferences.getBoolean(MusicSettingsActivity.KEY_ENABLE_HOME_ART,
 				false);
 
+		// First clean our old data
+		if (bgBitmap != null) {
+			bgBitmap.recycle();
+			bgBitmap = null;
+			System.gc();
+		}
 		// now load the proper bg
 		String BG_FILE = getFilesDir().toString() + File.separator
 				+ MusicSettingsActivity.BG_PHOTO_FILE;
-		Bitmap bgBitmap = BitmapFactory.decodeFile(BG_FILE);
+		bgBitmap = BitmapFactory.decodeFile(BG_FILE);
 
 		try {
 			if (preferences.getBoolean(
 					MusicSettingsActivity.KEY_ENABLE_HOME_ART, false)) {
-				setWallpaper(bgBitmap);
-				bgBitmap.recycle();
-				System.gc();
+				WallpaperManager.getInstance(this).setBitmap(bgBitmap);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -989,9 +996,7 @@ public class MediaPlaybackService extends Service implements
 		try {
 			if (preferences.getBoolean(
 					MusicSettingsActivity.KEY_ENABLE_HOME_ART, false)) {
-				setWallpaper(b);
-				b.recycle();
-				System.gc();
+				WallpaperManager.getInstance(this).setBitmap(b);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -1357,13 +1362,13 @@ public class MediaPlaybackService extends Service implements
 	 * Starts playback of a previously opened file.
 	 */
 	public void play() {
-		setArtwork();
 
 		TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		if (telephonyManager.getCallState() == TelephonyManager.CALL_STATE_OFFHOOK) {
 			return;
 		}
 		startProgressUpdate();
+		setArtwork();
 
 		mAudioManager.requestAudioFocus(mAudioFocusListener,
 				AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
@@ -1587,7 +1592,6 @@ public class MediaPlaybackService extends Service implements
 			}
 
 		} else if (mPlayListLen <= 0) {
-			startProgressUpdate();
 			// This is mostly so that if you press 'play' on a bluetooth headset
 			// without every having played anything before, it will still play
 			// something.
