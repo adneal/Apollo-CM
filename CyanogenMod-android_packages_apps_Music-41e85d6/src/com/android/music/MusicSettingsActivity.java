@@ -80,7 +80,6 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 	static final String KEY_ENABLE_SONG_TEXT = "tvLine1";
 	static final String KEY_ENABLE_ARTIST_TEXT = "tvLine2";
 	static final String KEY_ENABLE_ALBUM_TEXT = "tvLine3";
-	static final String KEY_ENABLE_BACKGROUND_SHAKE_ACTIONS = "cbShake";
 	static final String KEY_COLOR_PREFERENCE_KEY = "color";
 	static final String KEY_ENABLE_STATUS_PLAY_BUTTON = "cbStatusPlay";
 	static final String KEY_ENABLE_SHARE_BUTTON = "cbShare";
@@ -106,6 +105,8 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 	static final String KEY_LOCK = "cbLock";
 	public static final String THEME_DEFAULT = "Music";
 	static final String THEME_KEY = "themePackageName";
+	static final String SHAKE_SENSITIVITY = "shake_sensitivity";
+	static final String FLIP_SENSITIVITY = "flip_sensitivity";
 
 	// This key has the gesture entry name (E.g. PAUSE) appended to it before
 	// use
@@ -118,16 +119,6 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 	static final String ACTION_GESTURES_CHANGED = "com.android.music.gestureschanged";
 
 	static final String PREFERENCES_FILE = "settings";
-	static final String SCREENSAVER_COLOR_GESTURE = "screensaver_color_gesture";
-	static final String SCREENSAVER_COLOR_ALPHA_GESTURE = "screensaver_color_alpha_gesture";
-	static final String SCREENSAVER_COLOR_RED_GESTURE = "screensaver_color_red_gesture";
-	static final String SCREENSAVER_COLOR_GREEN_GESTURE = "screensaver_color_green_gesture";
-	static final String SCREENSAVER_COLOR_BLUE_GESTURE = "screensaver_color_blue_gesture";
-	static final String SCREENSAVER_COLOR_NP = "screensaver_color_np";
-	static final String SCREENSAVER_COLOR_ALPHA_NP = "screensaver_color_alpha_np";
-	static final String SCREENSAVER_COLOR_RED_NP = "screensaver_color_red_np";
-	static final String SCREENSAVER_COLOR_GREEN_NP = "screensaver_color_green_np";
-	static final String SCREENSAVER_COLOR_BLUE_NP = "screensaver_color_blue_np";
 	public static final String KEY_ENABLE_STATUS_NONYA = "cbStatusNonya";
 	public static final String KEY_BUILD_VERSION = "build";
 	public static final String KEY_SOUND_EFFECT = "eqEffects";
@@ -140,15 +131,17 @@ public class MusicSettingsActivity extends PreferenceActivity implements
 	private static final int EFFECTS_PANEL = 0;
 
 	// Color to use for text & graphics in screen saver mode.
-	// private final int SCREEN_SAVER_COLOR = 0xFF00C0FF;
-	// private final int SCREEN_SAVER_COLOR_DIM = 0xFF004880;
 	static final int DEFAULT_SCREENSAVER_COLOR_ALPHA = 230;
 	static final int DEFAULT_SCREENSAVER_COLOR_RED = 0;
 	static final int DEFAULT_SCREENSAVER_COLOR_GREEN = 192;
 	static final int DEFAULT_SCREENSAVER_COLOR_BLUE = 255;
+	// Custom wallpaper
 	static final String BG_PHOTO_FILE = "home_art";
 	static final String TEMP_PHOTO_FILE = "home";
 	private Bitmap bgBitmap = null;
+	// Shake and Flip sensitivity
+	static final double DEFAULT_SHAKE_SENS = 2;
+	static final int DEFAULT_FLIP_SENS = 10;
 
 	public AlertDialog themeAlert;
 	public CheckBoxPreference cp;

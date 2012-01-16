@@ -512,19 +512,13 @@
     <string name="shaker_title_artist">Tab Shake Actions</string>
     <string name="shaker_summary_artist">Shake action for each tab</string>
     <string name="shaker_summary_playlist">Shake action for the Playlist tab</string>
-    <string name="shaker_title_nowplaying">Now Playing Shake Actions</string>
-    <string name="shaker_summary_nowplaying">Shake action for the Now Playing tab</string>
-    <string name="shaker_title">Shake and Flip Actions</string>
+    <string name="shaker_title_nowplaying">Shake Actions</string>
+    <string name="shaker_summary_nowplaying">Play, next, prev, etc</string>
+    <string name="shaker_title">Shake &amp; Flip Actions</string>
     <string name="shaker_summary">Select your "shake" and "flip" actions</string>
+    <string name="sensitivity">Sensitivity</string>
+    <string name="sensitivity_summary">Shake &amp; Flip sensitivity</string>
 
-    <string-array name="shaker_db_entries_tabs">
-        <item>None</item>
-        <item>Play and Pause</item>
-        <item>Next</item>
-        <item>Prev</item>
-        <item>Shuffle</item>
-        <item>Party Shuffle</item>
-    </string-array>
     <string-array name="shaker_db_entries">
         <item>None</item>
         <item>Play and Pause</item>
@@ -540,7 +534,6 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
-        <item>6</item>
     </string-array>
 
     <string name="animation_ui_title">Animations</string>

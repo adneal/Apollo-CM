@@ -35,8 +35,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.gesture.GestureLibrary;
-import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.AudioManager;
@@ -49,10 +47,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 import android.os.SystemClock;
-import android.os.Vibrator;
-import android.provider.BaseColumns;
 import android.provider.MediaStore;
-import android.provider.MediaStore.Audio.AudioColumns;
 import android.text.Layout;
 import android.text.TextUtils.TruncateAt;
 import android.util.Log;
@@ -76,7 +71,7 @@ import android.widget.Toast;
 import com.android.music.MusicUtils.ServiceToken;
 
 public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
-		View.OnTouchListener, View.OnLongClickListener, Shaker.Callback {
+		View.OnTouchListener, View.OnLongClickListener {
 	private static final int USE_AS_RINGTONE = CHILD_MENU_BASE;
 
 	private SharedPreferences mPreferences;
@@ -90,9 +85,6 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	private Toast mToast;
 	private int mTouchSlop;
 	private ServiceToken mToken;
-	private GestureOverlayView mGestureOverlayView;
-	private GestureLibrary mGestureLibrary;
-	private Vibrator mVibrator;
 	// Media buttons
 	private RepeatingImageButton mPrevButton;
 	private ImageButton mPauseButton;
@@ -119,9 +111,6 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	private LinearLayout mDelete;
 	// Screen on while playing/charging
 	private boolean pluggedIn;
-	// Shake actions
-	private Shaker shaker;
-	private String shake_actions_db;
 	// Animations
 	private String np_animation_ui_db;
 	// ADW Theme constants
@@ -148,9 +137,6 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 		mAlbumArtHandler = new AlbumArtHandler(mAlbumArtWorker.getLooper());
 
 		setContentView(R.layout.player);
-
-		// Shake Action Sensitivity
-		shaker = new Shaker(this, 2.25d, 500, this);
 
 		mCurrentTime = (TextView) findViewById(R.id.currenttime);
 		mTotalTime = (TextView) findViewById(R.id.totaltime);
@@ -249,7 +235,6 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 		mProgress.setMax(1000);
 
 		mTouchSlop = ViewConfiguration.get(this).getScaledTouchSlop();
-		mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 		// ADW: Load the specified theme
 		String themePackage = MusicUtils.getThemePackageName(this,
@@ -819,13 +804,6 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	}
 
 	@Override
-	public void onPause() {
-		shaker.close(); // The only shake actions to stay in the "background"
-						// are the tabs.
-		super.onPause();
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
 		updateTrackInfo();
@@ -835,7 +813,6 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	@Override
 	public void onDestroy() {
 		mAlbumArtWorker.quit();
-		shaker.close();
 		super.onDestroy();
 		// System.out.println("***************** playback activity onDestroy\n");
 	}
@@ -2118,51 +2095,6 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 		public void quit() {
 			mLooper.quit();
 		}
-	}
-
-	@Override
-	public void shakingStarted() {
-		shake_actions_db = mPreferences.getString("shake_actions_db", "0");
-		if (shake_actions_db.equals("0")) {
-			// NONE
-		}
-		shake_actions_db = mPreferences.getString("shake_actions_db", "1");
-		if (shake_actions_db.equals("1")) {
-			doPauseResume();
-		}
-		shake_actions_db = mPreferences.getString("shake_actions_db", "2");
-		if (shake_actions_db.equals("2")) {
-			doNext();
-
-		}
-		shake_actions_db = mPreferences.getString("shake_actions_db", "3");
-		if (shake_actions_db.equals("3")) {
-			doPrev();
-
-		}
-		shake_actions_db = mPreferences.getString("shake_actions_db", "4");
-		if (shake_actions_db.equals("4")) {
-			Cursor cursor;
-			cursor = MusicUtils.query(this,
-					MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-					new String[] { BaseColumns._ID }, AudioColumns.IS_MUSIC
-							+ "=1", null,
-					MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
-			if (cursor != null) {
-				MusicUtils.shuffleAll(this, cursor);
-				cursor.close();
-			}
-		}
-		shake_actions_db = mPreferences.getString("shake_actions_db", "5");
-		if (shake_actions_db.equals("5")) {
-			MusicUtils.togglePartyShuffle();
-
-		}
-	}
-
-	@Override
-	public void shakingStopped() {
-
 	}
 
 	@Override

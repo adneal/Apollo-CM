@@ -76,7 +76,7 @@ import android.widget.Toast;
 import com.android.music.MusicUtils.ServiceToken;
 
 public class PlaylistBrowserActivity extends ListActivity implements
-		View.OnCreateContextMenuListener, MusicUtils.Defs, Shaker.Callback {
+		View.OnCreateContextMenuListener, MusicUtils.Defs {
 	private static final String TAG = "PlaylistBrowserActivity";
 	private static final int DELETE_PLAYLIST = CHILD_MENU_BASE + 1;
 	private static final int EDIT_PLAYLIST = CHILD_MENU_BASE + 2;
@@ -117,10 +117,6 @@ public class PlaylistBrowserActivity extends ListActivity implements
 	private ImageButton mPrev;
 	private ImageButton mShare;
 	private ImageButton mFlow;
-	// Shake actions
-	public Shaker Playlistshaker;
-	private String artist_shake_actions_db;
-	public boolean mShakeActions;
 	// Back button long press
 	public String back_button_db;
 	// Smaller now playing window swipe gesture
@@ -145,10 +141,6 @@ public class PlaylistBrowserActivity extends ListActivity implements
 		super.onCreate(icicle);
 		mPreferences = getSharedPreferences(
 				MusicSettingsActivity.PREFERENCES_FILE, MODE_PRIVATE);
-
-		mShakeActions = mPreferences.getBoolean(
-				MusicSettingsActivity.KEY_ENABLE_BACKGROUND_SHAKE_ACTIONS,
-				false);
 
 		final Intent intent = getIntent();
 		final String action = intent.getAction();
@@ -256,9 +248,6 @@ public class PlaylistBrowserActivity extends ListActivity implements
 				return false;
 			}
 		});
-
-		// Shake action sensitivity
-		Playlistshaker = new Shaker(this, 2.25d, 500, this);
 
 		// Smaller now playing window buttons
 		mShare = (ImageButton) findViewById(R.id.share_song);
@@ -698,13 +687,6 @@ public class PlaylistBrowserActivity extends ListActivity implements
 		super.onPause();
 		unregisterReceiver(mTrackListListener);
 		mReScanHandler.removeCallbacksAndMessages(null);
-		if (mPreferences.getBoolean(
-				MusicSettingsActivity.KEY_ENABLE_BACKGROUND_SHAKE_ACTIONS,
-				false)) {
-			// this seems totally wrong, but it works pretty perfect
-		} else {
-			Playlistshaker.close();
-		}
 		super.onPause();
 	}
 
@@ -1303,55 +1285,6 @@ public class PlaylistBrowserActivity extends ListActivity implements
 			setPauseButtonImage();
 		} catch (RemoteException ex) {
 		}
-	}
-
-	@Override
-	public void shakingStarted() {
-		artist_shake_actions_db = mPreferences.getString(
-				"artist_shake_actions_db", "0");
-		if (artist_shake_actions_db.equals("0")) {
-			// NONE
-		}
-		artist_shake_actions_db = mPreferences.getString(
-				"artist_shake_actions_db", "1");
-		if (artist_shake_actions_db.equals("1")) {
-			doPauseResume();
-		}
-		artist_shake_actions_db = mPreferences.getString(
-				"artist_shake_actions_db", "2");
-		if (artist_shake_actions_db.equals("2")) {
-			doNext();
-		}
-		artist_shake_actions_db = mPreferences.getString(
-				"artist_shake_actions_db", "3");
-		if (artist_shake_actions_db.equals("3")) {
-			doPrev();
-		}
-		artist_shake_actions_db = mPreferences.getString(
-				"artist_shake_actions_db", "4");
-		if (artist_shake_actions_db.equals("4")) {
-			Cursor cursor;
-			cursor = MusicUtils.query(this,
-					MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-					new String[] { BaseColumns._ID }, AudioColumns.IS_MUSIC
-							+ "=1", null,
-					MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
-			if (cursor != null) {
-				MusicUtils.shuffleAll(this, cursor);
-				cursor.close();
-			}
-		}
-		artist_shake_actions_db = mPreferences.getString(
-				"artist_shake_actions_db", "5");
-		if (artist_shake_actions_db.equals("5")) {
-			MusicUtils.togglePartyShuffle();
-		}
-
-	}
-
-	@Override
-	public void shakingStopped() {
-
 	}
 
 	@Override

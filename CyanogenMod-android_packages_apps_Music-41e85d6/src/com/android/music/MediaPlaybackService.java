@@ -67,7 +67,9 @@ import android.os.PowerManager.WakeLock;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.provider.BaseColumns;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Audio.AudioColumns;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -81,7 +83,7 @@ import android.widget.Toast;
  * switch between activities without stopping playback.
  */
 public class MediaPlaybackService extends Service implements
-		SensorEventListener {
+		SensorEventListener, Shaker.Callback {
 	/**
 	 * used to specify whether enqueue() should start playing the new list of
 	 * files right away, next or once all the currently queued files have been
@@ -184,13 +186,17 @@ public class MediaPlaybackService extends Service implements
 	public static int ROLL_UPER = 25;
 	public static int PITCH_LOVER = -160;
 	public static int PITCH_UPER = 160;
-	public static int SENSIVITY = 0;
-	public static int VIBRATORDURATION = 50;
+	// Sensitivity
+	public static int FLIP_SENS = 0;
+	public static double SHAKE_SENS = 0d;
+	public static Shaker shaker;
+	public static String shake_actions_db;
+	private IMediaPlaybackService mService = null;
+	// Flip
 	private SensorManager sensorMan = null;
 	private float PITCH;
 	private float ROLL;
 	private boolean IsWorked = false;
-	private boolean IsVibrate = false;
 	// Wallpaper Bitmap
 	private Bitmap bgBitmap = null;
 
@@ -444,6 +450,21 @@ public class MediaPlaybackService extends Service implements
 	public void onCreate() {
 		super.onCreate();
 
+		SharedPreferences mPrefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
+		Double shakeChange = new Double(mPrefs.getInt(
+				MusicSettingsActivity.SHAKE_SENSITIVITY,
+				(int) (MusicSettingsActivity.DEFAULT_SHAKE_SENS)));
+
+		SHAKE_SENS = shakeChange;
+
+		if (SHAKE_SENS == 0) {
+			new Shaker(this, 1.25, 500, this);
+		} else {
+			new Shaker(this, SHAKE_SENS + .25d, 500, this);
+		}
+
 		// Flip action
 		sensorMan = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		sensorMan.registerListener(this,
@@ -518,6 +539,10 @@ public class MediaPlaybackService extends Service implements
 	@Override
 	public void onDestroy() {
 		sensorMan.unregisterListener(this);
+
+		if (shaker != null)
+			shaker.close();
+		shaker = null;
 
 		// Check that we're not being destroyed while something is still
 		// playing.
@@ -633,10 +658,8 @@ public class MediaPlaybackService extends Service implements
 	private void reloadQueue() {
 		String q = null;
 
-		boolean newstyle = false;
 		int id = mCardId;
 		if (mPreferences.contains("cardid")) {
-			newstyle = true;
 			id = mPreferences.getInt("cardid", ~mCardId);
 		}
 		if (id == mCardId) {
@@ -1181,7 +1204,6 @@ public class MediaPlaybackService extends Service implements
 				addToPlayList(list, -1);
 				notifyChange(QUEUE_CHANGED);
 			}
-			int oldpos = mPlayPos;
 			if (position >= 0) {
 				mPlayPos = position;
 			} else {
@@ -2676,23 +2698,29 @@ public class MediaPlaybackService extends Service implements
 				MusicSettingsActivity.PREFERENCES_FILE, MODE_PRIVATE);
 		mPreferences.getBoolean(MusicSettingsActivity.KEY_FLIP, false);
 
+		SharedPreferences mPrefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+
+		int flipChange = new Integer(mPrefs.getInt(
+				MusicSettingsActivity.FLIP_SENSITIVITY,
+				MusicSettingsActivity.DEFAULT_FLIP_SENS));
+
+		FLIP_SENS = flipChange;
+
 		float vals[] = event.values;
 		PITCH = vals[1];// Pitch
 		ROLL = vals[2];// Roll
-
-		// Log.d("RD Mute Service", "PITCH : " + PITCH);
-		// Log.d("RD Mute Service", "ROLL : " + ROLL);
 
 		int nPITCH_UPER = PITCH_UPER;
 		int nPITCH_LOVER = PITCH_LOVER;
 		int nROLL_UPER = ROLL_UPER;
 		int nROLL_LOVER = ROLL_LOVER;
 
-		if (SENSIVITY != 0) {
-			nPITCH_UPER = PITCH_UPER - SENSIVITY;
-			nPITCH_LOVER = PITCH_LOVER + SENSIVITY;
-			nROLL_UPER = ROLL_UPER + SENSIVITY;
-			nROLL_LOVER = ROLL_LOVER - SENSIVITY;
+		if (FLIP_SENS != 0) {
+			nPITCH_UPER = PITCH_UPER - FLIP_SENS;
+			nPITCH_LOVER = PITCH_LOVER + FLIP_SENS;
+			nROLL_UPER = ROLL_UPER + FLIP_SENS;
+			nROLL_LOVER = ROLL_LOVER - FLIP_SENS;
 		}
 		if (preferences.getBoolean(MusicSettingsActivity.KEY_FLIP, false)) {
 			if (PITCH > nPITCH_UPER || PITCH < nPITCH_LOVER) {
@@ -2714,8 +2742,76 @@ public class MediaPlaybackService extends Service implements
 	}
 
 	public static void setSensivity(int sensivity) {
-		// Log.d("RD Mute Service", "SENSIVITY : " + sensivity);
-		SENSIVITY = sensivity - 10;
-		// Log.d("RD Mute Service", "SENSIVITY NEW : " + SENSIVITY);
+		FLIP_SENS = sensivity - 0;
+
 	}
+
+	private void doPauseResume() {
+		if (isPlaying()) {
+			pause();
+		} else {
+			play();
+		}
+	}
+
+	private void doNext() {
+
+		next(true);
+	}
+
+	private void doPrev() {
+
+		if (position() < 2000) {
+			prev();
+		} else {
+			seek(0);
+			play();
+		}
+	}
+
+	@Override
+	public void shakingStarted() {
+		SharedPreferences preferences = getSharedPreferences(
+				MusicSettingsActivity.PREFERENCES_FILE, MODE_PRIVATE);
+		shake_actions_db = preferences.getString("shake_actions_db", "1");
+		if (shake_actions_db.equals("1")) {
+			doPauseResume();
+		}
+		shake_actions_db = preferences.getString("shake_actions_db", "2");
+		if (shake_actions_db.equals("2")) {
+			doNext();
+		}
+		shake_actions_db = preferences.getString("shake_actions_db", "3");
+		if (shake_actions_db.equals("3")) {
+			doPrev();
+		}
+		shake_actions_db = preferences.getString("shake_actions_db", "4");
+		if (shake_actions_db.equals("4")) {
+			Cursor cursor;
+			cursor = MusicUtils.query(this,
+					MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+					new String[] { BaseColumns._ID }, AudioColumns.IS_MUSIC
+							+ "=1", null,
+					MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
+			if (cursor != null) {
+				MusicUtils.shuffleAll(this, cursor);
+				cursor.close();
+			}
+		}
+		shake_actions_db = preferences.getString("shake_actions_db", "5");
+		if (shake_actions_db.equals("5")) {
+			int shuffle = getShuffleMode();
+			if (shuffle == SHUFFLE_AUTO) {
+				setShuffleMode(SHUFFLE_NONE);
+			} else {
+				setShuffleMode(SHUFFLE_AUTO);
+			}
+		}
+	}
+
+	@Override
+	public void shakingStopped() {
+
+	}
+
 }

@@ -92,6 +92,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.android.music.Sensitivity"
+            android:label="Sensitivity"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Holo.Dialog" >
+            <intent-filter>
+                <action android:name="com.android.music.Sensitivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.android.music.MediaPlaybackActivity"
             android:clearTaskOnLaunch="true"
             android:excludeFromRecents="true"

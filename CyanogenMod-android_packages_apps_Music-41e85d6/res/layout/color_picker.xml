@@ -77,8 +77,7 @@
         android:layout_width="200dip"
         android:layout_height="100dip"
         android:layout_gravity="bottom|center"
-        android:layout_marginBottom="15dip"
-        android:background="#000" >
+        android:layout_marginBottom="15dip" >
 
         <TextView
             android:id="@+id/color_picker_sample"
