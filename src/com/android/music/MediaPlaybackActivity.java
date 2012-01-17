@@ -315,10 +315,10 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 					themePackage, "np_delete", mDeleteButton,
 					THEME_ITEM_FOREGROUND);
 			ArtistAlbumBrowserActivity
-					.loadThemeResource(themeResources, themePackage, "np_prev",
+					.loadThemeResource(themeResources, themePackage, "np_next",
 							mNextButton, THEME_ITEM_FOREGROUND);
 			ArtistAlbumBrowserActivity
-					.loadThemeResource(themeResources, themePackage, "np_next",
+					.loadThemeResource(themeResources, themePackage, "np_prev",
 							mPrevButton, THEME_ITEM_FOREGROUND);
 			// Now Playing bg
 			ArtistAlbumBrowserActivity
