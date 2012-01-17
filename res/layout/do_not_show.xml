@@ -9,7 +9,7 @@
         android:id="@+id/noShow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Do not show again" >
+        android:text="@string/do_not_show" >
     </CheckBox>
 
 </LinearLayout>

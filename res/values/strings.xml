@@ -630,4 +630,11 @@
     <string name="color_picker_green">Green</string>
     <string name="color_picker_blue">Blue</string>
 
+    <!-- Do not show again -->
+    <string name="do_not_show">Do not show again</string>
+
+    <!-- Shake and Flip sensitivity -->
+    <string name="tv_shake_sens">Shake action sensitivity</string>
+    <string name="tv_flip_sens">Flip action sensitivity</string>
+
 </resources>
