@@ -85,7 +85,7 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	private Toast mToast;
 	private int mTouchSlop;
 	private ServiceToken mToken;
-	// Media buttons
+	// Media buttons and theme stuff
 	private RepeatingImageButton mPrevButton;
 	private ImageButton mPauseButton;
 	private RepeatingImageButton mNextButton;
@@ -109,6 +109,7 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 	private LinearLayout mRingtone;
 	private LinearLayout mShop;
 	private LinearLayout mDelete;
+	private LinearLayout mNPBackground;
 	// Screen on while playing/charging
 	private boolean pluggedIn;
 	// Animations
@@ -253,6 +254,9 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 		}
 		// Set Views for themes
 		if (themeResources != null) {
+			bar = (ActionBar) getActionBar();
+
+			mNPBackground = (LinearLayout) findViewById(R.id.now_playing_bg);
 			mShuffleButton = ((LinearLayout) findViewById(R.id.shuffle));
 			mShuffleButtonText = (TextView) findViewById(R.id.shuffle_text);
 			mRepeatButton = ((LinearLayout) findViewById(R.id.repeat));
@@ -303,7 +307,7 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 					.loadThemeResource(themeResources, themePackage, "np_ring",
 							mRingButton, THEME_ITEM_FOREGROUND);
 			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
-					themePackage, "np_share", mShareButton,
+					themePackage, "np_share", mShareButtonImage,
 					THEME_ITEM_FOREGROUND);
 			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
 					themePackage, "np_eq", mEQ, THEME_ITEM_FOREGROUND);
@@ -316,6 +320,15 @@ public class MediaPlaybackActivity extends Activity implements MusicUtils.Defs,
 			ArtistAlbumBrowserActivity
 					.loadThemeResource(themeResources, themePackage, "np_next",
 							mPrevButton, THEME_ITEM_FOREGROUND);
+			// Now Playing bg
+			ArtistAlbumBrowserActivity
+					.loadThemeResource(themeResources, themePackage, "np_bg",
+							mNPBackground, THEME_ITEM_BACKGROUND);
+			int aBar = themeResources.getIdentifier("ab_bg", "drawable",
+					themePackage);
+			if (aBar != 0) {
+				bar.setBackgroundDrawable(themeResources.getDrawable(aBar));
+			}
 			int seeker = themeResources.getIdentifier("progress_horizontal",
 					"drawable", themePackage);
 			if (seeker != 0) {

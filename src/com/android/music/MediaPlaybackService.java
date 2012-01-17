@@ -540,10 +540,6 @@ public class MediaPlaybackService extends Service implements
 	public void onDestroy() {
 		sensorMan.unregisterListener(this);
 
-		if (shaker != null)
-			shaker.close();
-		shaker = null;
-
 		// Check that we're not being destroyed while something is still
 		// playing.
 		if (isPlaying()) {
@@ -1654,6 +1650,7 @@ public class MediaPlaybackService extends Service implements
 		if (remove_status_icon) {
 			mIsSupposedToBePlaying = false;
 		}
+
 	}
 
 	/**

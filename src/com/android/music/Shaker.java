@@ -6,7 +6,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.SystemClock;
-import com.android.music.R;
 
 public class Shaker {
 	private SensorManager mgr = null;
@@ -34,15 +33,18 @@ public class Shaker {
 
 	private void isShaking() {
 		long now = SystemClock.uptimeMillis();
+		try {
+			if (lastShakeTimestamp == 0) {
+				lastShakeTimestamp = now;
 
-		if (lastShakeTimestamp == 0) {
-			lastShakeTimestamp = now;
-
-			if (cb != null) {
-				cb.shakingStarted();
+				if (cb != null) {
+					cb.shakingStarted();
+				}
+			} else {
+				lastShakeTimestamp = now;
 			}
-		} else {
-			lastShakeTimestamp = now;
+		} catch (NullPointerException e) {
+
 		}
 	}
 

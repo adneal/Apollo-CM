@@ -311,15 +311,9 @@ public class PlaylistBrowserActivity extends ListActivity implements
 			mButtonBarSong = (TextView) findViewById(R.id.songtab);
 			mButtonBarPlaylist = (TextView) findViewById(R.id.playlisttab);
 			mButtonBarNP = (TextView) findViewById(R.id.nowplayingtab);
-			mGroup = (RelativeLayout) findViewById(R.id.group_item);
-			mChild = (RelativeLayout) findViewById(R.id.child_item);
 			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
 					themePackage, "tab_playlist", mPlaylistTab,
 					THEME_ITEM_BACKGROUND);
-			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
-					themePackage, "group_bg", mGroup, THEME_ITEM_BACKGROUND);
-			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
-					themePackage, "child_bg", mChild, THEME_ITEM_BACKGROUND);
 			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
 					themePackage, "buttonbar", mButtonBar,
 					THEME_ITEM_BACKGROUND);
@@ -1127,22 +1121,7 @@ public class PlaylistBrowserActivity extends ListActivity implements
 			long id = cursor.getLong(mIdIdx);
 
 			ImageView iv = (ImageView) view.findViewById(R.id.icon);
-			if (id == RECENTLY_ADDED_PLAYLIST) {
-				iv.setImageResource(R.drawable.ic_mp_playlist_recently_added_list);
-				if (themeResources != null) {
-					ArtistAlbumBrowserActivity.loadThemeResource(
-							themeResources, themePackage,
-							"playlist_recently_added", iv,
-							THEME_ITEM_FOREGROUND);
-				}
-			} else {
-				iv.setImageResource(R.drawable.ic_mp_playlist_list);
-				if (themeResources != null) {
-					ArtistAlbumBrowserActivity.loadThemeResource(
-							themeResources, themePackage, "playlist_list", iv,
-							THEME_ITEM_FOREGROUND);
-				}
-			}
+
 			ViewGroup.LayoutParams p = iv.getLayoutParams();
 			p.width = ViewGroup.LayoutParams.WRAP_CONTENT;
 			p.height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -1156,6 +1135,7 @@ public class PlaylistBrowserActivity extends ListActivity implements
 					.findViewById(R.id.second_column_icon);
 			iv.setVisibility(View.GONE);
 			mContextMenu.setOnClickListener(mCML);
+			ImageView cM = (ImageView) view.findViewById(R.id.CM);
 			if (themeResources != null) {
 
 				int line1 = themeResources.getIdentifier(
@@ -1164,6 +1144,9 @@ public class PlaylistBrowserActivity extends ListActivity implements
 				if (line1 != 0) {
 					tv.setTextColor(themeResources.getColor(line1));
 				}
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "bt_context_menu", cM,
+						THEME_ITEM_FOREGROUND);
 			}
 		}
 
@@ -1233,12 +1216,13 @@ public class PlaylistBrowserActivity extends ListActivity implements
 		try {
 			if (mService != null && mService.isPlaying()) {
 				mPlay.setImageResource(R.drawable.ic_media_pause);
-				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
-						themePackage, "np_pause", mPlay, THEME_ITEM_FOREGROUND);
+				ArtistAlbumBrowserActivity
+						.loadThemeResource(themeResources, themePackage,
+								"snp_pause", mPlay, THEME_ITEM_FOREGROUND);
 			} else {
 				mPlay.setImageResource(R.drawable.ic_appwidget_music_play);
 				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
-						themePackage, "np_play", mPlay, THEME_ITEM_FOREGROUND);
+						themePackage, "snp_play", mPlay, THEME_ITEM_FOREGROUND);
 			}
 		} catch (RemoteException ex) {
 		}

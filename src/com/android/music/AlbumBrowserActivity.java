@@ -252,13 +252,9 @@ public class AlbumBrowserActivity extends ListActivity implements
 			mButtonBarSong = (TextView) findViewById(R.id.songtab);
 			mButtonBarPlaylist = (TextView) findViewById(R.id.playlisttab);
 			mButtonBarNP = (TextView) findViewById(R.id.nowplayingtab);
-			mGroup = (RelativeLayout) findViewById(R.id.group_item);
-			mChild = (RelativeLayout) findViewById(R.id.child_item);
 			ArtistAlbumBrowserActivity
 					.loadThemeResource(themeResources, themePackage,
 							"tab_album", mAlbumTab, THEME_ITEM_BACKGROUND);
-			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
-					themePackage, "child_bg", mChild, THEME_ITEM_BACKGROUND);
 			ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
 					themePackage, "buttonbar", mButtonBar,
 					THEME_ITEM_BACKGROUND);
@@ -1175,12 +1171,32 @@ public class AlbumBrowserActivity extends ListActivity implements
 				if (line2 != 0) {
 					vh.line2.setTextColor(themeResources.getColor(line2));
 				}
+				ArtistAlbumBrowserActivity.loadThemeResource(themeResources,
+						themePackage, "bt_context_menu", vh.mCM,
+						THEME_ITEM_FOREGROUND);
 			}
 			return v;
 		}
 
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
+
+			// ADW: Load the specified theme
+			String themePackage = MusicUtils.getThemePackageName(context,
+					MusicSettingsActivity.THEME_DEFAULT);
+			PackageManager pm = context.getPackageManager();
+			Resources themeResources = null;
+			if (!themePackage.equals(MusicSettingsActivity.THEME_DEFAULT)) {
+				try {
+					themeResources = pm
+							.getResourcesForApplication(themePackage);
+				} catch (NameNotFoundException e) {
+					// ADW The saved theme was uninstalled so we save the
+					// default one
+					MusicUtils.setThemePackageName(context,
+							MusicSettingsActivity.THEME_DEFAULT);
+				}
+			}
 
 			ViewHolder vh = (ViewHolder) view.getTag();
 
@@ -1217,6 +1233,14 @@ public class AlbumBrowserActivity extends ListActivity implements
 				iv.setBackgroundResource(R.anim.peak_meter);
 				AnimationDrawable frameAnimation = (AnimationDrawable) iv
 						.getBackground();
+				if (themeResources != null) {
+					int peak = themeResources.getIdentifier("peak_meter",
+							"anim", themePackage);
+					if (peak != 0) {
+						iv.setBackgroundDrawable(themeResources
+								.getDrawable(peak));
+					}
+				}
 				// Start the animation (looped playback by default).
 				frameAnimation.start();
 				iv.setVisibility(View.VISIBLE);
@@ -1314,14 +1338,14 @@ public class AlbumBrowserActivity extends ListActivity implements
 				mPlay.setImageResource(R.drawable.ic_media_pause);
 				if (themeResources != null) {
 					ArtistAlbumBrowserActivity.loadThemeResource(
-							themeResources, themePackage, "np_pause", mPlay,
+							themeResources, themePackage, "snp_pause", mPlay,
 							THEME_ITEM_FOREGROUND);
 				}
 			} else {
 				mPlay.setImageResource(R.drawable.ic_appwidget_music_play);
 				if (themeResources != null) {
 					ArtistAlbumBrowserActivity.loadThemeResource(
-							themeResources, themePackage, "np_play", mPlay,
+							themeResources, themePackage, "snp_play", mPlay,
 							THEME_ITEM_FOREGROUND);
 				}
 			}

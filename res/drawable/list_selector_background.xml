@@ -27,7 +27,7 @@
         android:drawable="@drawable/playlist_tile_normal" />
 
     <item android:state_focused="true"
-        android:drawable="@color/ics_opaque" />
+        android:drawable="@drawable/playlist_tile_normal" />
 
     <item android:state_focused="false"
         android:drawable="@drawable/playlist_tile_normal" />
