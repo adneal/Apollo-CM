@@ -2752,12 +2752,10 @@ public class MediaPlaybackService extends Service implements
 	}
 
 	private void doNext() {
-
 		next(true);
 	}
 
 	private void doPrev() {
-
 		if (position() < 2000) {
 			prev();
 		} else {
@@ -2802,6 +2800,10 @@ public class MediaPlaybackService extends Service implements
 				setShuffleMode(SHUFFLE_NONE);
 			} else {
 				setShuffleMode(SHUFFLE_AUTO);
+			}
+			shake_actions_db = preferences.getString("shake_actions_db", "0");
+			if (shake_actions_db.equals("0")) {
+				// Nothing - this needs to stay last
 			}
 		}
 	}
