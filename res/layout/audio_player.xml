@@ -1,115 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (C) 2007 The Android Open Source Project
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-  
-          http://www.apache.org/licenses/LICENSE-2.0
-  
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/now_playing_bg"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/player_background"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:ignore="ContentDescription" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1" >
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/black" >
 
         <ImageView
-            android:id="@+id/album"
+            android:id="@+id/audio_player_album_art"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY" />
-
-        <ImageView
-            android:id="@+id/album_dummy"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:visibility="gone" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:paddingBottom="6dip"
-        android:paddingLeft="11dip"
-        android:paddingTop="4dip" >
+        android:paddingLeft="@dimen/audio_player_info_container_padding"
+        android:paddingRight="@dimen/audio_player_info_container_padding"
+        android:paddingTop="@dimen/audio_player_artwork_padding" >
 
         <TextView
-            android:id="@+id/trackname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:ellipsize="end"
-            android:shadowColor="#ff000000"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="3"
-            android:singleLine="true"
-            android:textColor="#ffffffff"
-            android:textSize="19sp"
+            android:id="@+id/audio_player_track"
+            style="@style/AudioPlayerText"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:paddingBottom="10dip"
-        android:paddingLeft="13dip"
-        android:paddingTop="4dip" >
 
         <TextView
-            android:id="@+id/albumname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:ellipsize="end"
-            android:shadowColor="#ff000000"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="3"
-            android:singleLine="true"
-            android:textColor="#ff999999"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:id="@+id/audio_player_album_artist"
+            style="@style/AudioPlayerText"
+            android:layout_below="@+id/audio_player_track"
+            android:textColor="@color/transparent_black"
+            android:textSize="@dimen/text_size_small" />
+    </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:paddingBottom="2dip"
-        android:paddingTop="4dip"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/artistname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <include layout="@layout/audio_player_common" />
+    <include layout="@layout/audio_controls" />
 
 </LinearLayout>

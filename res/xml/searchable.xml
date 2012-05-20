@@ -16,12 +16,7 @@
 -->
 
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
-    android:hint="@string/search_hint"
     android:includeInGlobalSearch="true"
-    android:label="@string/search_title"
-    android:searchSettingsDescription="@string/search_settings_description"
-    android:searchSuggestAuthority="media"
+    android:label="@string/search"
     android:searchSuggestIntentAction="android.intent.action.VIEW"
-    android:searchSuggestPath="external/audio/search"
-    android:searchSuggestThreshold="3"
     android:voiceSearchMode="showVoiceSearchButton|launchRecognizer" />

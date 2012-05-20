@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/bottom_action_bar_height"
+    android:layout_gravity="bottom"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_action_bar_divider_height"
+        android:background="@color/holo_blue_dark" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/bottom_action_bar_repeat"
+            style="@style/BottomActionBarItem"
+            android:layout_weight="1"
+            android:contentDescription="@string/cd_repeat"
+            android:src="@drawable/apollo_holo_light_repeat_normal" />
+
+        <ImageButton
+            android:id="@+id/bottom_action_bar_previous"
+            style="@style/BottomActionBarItem"
+            android:layout_weight="1"
+            android:contentDescription="@string/cd_previous"
+            android:src="@drawable/apollo_holo_light_previous" />
+
+        <ImageButton
+            android:id="@+id/bottom_action_bar_play"
+            style="@style/BottomActionBarItem"
+            android:layout_weight="1"
+            android:contentDescription="@string/cd_play"
+            android:src="@drawable/apollo_holo_light_play" />
+
+        <ImageButton
+            android:id="@+id/bottom_action_bar_next"
+            style="@style/BottomActionBarItem"
+            android:layout_weight="1"
+            android:contentDescription="@string/cd_next"
+            android:src="@drawable/apollo_holo_light_next" />
+
+        <ImageButton
+            android:id="@+id/bottom_action_bar_shuffle"
+            style="@style/BottomActionBarItem"
+            android:layout_weight="1"
+            android:contentDescription="@string/cd_shuffle"
+            android:src="@drawable/apollo_holo_light_shuffle_normal" />
+    </LinearLayout>
+
+</LinearLayout>
