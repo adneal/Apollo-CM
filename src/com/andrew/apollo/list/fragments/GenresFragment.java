@@ -98,7 +98,7 @@ public class GenresFragment extends Fragment implements LoaderCallbacks<Cursor>,
         Uri uri = Audio.Genres.EXTERNAL_CONTENT_URI;
         String selection = getBetterGenresWhereClause(getActivity());
         String sortOrder = Audio.Genres.DEFAULT_SORT_ORDER;
-        return new CursorLoader(getActivity(), uri, projection, selection, null, sortOrder);
+        return new CursorLoader(getActivity(), uri, projection, null, null, sortOrder);
     }
 
     @Override
