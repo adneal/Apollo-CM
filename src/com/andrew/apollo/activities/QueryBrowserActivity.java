@@ -19,12 +19,10 @@ package com.andrew.apollo.activities;
 import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.AsyncQueryHandler;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -32,9 +30,7 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Audio;
@@ -81,11 +77,9 @@ public class QueryBrowserActivity extends ListActivity implements Constants, Ser
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
-        IntentFilter f = new IntentFilter();
-        f.addAction(Intent.ACTION_MEDIA_SCANNER_STARTED);
-        f.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
-        f.addDataScheme(DATA_SCHEME);
-        registerReceiver(mScanListener, f);
+        if (mAdapter != null) {
+            getQueryCursor(mAdapter.getQueryHandler(), null);
+        }
 
         Intent intent = getIntent();
         String action = intent != null ? intent.getAction() : null;
@@ -191,15 +185,8 @@ public class QueryBrowserActivity extends ListActivity implements Constants, Ser
     }
 
     @Override
-    public void onPause() {
-        mReScanHandler.removeCallbacksAndMessages(null);
-        super.onPause();
-    }
-
-    @Override
     public void onDestroy() {
         MusicUtils.unbindFromService(mToken);
-        unregisterReceiver(mScanListener);
         // If we have an adapter and didn't send it off to another activity yet,
         // we should
         // close its cursor, which we do by assigning a null cursor to it. Doing
@@ -222,30 +209,6 @@ public class QueryBrowserActivity extends ListActivity implements Constants, Ser
         super.onDestroy();
     }
 
-    /*
-     * This listener gets called when the media scanner starts up, and when the
-     * sd card is unmounted.
-     */
-    private final BroadcastReceiver mScanListener = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            MusicUtils.setSpinnerState(QueryBrowserActivity.this);
-            mReScanHandler.sendEmptyMessage(0);
-        }
-    };
-
-    private final Handler mReScanHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (mAdapter != null) {
-                getQueryCursor(mAdapter.getQueryHandler(), null);
-            }
-            // if the query results in a null cursor, onQueryComplete() will
-            // call init(), which will post a delayed message to this handler
-            // in order to try again.
-        }
-    };
-
     public void init(Cursor c) {
 
         if (mAdapter == null) {
@@ -254,9 +217,7 @@ public class QueryBrowserActivity extends ListActivity implements Constants, Ser
         mAdapter.changeCursor(c);
 
         if (mQueryCursor == null) {
-            MusicUtils.displayDatabaseError(this);
             setListAdapter(null);
-            mReScanHandler.sendEmptyMessageDelayed(0, 1000);
             return;
         }
     }

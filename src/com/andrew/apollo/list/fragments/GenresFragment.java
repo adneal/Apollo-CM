@@ -4,18 +4,12 @@
 
 package com.andrew.apollo.list.fragments;
 
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.MediaStore.Audio;
-import android.provider.MediaStore.Audio.AudioColumns;
-import android.provider.MediaStore.Audio.Genres;
-import android.provider.MediaStore.Audio.GenresColumns;
-import android.provider.MediaStore.MediaColumns;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
@@ -93,10 +87,9 @@ public class GenresFragment extends Fragment implements LoaderCallbacks<Cursor>,
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = new String[] {
-                BaseColumns._ID, GenresColumns.NAME
+                Audio.Genres._ID, Audio.Genres.NAME
         };
         Uri uri = Audio.Genres.EXTERNAL_CONTENT_URI;
-        String selection = getBetterGenresWhereClause(getActivity());
         String sortOrder = Audio.Genres.DEFAULT_SORT_ORDER;
         return new CursorLoader(getActivity(), uri, projection, null, null, sortOrder);
     }
@@ -108,8 +101,8 @@ public class GenresFragment extends Fragment implements LoaderCallbacks<Cursor>,
             return;
         }
 
-        mGenreIdIndex = data.getColumnIndexOrThrow(BaseColumns._ID);
-        mGenreNameIndex = data.getColumnIndexOrThrow(GenresColumns.NAME);
+        mGenreIdIndex = data.getColumnIndexOrThrow(Audio.Genres._ID);
+        mGenreNameIndex = data.getColumnIndexOrThrow(Audio.Genres.NAME);
         mGenreAdapter.changeCursor(data);
         mCursor = data;
     }
@@ -168,51 +161,5 @@ public class GenresFragment extends Fragment implements LoaderCallbacks<Cursor>,
                 break;
         }
         return super.onContextItemSelected(item);
-    }
-
-    /**
-     * @param context
-     * @return correct genre name
-     */
-    public String getBetterGenresWhereClause(Context context) {
-        StringBuilder builder = new StringBuilder();
-        ContentResolver resolver = context.getContentResolver();
-        String[] genres_cols = new String[] {
-            BaseColumns._ID
-        };
-        Uri genres_uri = Audio.Genres.EXTERNAL_CONTENT_URI;
-        Cursor genres_cursor = resolver.query(genres_uri, genres_cols, null, null, null);
-        if (genres_cursor != null) {
-            if (genres_cursor.getCount() <= 0) {
-                genres_cursor.close();
-                return null;
-            }
-        } else
-            return null;
-        builder.append(BaseColumns._ID + " IN (");
-        genres_cursor.moveToFirst();
-        while (!genres_cursor.isAfterLast()) {
-            long genre_id = genres_cursor.getLong(0);
-            StringBuilder where = new StringBuilder();
-            where.append(AudioColumns.IS_MUSIC + "=1");
-            where.append(" AND " + MediaColumns.TITLE + "!=''");
-            String[] cols = new String[] {
-                BaseColumns._ID
-            };
-            Uri uri = Genres.Members.getContentUri(EXTERNAL, genre_id);
-            Cursor member_cursor = context.getContentResolver().query(uri, cols, where.toString(),
-                    null, null);
-            if (member_cursor != null) {
-                if (member_cursor.getCount() > 0) {
-                    builder.append(genre_id + ",");
-                }
-                member_cursor.close();
-            }
-            genres_cursor.moveToNext();
-        }
-        genres_cursor.close();
-        builder.deleteCharAt(builder.length() - 1);
-        builder.append(")");
-        return builder.toString();
     }
 }

@@ -116,11 +116,6 @@
         <activity
             android:name=".preferences.SettingsHolder"
             android:label="@string/settings" />
-        <!-- Mediascanner -->
-        <activity
-            android:name=".activities.ScanningProgress"
-            android:exported="false"
-            android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity
             android:name=".menu.PlaylistDialog"
             android:label="@string/rename_playlist"

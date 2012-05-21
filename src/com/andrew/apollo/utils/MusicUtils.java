@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.RemoteException;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
@@ -36,15 +35,12 @@ import android.provider.MediaStore.Audio.PlaylistsColumns;
 import android.provider.MediaStore.MediaColumns;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
-import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.andrew.apollo.Constants;
 import com.andrew.apollo.IApolloService;
 import com.andrew.apollo.R;
-import com.andrew.apollo.activities.ScanningProgress;
 import com.andrew.apollo.service.ApolloService;
 import com.andrew.apollo.service.ServiceBinder;
 import com.andrew.apollo.service.ServiceToken;
@@ -68,10 +64,6 @@ public class MusicUtils implements Constants {
     private static final Object[] sTimeArgs = new Object[5];
 
     private static ContentValues[] sContentValuesCache = null;
-
-    private static String mLastSdStatus;
-
-    private final static int SCAN_DONE = 0;
 
     /**
      * @param context
@@ -903,62 +895,6 @@ public class MusicUtils implements Constants {
             }
         }
         return 0;
-    }
-
-    /**
-     * @param context
-     * @return whether the mediascanner is running
-     */
-    public static boolean isMediaScannerScanning(Context context) {
-        boolean result = false;
-        Cursor cursor = query(context, MediaStore.getMediaScannerUri(), new String[] {
-            MediaStore.MEDIA_SCANNER_VOLUME
-        }, null, null, null);
-        if (cursor != null) {
-            if (cursor.getCount() == 1) {
-                cursor.moveToFirst();
-                result = EXTERNAL.equals(cursor.getString(0));
-            }
-            cursor.close();
-        }
-        return result;
-    }
-
-    /**
-     * @param a
-     */
-    public static void setSpinnerState(Activity a) {
-        if (isMediaScannerScanning(a)) {
-            // Start the progress spinner
-            a.getWindow().setFeatureInt(Window.FEATURE_INDETERMINATE_PROGRESS,
-                    Window.PROGRESS_INDETERMINATE_ON);
-
-            a.getWindow().setFeatureInt(Window.FEATURE_INDETERMINATE_PROGRESS,
-                    Window.PROGRESS_VISIBILITY_ON);
-        } else {
-            // Stop the progress spinner
-            a.getWindow().setFeatureInt(Window.FEATURE_INDETERMINATE_PROGRESS,
-                    Window.PROGRESS_VISIBILITY_OFF);
-        }
-    }
-
-    /**
-     * @param a
-     * @param resID
-     */
-    public static void displayDatabaseError(Activity a) {
-        if (a.isFinishing()) {
-            return;
-        }
-
-        String status = Environment.getExternalStorageState();
-        if (status.equals(Environment.MEDIA_MOUNTED)) {
-            Intent intent = new Intent();
-            intent.setClass(a, ScanningProgress.class);
-            a.startActivityForResult(intent, SCAN_DONE);
-        } else if (!TextUtils.equals(mLastSdStatus, status)) {
-            mLastSdStatus = status;
-        }
     }
 
     /**

@@ -118,11 +118,6 @@
     <string name="apply_theme">Apply theme</string>
     <string name="get_more_themes">Get more themes</string>
 
-    <!-- Dialog while the media scanner is starting up -->
-    <string name="scanning">Scanning SD card\u2026</string>
-    <!-- Dialog while the media scanner is starting up -->
-    <string name="scanning_nosdcard">Scanning USB storage\u2026</string>
-
     <!-- Playlists menu -->
     <string name="favorite">Favorites</string>
     <string name="queue">Queue</string>

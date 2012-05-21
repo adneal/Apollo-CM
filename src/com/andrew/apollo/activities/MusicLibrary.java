@@ -4,10 +4,7 @@
 
 package com.andrew.apollo.activities;
 
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
@@ -91,14 +88,6 @@ public class MusicLibrary extends FragmentActivity implements ServiceConnection,
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(ApolloService.META_CHANGED);
-
-        IntentFilter scannerFilter = new IntentFilter();
-        scannerFilter.addAction(Intent.ACTION_MEDIA_SCANNER_STARTED);
-        scannerFilter.addAction(Intent.ACTION_MEDIA_SCANNER_FINISHED);
-        scannerFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
-        scannerFilter.addDataScheme(DATA_SCHEME);
-
-        registerReceiver(mScanListener, scannerFilter);
         super.onStart();
     }
 
@@ -107,8 +96,6 @@ public class MusicLibrary extends FragmentActivity implements ServiceConnection,
         // Unbind
         if (MusicUtils.mService != null)
             MusicUtils.unbindFromService(mToken);
-
-        unregisterReceiver(mScanListener);
         super.onStop();
     }
 
@@ -175,19 +162,4 @@ public class MusicLibrary extends FragmentActivity implements ServiceConnection,
         ViewPager viewPager = (ViewPager)findViewById(R.id.bottomActionBarPager);
         viewPager.setAdapter(pagerAdatper);
     }
-
-    /*
-     * This listener gets called when the media scanner starts up or finishes,
-     * and when the sd card is unmounted.
-     */
-    private final BroadcastReceiver mScanListener = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (Intent.ACTION_MEDIA_SCANNER_STARTED.equals(action)
-                    || Intent.ACTION_MEDIA_SCANNER_FINISHED.equals(action)) {
-                MusicUtils.setSpinnerState(MusicLibrary.this);
-            }
-        }
-    };
 }
