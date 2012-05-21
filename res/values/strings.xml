@@ -54,7 +54,6 @@
     <string name="shuffle_all">Shuffle all</string>
     <string name="share">Share</string>
     <string name="play_store">Play Store</string>
-    <string name="help">Help</string>
 
     <!-- Set track as ringtone -->
     <string name="set_as_ringtone">\"<xliff:g id="name" example="Alarm Bell">%s</xliff:g>\" set as ringtone</string>
@@ -103,10 +102,6 @@
     <string name="apollo_themes">Select theme for Apollo</string>
     <string name="select_theme">Select your theme</string>
     <string name="version">Apollo Version</string>
-    <string name="author_title">Author</string>
-    <string name="author_summary">Andrew Neal</string>
-    <string name="credits_title">Credits</string>
-    <string name="credits_summary">AOSP, CyanogenMod, A.J Lopez, and all others</string>
 
     <!-- Settings keys -->
     <string name="key_themes">themepreview</string>
