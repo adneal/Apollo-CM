@@ -160,7 +160,7 @@ public class ArtistAlbumsFragment extends Fragment implements LoaderCallbacks<Cu
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mListView != null) {
-                mListView.invalidateViews();
+                mArtistAlbumAdapter.notifyDataSetChanged();
             }
         }
 

@@ -213,7 +213,7 @@ public class ArtistsFragment extends Fragment implements LoaderCallbacks<Cursor>
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mGridView != null) {
-                mGridView.invalidateViews();
+                mArtistAdapter.notifyDataSetChanged();
             }
         }
 

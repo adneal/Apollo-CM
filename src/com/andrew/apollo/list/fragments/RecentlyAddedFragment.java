@@ -143,7 +143,7 @@ public class RecentlyAddedFragment extends Fragment implements LoaderCallbacks<C
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mListView != null) {
-                mListView.invalidateViews();
+                mRecentlyAddedAdapter.notifyDataSetChanged();
             }
         }
 

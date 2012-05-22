@@ -240,7 +240,7 @@ public class QuickQueueFragment extends Fragment implements LoaderCallbacks<Curs
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mGridView != null) {
-                mGridView.invalidateViews();
+                mQuickQueueAdapter.notifyDataSetChanged();
                 // Scroll to the currently playing track in the queue
                 mGridView.postDelayed(new Runnable() {
                     @Override

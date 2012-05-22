@@ -212,7 +212,7 @@ public class TracksFragment extends Fragment implements LoaderCallbacks<Cursor>,
                 if (Audio.Albums.CONTENT_TYPE.equals(mimeType)) {
                     long albumId = getArguments().getLong(BaseColumns._ID);
                     where.append(" AND " + AudioColumns.ALBUM_ID + "=" + albumId);
-                    sortOrder = Audio.Albums.DEFAULT_SORT_ORDER;
+                    sortOrder = Audio.Media.TRACK + ", " + sortOrder;
                 } else if (Audio.Artists.CONTENT_TYPE.equals(mimeType)) {
                     sortOrder = MediaColumns.TITLE;
                     long artist_id = getArguments().getLong(BaseColumns._ID);
@@ -355,7 +355,7 @@ public class TracksFragment extends Fragment implements LoaderCallbacks<Cursor>,
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mListView != null) {
-                mListView.invalidateViews();
+                mTrackAdapter.notifyDataSetChanged();
                 // Scroll to the currently playing track in the queue
                 if (mPlaylistId == PLAYLIST_QUEUE)
                     mListView.postDelayed(new Runnable() {

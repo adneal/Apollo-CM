@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.andrew.apollo.service.ApolloService;
@@ -29,6 +30,8 @@ import com.andrew.apollo.utils.ThemeUtils;
 public class BottomActionBarControlsFragment extends Fragment {
 
     private ImageButton mRepeat, mPrev, mPlay, mNext, mShuffle;
+
+    private ImageView mDivider;
 
     // Notify if repeat or shuffle changes
     private Toast mToast;
@@ -98,9 +101,12 @@ public class BottomActionBarControlsFragment extends Fragment {
                 toggleShuffle();
             }
         });
+
+        mDivider = (ImageView)root.findViewById(R.id.bottom_action_bar_control_divider);
         // Theme chooser
         ThemeUtils.setImageButton(getActivity(), mPrev, "apollo_previous");
         ThemeUtils.setImageButton(getActivity(), mNext, "apollo_next");
+        ThemeUtils.setBackgroundColor(getActivity(), mDivider, "bottom_action_bar_info_divider");
         return root;
     }
 
