@@ -1,327 +1,431 @@
-/**
- * 
+/*
+ * Copyright (C) 2012 Andrew Neal Licensed under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law
+ * or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 
 package com.andrew.apollo.utils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import android.app.ActionBar;
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
+import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.provider.MediaStore.Audio;
-import android.support.v4.app.Fragment;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.webkit.WebView;
 import android.widget.Toast;
 
-import com.andrew.apollo.Constants;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.andrew.apollo.Config;
 import com.andrew.apollo.R;
-import com.androidquery.util.AQUtility;
+import com.andrew.apollo.cache.ImageCache;
+import com.andrew.apollo.cache.ImageFetcher;
+import com.andrew.apollo.ui.activities.ShortcutActivity;
+import com.andrew.apollo.widgets.ColorPickerView;
+import com.andrew.apollo.widgets.ColorSchemeDialog;
+import com.devspark.appmsg.Crouton;
+
+import java.lang.ref.WeakReference;
+import java.util.List;
 
 /**
- * @author Andrew Neal
- * @Note Various methods used to help with specific Apollo statements
+ * Mostly general and UI helpers.
+ * 
+ * @author Andrew Neal (andrewdneal@gmail.com)
  */
-public class ApolloUtils implements Constants {
+public final class ApolloUtils {
 
     /**
-     * Used to fit a Bitmap nicely inside a View
+     * The threshold used calculate if a color is light or dark
+     */
+    private static final int BRIGHTNESS_THRESHOLD = 130;
+
+    /* This class is never initiated */
+    public ApolloUtils() {
+    }
+
+    /**
+     * Used to determine if the current device is a Google TV
      * 
-     * @param view
-     * @param bitmap
+     * @param context The {@link Context} to use
+     * @return True if the device has Google TV, false otherwise
      */
-    public static void setBackground(View view, Bitmap bitmap) {
-
-        if (bitmap == null) {
-            view.setBackgroundResource(0);
-            return;
-        }
-
-        int vwidth = view.getWidth();
-        int vheight = view.getHeight();
-        int bwidth = bitmap.getWidth();
-        int bheight = bitmap.getHeight();
-
-        float scalex = (float)vwidth / bwidth;
-        float scaley = (float)vheight / bheight;
-        float scale = Math.max(scalex, scaley) * 1.0f;
-
-        Bitmap.Config config = Bitmap.Config.ARGB_8888;
-        Bitmap background = Bitmap.createBitmap(vwidth, vheight, config);
-
-        Canvas canvas = new Canvas(background);
-
-        Matrix matrix = new Matrix();
-        matrix.setTranslate(-bwidth / 2, -bheight / 2);
-        matrix.postScale(scale, scale);
-        matrix.postTranslate(vwidth / 2, vheight / 2);
-
-        canvas.drawBitmap(bitmap, matrix, null);
-
-        view.setBackgroundDrawable(new BitmapDrawable(view.getResources(), background));
+    public static final boolean isGoogleTV(final Context context) {
+        return context.getPackageManager().hasSystemFeature("com.google.android.tv");
     }
 
     /**
-     * @param view
-     * @param bitmap This is to avoid Bitmap's IllegalArgumentException
-     */
-    public static void runnableBackground(final ImageView view, final Bitmap bitmap) {
-        view.post(new Runnable() {
-
-            @Override
-            public void run() {
-                ApolloUtils.setBackground(view, bitmap);
-            }
-        });
-    }
-
-    /**
-     * @param context
-     * @return whether there is an active data connection
-     */
-    public static boolean isOnline(Context context) {
-        boolean state = false;
-        ConnectivityManager cm = (ConnectivityManager)context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo wifiNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiNetwork != null) {
-            state = wifiNetwork.isConnectedOrConnecting();
-        }
-
-        NetworkInfo mobileNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (mobileNetwork != null) {
-            state = mobileNetwork.isConnectedOrConnecting();
-        }
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null) {
-            state = activeNetwork.isConnectedOrConnecting();
-        }
-        return state;
-    }
-
-    /**
-     * Sets cached image URLs
+     * Used to determine if the device is running Froyo or greater
      * 
-     * @param artistName
-     * @param url
-     * @param key
-     * @param context
+     * @return True if the device is running Froyo or greater, false otherwise
      */
-    public static void setImageURL(String name, String url, String key, Context context) {
-        SharedPreferences settings = context.getSharedPreferences(key, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(name, url);
-        editor.commit();
+    public static final boolean hasFroyo() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
     }
 
     /**
-     * @param name
-     * @param key
-     * @param context
-     * @return cached image URLs
+     * Used to determine if the device is running Gingerbread or greater
+     * 
+     * @return True if the device is running Gingerbread or greater, false
+     *         otherwise
      */
-    public static String getImageURL(String name, String key, Context context) {
-        SharedPreferences settings = context.getSharedPreferences(key, 0);
-        return settings.getString(name, null);
+    public static final boolean hasGingerbread() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
     }
 
     /**
-     * @param context
-     * @return if a Tablet is the device being used
+     * Used to determine if the device is running Honeycomb or greater
+     * 
+     * @return True if the device is running Honeycomb or greater, false
+     *         otherwise
      */
-    public static boolean isTablet(Context context) {
+    public static final boolean hasHoneycomb() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    }
+
+    /**
+     * Used to determine if the device is running Honeycomb-MR1 or greater
+     * 
+     * @return True if the device is running Honeycomb-MR1 or greater, false
+     *         otherwise
+     */
+    public static final boolean hasHoneycombMR1() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1;
+    }
+
+    /**
+     * Used to determine if the device is running ICS or greater
+     * 
+     * @return True if the device is running Ice Cream Sandwich or greater,
+     *         false otherwise
+     */
+    public static final boolean hasICS() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+    }
+
+    /**
+     * Used to determine if the device is running Jelly Bean or greater
+     * 
+     * @return True if the device is running Jelly Bean or greater, false
+     *         otherwise
+     */
+    public static final boolean hasJellyBean() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+    }
+
+    /**
+     * Used to determine if the device is a tablet or not
+     * 
+     * @param context The {@link Context} to use.
+     * @return True if the device is a tablet, false otherwise.
+     */
+    public static final boolean isTablet(final Context context) {
         return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     /**
-     * UP accordance without the icon
+     * Used to determine if the device is currently in landscape mode
      * 
-     * @param actionBar
+     * @param context The {@link Context} to use.
+     * @return True if the device is in landscape mode, false otherwise.
      */
-    public static void showUpTitleOnly(ActionBar actionBar) {
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE,
-                ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE
-                        | ActionBar.DISPLAY_SHOW_HOME);
+    public static final boolean isLandscape(final Context context) {
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     /**
-     * @param bitmap
-     * @param newHeight
-     * @param newWidth
-     * @return a scaled Bitmap
+     * Execute an {@link AsyncTask} on a thread pool
+     * 
+     * @param forceSerial True to force the task to run in serial order
+     * @param task Task to execute
+     * @param args Optional arguments to pass to
+     *            {@link AsyncTask#execute(Object[])}
+     * @param <T> Task argument type
      */
-    public static Bitmap getResizedBitmap(Bitmap bitmap, int newHeight, int newWidth) {
+    @SuppressLint("NewApi")
+    public static <T> void execute(final boolean forceSerial, final AsyncTask<T, ?, ?> task,
+            final T... args) {
+        final WeakReference<AsyncTask<T, ?, ?>> taskReference = new WeakReference<AsyncTask<T, ?, ?>>(
+                task);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.DONUT) {
+            throw new UnsupportedOperationException(
+                    "This class can only be used on API 4 and newer.");
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB || forceSerial) {
+            taskReference.get().execute(args);
+        } else {
+            taskReference.get().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, args);
+        }
+    }
 
-        if (bitmap == null) {
-            return null;
+    /**
+     * Used to determine if there is an active data connection and what type of
+     * connection it is if there is one
+     * 
+     * @param context The {@link Context} to use
+     * @return True if there is an active data connection, false otherwise.
+     *         Also, if the user has checked to only download via Wi-Fi in the
+     *         settings, the mobile data and other network connections aren't
+     *         returned at all
+     */
+    public static final boolean isOnline(final Context context) {
+        /*
+         * This sort of handles a sudden configuration change, but I think it
+         * should be dealt with in a more professional way.
+         */
+        if (context == null) {
+            return false;
         }
 
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        float scaleWidth = ((float)newWidth) / width;
-        float scaleHeight = ((float)newHeight) / height;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
-        return resizedBitmap;
-    }
+        boolean state = false;
+        final boolean onlyOnWifi = PreferenceUtils.getInstace(context).onlyOnWifi();
 
-    /**
-     * Header used in the track browser
-     * 
-     * @param fragment
-     * @param view
-     * @param string
-     */
-    public static void listHeader(Fragment fragment, View view, String string) {
-        if (fragment.getArguments() != null) {
-            TextView mHeader = (TextView)view.findViewById(R.id.title);
-            String mimetype = fragment.getArguments().getString(MIME_TYPE);
-            if (Audio.Artists.CONTENT_TYPE.equals(mimetype)) {
-                mHeader.setVisibility(View.VISIBLE);
-                mHeader.setText(string);
-            } else if (Audio.Albums.CONTENT_TYPE.equals(mimetype)) {
-                mHeader.setVisibility(View.VISIBLE);
-                mHeader.setText(string);
+        /* Monitor network connections */
+        final ConnectivityManager connectivityManager = (ConnectivityManager)context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        /* Wi-Fi connection */
+        final NetworkInfo wifiNetwork = connectivityManager
+                .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiNetwork != null) {
+            state = wifiNetwork.isConnectedOrConnecting();
+        }
+
+        /* Mobile data connection */
+        final NetworkInfo mbobileNetwork = connectivityManager
+                .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (mbobileNetwork != null) {
+            if (!onlyOnWifi) {
+                state = mbobileNetwork.isConnectedOrConnecting();
             }
         }
-    }
 
-    /**
-     * Sets the ListView paddingLeft for the header
-     * 
-     * @param fragment
-     * @param mListView
-     */
-    public static void setListPadding(Fragment fragment, ListView mListView, int left, int top,
-            int right, int bottom) {
-        if (fragment.getArguments() != null) {
-            String mimetype = fragment.getArguments().getString(MIME_TYPE);
-            if (Audio.Albums.CONTENT_TYPE.equals(mimetype)) {
-                mListView.setPadding(AQUtility.dip2pixel(fragment.getActivity(), left), top,
-                        AQUtility.dip2pixel(fragment.getActivity(), right), bottom);
-            } else if (Audio.Artists.CONTENT_TYPE.equals(mimetype)) {
-                mListView.setPadding(AQUtility.dip2pixel(fragment.getActivity(), left), top,
-                        AQUtility.dip2pixel(fragment.getActivity(), right), bottom);
+        /* Other networks */
+        final NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            if (!onlyOnWifi) {
+                state = activeNetwork.isConnectedOrConnecting();
             }
         }
-    }
 
-    // Returns if we're viewing an album
-    public static boolean isAlbum(String mimeType) {
-        return Audio.Albums.CONTENT_TYPE.equals(mimeType);
-    }
-
-    // Returns if we're viewing an artists albums
-    public static boolean isArtist(String mimeType) {
-        return Audio.Artists.CONTENT_TYPE.equals(mimeType);
-    }
-
-    // Returns if we're viewing a genre
-    public static boolean isGenre(String mimeType) {
-        return Audio.Genres.CONTENT_TYPE.equals(mimeType);
+        return state;
     }
 
     /**
-     * @param artistName
-     * @param id
-     * @param key
-     * @param context
+     * Display a {@link Toast} letting the user know what an item does when long
+     * pressed.
+     * 
+     * @param view The {@link View} to copy the content description from.
      */
-    public static void setArtistId(String artistName, long id, String key, Context context) {
-        SharedPreferences settings = context.getSharedPreferences(key, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putLong(artistName, id);
-        editor.commit();
+    public static void showCheatSheet(final View view) {
+
+        final int[] screenPos = new int[2]; // origin is device display
+        final Rect displayFrame = new Rect(); // includes decorations (e.g.
+                                              // status bar)
+        view.getLocationOnScreen(screenPos);
+        view.getWindowVisibleDisplayFrame(displayFrame);
+
+        final Context context = view.getContext();
+        final int viewWidth = view.getWidth();
+        final int viewHeight = view.getHeight();
+        final int viewCenterX = screenPos[0] + viewWidth / 2;
+        final int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+        final int estimatedToastHeight = (int)(48 * context.getResources().getDisplayMetrics().density);
+
+        final Toast cheatSheet = Toast.makeText(context, view.getContentDescription(),
+                Toast.LENGTH_SHORT);
+        final boolean showBelow = screenPos[1] < estimatedToastHeight;
+        if (showBelow) {
+            // Show below
+            // Offsets are after decorations (e.g. status bar) are factored in
+            cheatSheet.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, viewCenterX
+                    - screenWidth / 2, screenPos[1] - displayFrame.top + viewHeight);
+        } else {
+            // Show above
+            // Offsets are after decorations (e.g. status bar) are factored in
+            cheatSheet.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, viewCenterX
+                    - screenWidth / 2, displayFrame.bottom - screenPos[1]);
+        }
+        cheatSheet.show();
     }
 
     /**
-     * @param artistName
-     * @param key
-     * @param context
-     * @return artist ID
+     * @param context The {@link Context} to use.
+     * @return An {@link AlertDialog} used to show the open source licenses used
+     *         in Apollo.
      */
-    public static Long getArtistId(String artistName, String key, Context context) {
-        SharedPreferences settings = context.getSharedPreferences(key, 0);
-        return settings.getLong(artistName, 0);
+    public static final AlertDialog createOpenSourceDialog(final Context context) {
+        final WebView webView = new WebView(context);
+        webView.loadUrl("file:///android_asset/licenses.html");
+        return new AlertDialog.Builder(context).setTitle(R.string.settings_open_source_licenses)
+                .setView(webView)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int whichButton) {
+                        dialog.dismiss();
+                    }
+                }).create();
     }
 
     /**
-     * @param artistName
+     * Calculate whether a color is light or dark, based on a commonly known
+     * brightness formula.
+     * 
+     * @see {@literal http://en.wikipedia.org/wiki/HSV_color_space%23Lightness}
      */
-    public static void shopFor(Context mContext, String artistName) {
-        String str = "https://market.android.com/search?q=%s&c=music&featured=MUSIC_STORE_SEARCH";
-        Intent shopIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(str,
-                Uri.encode(artistName))));
-        shopIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        shopIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        mContext.startActivity(shopIntent);
+    public static final boolean isColorDark(final int color) {
+        return (30 * Color.red(color) + 59 * Color.green(color) + 11 * Color.blue(color)) / 100 <= BRIGHTNESS_THRESHOLD;
     }
 
     /**
-     * @param src
-     * @return Bitmap fro URL
+     * Runs a piece of code after the next layout run
+     * 
+     * @param view The {@link View} used.
+     * @param runnable The {@link Runnable} used after the next layout run
      */
-    public static Bitmap getBitmapFromURL(String src) {
+    @SuppressLint("NewApi")
+    public static void doAfterLayout(final View view, final Runnable runnable) {
+        final OnGlobalLayoutListener listener = new OnGlobalLayoutListener() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onGlobalLayout() {
+                /* Layout pass done, unregister for further events */
+                if (hasJellyBean()) {
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+                runnable.run();
+            }
+        };
+        view.getViewTreeObserver().addOnGlobalLayoutListener(listener);
+    }
+
+    /**
+     * Creates a new instance of the {@link ImageCache} and {@link ImageFetcher}
+     * 
+     * @param activity The {@link FragmentActivity} to use.
+     * @return A new {@link ImageFetcher} used to fetch images asynchronously.
+     */
+    public static final ImageFetcher getImageFetcher(final SherlockFragmentActivity activity) {
+        final ImageFetcher imageFetcher = ImageFetcher.getInstance(activity);
+        imageFetcher.setImageCache(ImageCache.findOrCreateCache(activity));
+        return imageFetcher;
+    }
+
+    /**
+     * Used to create shortcuts for an artist, album, or playlist that is then
+     * placed on the default launcher homescreen
+     * 
+     * @param displayName The shortcut name
+     * @param id The ID of the artist, album, playlist, or genre
+     * @param mimeType The MIME type of the shortcut
+     * @param context The {@link Context} to use to
+     */
+    public static void createShortcutIntent(final String displayName, final Long id,
+            final String mimeType, final SherlockFragmentActivity context) {
         try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            final ImageFetcher fetcher = getImageFetcher(context);
+            Bitmap bitmap = null;
+            if (mimeType.equals(MediaStore.Audio.Albums.CONTENT_TYPE)) {
+                bitmap = fetcher.getCachedBitmap(displayName + Config.ALBUM_ART_SUFFIX);
+            } else {
+                bitmap = fetcher.getCachedBitmap(displayName);
+            }
+            if (bitmap == null) {
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.default_artwork);
+            }
+
+            // Intent used when the icon is touched
+            final Intent shortcutIntent = new Intent(context, ShortcutActivity.class);
+            shortcutIntent.setAction(Intent.ACTION_VIEW);
+            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            shortcutIntent.putExtra(Config.ID, id);
+            shortcutIntent.putExtra(Config.NAME, displayName);
+            shortcutIntent.putExtra(Config.MIME_TYPE, mimeType);
+
+            // Intent that actually sets the shortcut
+            final Intent intent = new Intent();
+            intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, BitmapUtils.resizeAndCropCenter(bitmap, 96));
+            intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, displayName);
+            intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+            context.sendBroadcast(intent);
+            Crouton.makeText(context,
+                    displayName + " " + context.getString(R.string.pinned_to_home_screen),
+                    Crouton.STYLE_CONFIRM).show();
+        } catch (final Exception e) {
+            Log.e("ApolloUtils", "createShortcutIntent - " + e);
+            Crouton.makeText(
+                    context,
+                    displayName + " "
+                            + context.getString(R.string.could_not_be_pinned_to_home_screen),
+                    Crouton.STYLE_ALERT).show();
         }
     }
 
     /**
-     * @param message
+     * Shows the {@link ColorPickerView}
+     * 
+     * @param context The {@link Context} to use.
      */
-    public static void showToast(int message, Toast mToast, Context context) {
-        if (mToast == null) {
-            mToast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
-        }
-        mToast.setText(context.getString(message));
-        mToast.show();
+    public static void showColorPicker(final Context context) {
+        final ColorSchemeDialog colorPickerView = new ColorSchemeDialog(context);
+        colorPickerView.setButton(AlertDialog.BUTTON_POSITIVE,
+                context.getString(android.R.string.ok), new OnClickListener() {
+
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        PreferenceUtils.getInstace(context).setDefaultThemeColor(
+                                colorPickerView.getColor());
+                    }
+                });
+        colorPickerView.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(R.string.cancel),
+                (DialogInterface.OnClickListener)null);
+        colorPickerView.show();
     }
 
     /**
-     * @param context
-     * @return meow
+     * Used to know if Apollo was sent into the background
+     * 
+     * @param context The {@link Context} to use
      */
-    public static AnimationDrawable getNyanCat(Context context) {
-        final AnimationDrawable animation = new AnimationDrawable();
-        for (int i = 0; i < 12; i++) {
-            try {
-                animation.addFrame(Drawable.createFromStream(
-                        context.getAssets().open("Frame" + i + ".png"), null), 75);
-            } catch (IOException e) {
+    public static final boolean isApplicationSentToBackground(final Context context) {
+        final ActivityManager activityManager = (ActivityManager)context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        final List<RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
+        if (!tasks.isEmpty()) {
+            final ComponentName topActivity = tasks.get(0).topActivity;
+            if (!topActivity.getPackageName().equals(context.getPackageName())) {
+                return true;
             }
         }
-        animation.setOneShot(false);
-        return animation;
+        return false;
     }
+
 }

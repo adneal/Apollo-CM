@@ -1,127 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2012 Andrew Neal
+ 
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+ 
+       http://www.apache.org/licenses/LICENSE-2.0
+ 
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <!-- App name -->
     <string name="app_name">Apollo</string>
 
-    <!-- Content descriptions for the Bottom Action Bar -->
-    <string name="cd_favorite">Make this a favorite song</string>
-    <string name="cd_search">Search through your music</string>
-    <string name="cd_overflow">View more options</string>
-    <string name="cd_bottom_action_bar_album_art">Album art for this song</string>
-    <string name="cd_repeat">Repeat one or all</string>
-    <string name="cd_previous">Skip backwards</string>
-    <string name="cd_play">Play and pause</string>
-    <string name="cd_next">Skip forwards</string>
-    <string name="cd_shuffle">Shuffle tracks</string>
+    <!-- Page titles -->
+    <string name="page_recent">Recent</string>
+    <string name="page_artists">Artists</string>
+    <string name="page_albums">Albums</string>
+    <string name="page_songs">Songs</string>
+    <string name="page_playlists">Playlists</string>
+    <string name="page_genres">Genres</string>
 
-    <!-- AudioPlayer title -->
-    <string name="nowplaying">Now Playing</string>
+    <!-- Option menu items -->
+    <string name="menu_settings">Settings</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_shuffle">Shuffle all</string>
+    <string name="menu_play_all">Play all</string>
+    <string name="menu_sort_by">Sort by</string>
+    <string name="menu_shop">Shop for themes</string>
+    <string name="menu_clear_recents">Clear recent</string>
+    <string name="menu_clear_queue">Clear queue</string>
+    <string name="menu_save_queue">Save queue</string>
+    <string name="menu_clear_favorites">Clear Favorites</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_save_lyrics">Save lyrics</string>
+    <string name="menu_remove_lyrics">Delete lyrics</string>
+    <string name="menu_download_lyrics">Fetch lyrics</string>
+    <string name="menu_add_to_homescreen">Place on Home screen</string>
+    <string name="menu_equalizer">Equalizer</string>
+    <string name="menu_simple">Simple</string>
+    <string name="menu_detailed">Detailed</string>
+    <string name="menu_grid">Grid</string>
+    <string name="menu_view_as">View as</string>
 
-    <!-- Used to indicate the number of albums for an artist -->
-    <plurals name="Nalbums">
-
-        <!-- Number of albums is one -->
-        <item quantity="one">1 album</item>
-        <!-- Number of albums is more than one -->
-        <item quantity="other"><xliff:g id="count">%d</xliff:g> albums</item>
-    </plurals>
-
-    <!-- Used to indicate the number of songs for an album -->
-
-    <plurals name="Nsongs">
-
-        <!-- Number of songs is one -->
-        <item quantity="one">1 song</item>
-        <item quantity="other"><xliff:g id="count">%d</xliff:g> songs</item>
-    </plurals>
-
-    <!-- Toasts after adding song(s) to playlists -->
-    <plurals name="NNNtrackstoplaylist">
-
-        <!-- message shown when one song was added -->
-        <item quantity="one">1 song added to playlist</item>
-        <!-- message shown when zero or more than one song was added -->
-        <item quantity="other"><xliff:g id="number" example="27">%d</xliff:g> songs added to playlis.</item>
-    </plurals>
-
-    <!-- Headers -->
-    <string name="album_header">ALBUM LIST</string>
-    <string name="track_header">TRACK LIST</string>
-
-    <!-- Options MenuItems -->
-    <string name="settings">Settings</string>
-    <string name="shuffle_all">Shuffle all</string>
-    <string name="share">Share</string>
-    <string name="play_store">Play Store</string>
-
-    <!-- Set track as ringtone -->
-    <string name="set_as_ringtone">\"<xliff:g id="name" example="Alarm Bell">%s</xliff:g>\" set as ringtone</string>
-
-    <!-- Do not translate. Duration format for duration < 1 hour -->
-    <string name="durationformatshort" translatable="false"><xliff:g id="format">%2$d:%5$02d</xliff:g></string>
-    <!-- Do not translate. Duration format for duration >= 1 hour -->
-    <string name="durationformatlong" translatable="false"><xliff:g id="format">%1$d:%3$02d:%5$02d</xliff:g></string>
-
-    <!-- Transient popup message shown after renaming a playlist -->
-    <string name="rename_playlist">Rename playlist</string>
-
-    <!-- Shuffle and repeat messages -->
-    <string name="repeat_one">Repeat one</string>
-    <string name="repeat_all">Repeat all</string>
-    <string name="repeat_off">Repeat off</string>
-    <string name="shuffle_off">Shuffle off</string>
-    <string name="shuffle_on">Shuffle on</string>
-
-    <!-- Share Intent -->
-    <string name="now_listening_to">Now listening to:</string>
-    <string name="by">by</string>
-    <string name="share_track_using">Share track using</string>
-
-    <!-- ContextMenu items -->
-    <string name="play_all">Play all</string>
+    <!-- Playlist items -->
     <string name="add_to_playlist">Add to playlist</string>
-    <string name="use_as_ringtone">Use as ringtone</string>
-    <string name="delete_playlist">Delete playlist</string>
-    <string name="search">Search</string>
-    <string name="remove">Remove from playlist</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="add_to_queue">Add to queue</string>
+    <string name="add_to_quickplay">Pin to Quickplay</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+    <string name="remove_from_playlist">Remove from playlist</string>
+    <string name="remove_from_recent">Remove from recent</string>
+    <string name="remove_from_queue">Remove from queue</string>
+    <string name="remove_from_quickplay">Remove from Quickplay</string>
 
-    <!-- App Widgets -->
-    <string name="apollo_1x1">Apollo (1x1)</string>
-    <string name="apollo_4x1">Apollo (4x1)</string>
-    <string name="apollo_4x2">Apollo (4x2)</string>
+    <!-- Sort orders -->
+    <string name="sort_order_entry_az">A-Z</string>
+    <string name="sort_order_entry_za">Z-A</string>
+    <string name="sort_order_entry_artist">Artist</string>
+    <string name="sort_order_entry_album">Album</string>
+    <string name="sort_order_entry_year">Year</string>
+    <string name="sort_order_entry_duration">Duration</string>
+    <string name="sort_order_entry_date_added">Date added</string>
+    <string name="sort_order_entry_track_list">Track list</string>
+    <string name="sort_order_entry_number_of_songs">Number of songs</string>
+    <string name="sort_order_entry_number_of_albums">Number of albums</string>
 
-    <!-- Unknown genre name -->
-    <string name="unknown">Unknown</string>
+    <!-- Default playlist names -->
+    <string name="playlist_favorites">Favorites</string>
+    <string name="playlist_last_added">Last added</string>
+
+    <!-- AlertDialog items -->
+    <string name="sort_order_title">Sort by</string>
+    <string name="new_playlist">New playlist</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="overwrite">Overwrite</string>
+    <string name="new_playlist_name_template">Playlist <xliff:g id="number">%d</xliff:g></string>
+    <string name="create_playlist_prompt" msgid="942607395076646686">"Playlist name"</string>
+    <string name="cannot_be_undone">This cannot be undone</string>
+    <string name="delete_warning">This will permanently delete the cached image entries</string>
+    <string name="new_photo">Choose photo from Gallery</string>
+    <string name="google_search">Google search</string>
+    <string name="use_default">Use default photo</string>
+    <string name="old_photo">Use old photo</string>
+
+    <!-- Context menu items -->
+    <string name="context_menu_play_selection">Play</string>
+    <string name="context_menu_play_next">Play next</string>
+    <string name="context_menu_more_by_artist">More by artist</string>
+    <string name="context_menu_rename_playlist">Rename</string>
+    <string name="context_menu_delete">Delete</string>
+    <string name="context_menu_fetch_album_art">Fetch album art</string>
+    <string name="context_menu_fetch_artist_image">Fetch artist image</string>
+    <string name="context_menu_open_in_play_store">Open in Play Store</string>
+    <string name="context_menu_remove_from_recent">Remove from recent</string>
+    <string name="context_menu_remove_from_queue">Remove from queue</string>
+    <string name="context_menu_play_next">Play next</string>
+    <string name="context_menu_use_as_ringtone">Use as ringtone</string>
+
+    <!-- Content descriptions -->
+    <string name="accessibility_play">Play</string>
+    <string name="accessibility_pause">Pause</string>
+    <string name="accessibility_next">Next</string>
+    <string name="accessibility_prev">Previous</string>
+    <string name="accessibility_shuffle">Shuffle</string>
+    <string name="accessibility_shuffle_all">Shuffle all</string>
+    <string name="accessibility_repeat">Repeat</string>
+    <string name="accessibility_repeat_all">Repeat all</string>
+    <string name="accessibility_repeat_one">Repeat one</string>
+    <string name="accessibility_add_to_favorites">Add to favorites</string>
+    <string name="accessibility_remove_from_favorites">Remove from favorites</string>
+
+    <!-- Toast messages -->
+    <string name="removed_from_favorites">removed from Favorites</string>
+    <string name="removed_from_recent">removed from recent</string>
+    <string name="removed_from_playlist">removed from playlist</string>
+    <string name="added_to_favorites">added to Favorites</string>
+    <string name="pinned_to_home_screen">pinned to your Home screen</string>
+    <string name="could_not_be_pinned_to_home_screen">could not be pinned to your Home screen</string>
+    <string name="set_as_ringtone">\"<xliff:g id="name" example="Alarm Bell">%s</xliff:g>\" set as ringtone</string>
+    <string name="playlist_renamed">Playlist renamed</string>
+    <string name="theme_set">set as the theme</string>
+    <string name="lyrics_saved">lyrics saved</string>
+    <string name="lyrics_deleted">lyrics deleted</string>
 
     <!-- Settings -->
-    <string name="about">About Apollo</string>
-    <string name="eqalizer">Equalizer</string>
-    <string name="header_interface">Interface</string>
-    <string name="themes">Themes</string>
-    <string name="apollo_themes">Select theme for Apollo</string>
-    <string name="select_theme">Select your theme</string>
-    <string name="version">Apollo Version</string>
+    <string name="settings_ui_category">Interface</string>
+    <string name="settings_storage_category">Storage</string>
+    <string name="settings_data_category">Data</string>
+    <string name="settings_about_category">About</string>
+    <string name="settings_author_title">Author</string>
+    <string name="settings_about_apollo">About Apollo</string>
+    <string name="settings_special_thanks">Special thanks</string>
+    <string name="settings_cyanogenmod_title">CyanogenMod</string>
+    <string name="settings_self_title">Andrew Neal</string>
+    <string name="settings_lopez_title">A.J. Lopez</string>
+    <string name="settings_lopez_summary">Icon and Play Store banner design</string>
+    <string name="settings_color_scheme_title">Choose Apollo\'s default color scheme</string>
+    <string name="settings_color_scheme_summary">Changes the accent color in Apollo</string>
+    <string name="settings_theme_chooser_title">Theme chooser</string>
+    <string name="settings_delete_cache_title">Delete cache</string>
+    <string name="settings_delete_cache_summary">Remove all cached images</string>
+    <string name="settings_download_only_on_wifi_title">Download via Wi-Fi only</string>
+    <string name="settings_download_only_on_wifi_summary">To reduce carrier charges, don\'t download over mobile networks</string>
+    <string name="settings_download_missing_artwork_title">Download missing album art</string>
+    <string name="settings_download_artist_images_title">Download missing artist images</string>
+    <string name="settings_open_source_licenses">Open source licenses</string>
+    <string name="settings_use_lockscreen_controls">Use lockscreen controls</string>
+    <string name="settings_version_title">Version number</string>
 
-    <!-- Settings keys -->
-    <string name="key_themes">themepreview</string>
-    <string name="key_themes_package">themePackageName</string>
-    <string name="key_themes_preferences">themePrefences</string>
-    <string name="key_build_version">build_version</string>
+    <!-- Share Intent -->
+    <string name="now_listening_to">#NowPlaying</string>
+    <string name="by">by</string>
+    <string name="share_track_using">Share track using:</string>
+    <string name="hash_apollo">#Apollo</string>
 
-    <!-- Theme layout Buttons -->
-    <string name="apply_theme">Apply theme</string>
-    <string name="get_more_themes">Get more themes</string>
+    <!-- ColorPicker -->
+    <string name="color_picker_title">Color scheme</string>
+    <string name="hex">#</string>
+    <string name="current_color">Current</string>
+    <string name="new_color">New</string>
 
-    <!-- Playlists menu -->
-    <string name="favorite">Favorites</string>
-    <string name="queue">Queue</string>
-    <string name="new_playlist">New</string>
-    <string name="new_playlist_name_template">Playlist <xliff:g id="number">%d</xliff:g></string>
-    <string name="save">Save</string>
-    <string name="overwrite">Overwrite</string>
+    <!-- App widget -->
+    <string name="app_widget_small">Apollo: 4x1</string>
+    <string name="app_widget_large">Apollo: 4x2</string>
+    <string name="app_widget_large_alt">Apollo: 4x2 (Alternate)</string>
+    <string name="app_widget_recent">Apollo: Recently listened</string>
+    <string name="app_widget_text_separator">-</string>
 
-    <!-- Something went wrong -->
-    <string name="error">Error</string>
+    <!-- What keywords to use when shopping for Apollo themes -->
+    <string name="apollo_themes_shop_key">Apollo Themes</string>
+
+    <!-- Empty list / error messages -->
+    <string name="no_effects_for_you">The equalizer could not be opened.</string>
+    <string name="empty_music">To copy music from your computer to your device, use a USB cable.</string>
+    <string name="empty_last_added">Songs you\'ve added over the last month will be shown here.</string>
+    <string name="empty_search">No search results found</string>
+    <string name="empty_favorite">Songs you mark as favorites will be shown here.</string>
+    <string name="empty_recent">Albums you\'ve listened to will show up here. Try playing some music.</string>
+    <string name="no_lyrics">Lyrics for \"<xliff:g id="name">%s</xliff:g>\" could not be found</string>
+    <string name="try_fetch_lyrics">To fetch lyrics for \"<xliff:g id="name">%s</xliff:g>\" use \"Fetch lyrics\" in the menu.</string>
 
 </resources>

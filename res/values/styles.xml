@@ -1,186 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<!--
+  Copyright (C) 2012 Andrew Neal
+ 
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+ 
+       http://www.apache.org/licenses/LICENSE-2.0
+ 
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Custom tabs -->
-    <style name="Tabs">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/bottom_action_bar_height</item>
-        <item name="android:background">@drawable/tab</item>
-        <item name="android:gravity">center</item>
-        <item name="android:paddingBottom">@dimen/tab_padding_top_bottom</item>
-        <item name="android:paddingLeft">@dimen/tab_padding_left_right</item>
-        <item name="android:paddingRight">@dimen/tab_padding_left_right</item>
-        <item name="android:paddingTop">@dimen/tab_padding_top_bottom</item>
-        <item name="android:textColor">@color/tab_text_color</item>
-        <item name="android:textSize">@dimen/text_size_micro</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">false</item>
-        <item name="android:selectAllOnFocus">false</item>
+    <!-- Main Holo -->
+    <style name="Apollo.Theme.Dark" parent="Theme.Sherlock">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowContentOverlay">@null</item>
     </style>
 
-    <!-- ImageButton in the bottom bar -->
-    <style name="BottomActionBarItem">
-        <item name="android:layout_width">@dimen/bottom_action_bar_item_width</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:paddingLeft">@dimen/bottom_action_bar_item_padding_left_right</item>
-        <item name="android:paddingRight">@dimen/bottom_action_bar_item_padding_left_right</item>
-        <item name="android:background">@drawable/holo_selector</item>
+    <!-- Main Holo light -->
+    <style name="Apollo.Theme.Light" parent="Theme.Sherlock.Light">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowContentOverlay">@null</item>
+    </style>
+
+    <!-- Shortcut Activity theme -->
+    <style name="Theme.Transparent" parent="Theme.Sherlock.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <!-- Notification bar event text -->
+    <style name="NotificationText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:fadingEdge">horizontal</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <!-- Notification bar actions -->
+    <style name="NotificationAction">
+        <item name="android:layout_width">@dimen/notification_action_width</item>
+        <item name="android:layout_height">@dimen/notification_action_height</item>
         <item name="android:gravity">center|right</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:padding">@dimen/notification_action_padding</item>
+        <item name="android:background">?android:selectableItemBackground</item>
     </style>
 
-    <!-- TextView in the bottom bar -->
+    <style name="NotificationAction.Previous" parent="@style/NotificationAction">
+        <item name="android:src">@drawable/btn_playback_previous</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:contentDescription">@string/accessibility_prev</item>
+    </style>
+
+    <style name="NotificationAction.Play" parent="@style/NotificationAction">
+        <item name="android:src">@drawable/btn_playback_play</item>
+        <item name="android:contentDescription">@string/accessibility_play</item>
+    </style>
+
+    <style name="NotificationAction.Next" parent="@style/NotificationAction">
+        <item name="android:src">@drawable/btn_playback_next</item>
+        <item name="android:contentDescription">@string/accessibility_next</item>
+    </style>
+
+    <style name="NotificationAction.Collapse" parent="@style/NotificationAction">
+        <item name="android:src">@drawable/btn_notification_collapse</item>
+    </style>
+
+    <!-- Bottom Action Bar TextViews -->
     <style name="BottomActionBarText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:paddingLeft">5dp</item>
         <item name="android:gravity">top|left|center</item>
         <item name="android:singleLine">true</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:textSize">@dimen/text_size_extra_micro</item>
-        <item name="android:textAllCaps">true</item>
     </style>
 
-    <!-- List separator with a blue underline -->
-    <style name="SeparatorTextViewStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">@dimen/list_separator_min_height</item>
-        <item name="android:background">@drawable/list_section_divider_holo_custom</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    <style name="BottomActionBarLineOne" parent="@style/BottomActionBarText">
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/holo_blue_dark</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingRight">@dimen/list_separator_padding_left_right</item>
-        <item name="android:visibility">gone</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-    <!-- Notification bar button -->
-    <style name="StatusBarButton">
-        <item name="android:layout_width">@dimen/status_bar_button_width_height</item>
-        <item name="android:layout_height">@dimen/status_bar_button_width_height</item>
-        <item name="android:layout_gravity">center|right</item>
-        <item name="android:background">?android:listChoiceBackgroundIndicator</item>
     </style>
 
-    <!-- Notification bar text -->
-    <style name="StatusBarText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">left</item>
-        <item name="android:ellipsize">marquee</item>
-        <item name="android:scrollHorizontally">true</item>
-        <item name="android:singleLine">true</item>
-    </style>
+    <style name="BottomActionBarLineTwo" parent="@style/BottomActionBarText"></style>
 
-    <!-- Half and half layout -->
-    <style name="HalfText">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/transparent_black</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:gravity">center</item>
-        <item name="android:padding">@dimen/half_and_half_text_padding</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-    </style>
-
-    <!-- ContextMenu header text -->
-    <style name="HeaderText">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:gravity">center|left</item>
-        <item name="android:paddingTop">@dimen/header_text_padding</item>
-        <item name="android:paddingLeft">@dimen/header_text_padding_left</item>
-        <item name="android:paddingBottom">@dimen/header_text_padding</item>
-        <item name="android:paddingRight">@dimen/header_text_padding</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/text_size_large</item>
-    </style>
-
-    <!-- TextView in shown over the images in the GridView -->
-    <style name="GridViewTextItem">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:shadowColor">@color/white</item>
-        <item name="android:shadowRadius">1</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
-    </style>
-
-    <!-- Now playing indicator -->
-    <style name="PeakMeter">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentRight">true</item>
-    </style>
-
-    <!-- TextView in the audio player -->
-    <style name="AudioPlayerText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:ellipsize">marquee</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:lineSpacingMultiplier">1.2</item>
-        <item name="android:scrollHorizontally">true</item>
-    </style>
-
-    <!-- ImageButton in the audio player controls -->
-    <style name="AudioPlayerButton">
+    <!-- Bottom Action Bar Image Buttons -->
+    <style name="BottomActionBarItem">
+        <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:background">@drawable/holo_selector</item>
+        <item name="android:gravity">center|right</item>
+        <item name="android:paddingLeft">@dimen/bottom_action_bar_item_padding_left</item>
+        <item name="android:paddingRight">@dimen/bottom_action_bar_item_padding_right</item>
+        <item name="android:scaleType">centerInside</item>
     </style>
 
-    <!-- QuickQueue -->
-    <style name="Theme.QuickQueue" parent="@android:style/Theme.Holo.Light">
-        <item name="android:windowBackground">@color/transparent</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowNoTitle">true</item>
+    <style name="BottomActionBarItem.Previous" parent="@style/BottomActionBarItem">
+        <item name="android:contentDescription">@string/accessibility_prev</item>
     </style>
 
-    <!-- App Widget 4x2 -->
-    <style name="FourByTwoMediaButton">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:background">@drawable/holo_selector</item>
-        <item name="android:scaleType">center</item>
+    <style name="BottomActionBarItem.Next" parent="@style/BottomActionBarItem">
+        <item name="android:contentDescription">@string/accessibility_next</item>
     </style>
 
-    <!-- Overflow Holo theme -->
-    <style name="Apollo.Holo" parent="@android:style/Theme.Holo.Light">
-        <item name="android:actionOverflowButtonStyle">@style/OverFlowHolo</item>
+    <style name="BottomActionBarItem.Play" parent="@style/BottomActionBarItem">
+        <item name="android:contentDescription">@string/accessibility_play</item>
     </style>
 
-    <!-- Overflow Holo.Light theme -->
-    <style name="Apollo.Holo.Light" parent="@android:style/Theme.Holo.Light">
-        <item name="android:actionOverflowButtonStyle">@style/OverFlowHolo.Light</item>
+    <style name="BottomActionBarItem.Shuffle" parent="@style/BottomActionBarItem">
+        <item name="android:contentDescription">@string/accessibility_shuffle</item>
     </style>
 
-    <!-- Overflow Holo.Dark -->
-    <style name="OverFlowHolo" parent="@android:style/Widget.Holo.ActionButton.Overflow">
-        <item name="android:src">@drawable/apollo_holo_dark_overflow</item>
-    </style>
-
-    <!-- Overflow Holo.Dark -->
-    <style name="OverFlowHolo.Light" parent="@android:style/Widget.Holo.ActionButton.Overflow">
-        <item name="android:src">@drawable/apollo_holo_light_overflow</item>
+    <style name="BottomActionBarItem.Repeat" parent="@style/BottomActionBarItem">
+        <item name="android:contentDescription">@string/accessibility_repeat</item>
     </style>
 
 </resources>

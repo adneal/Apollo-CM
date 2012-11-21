@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- ListView album art size -->
-    <integer name="listview_album_art">100</integer>
-
-</resources>
