@@ -101,7 +101,6 @@
     <string name="context_menu_open_in_play_store">Open in Play Store</string>
     <string name="context_menu_remove_from_recent">Remove from recent</string>
     <string name="context_menu_remove_from_queue">Remove from queue</string>
-    <string name="context_menu_play_next">Play next</string>
     <string name="context_menu_use_as_ringtone">Use as ringtone</string>
 
     <!-- Content descriptions -->
