@@ -373,6 +373,10 @@ public class PlaylistSongFragment extends SherlockFragment implements LoaderCall
      */
     @Override
     public void drop(final int from, final int to) {
+        if (from == 0 || to == 0) {
+            mAdapter.notifyDataSetChanged();
+            return;
+        }
         final int realFrom = from - 1;
         final int realTo = to - 1;
         mSong = mAdapter.getItem(realFrom);

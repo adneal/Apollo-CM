@@ -1,0 +1,211 @@
+# view land\res/layout-land/activity_player_base.xml #generated:55
+# view res/layout/activity_player_base.xml #generated:136
+# view res/layout/activity_profile_base.xml #generated:35
+# view res/layout/fragment_music_browser_phone.xml #generated:32
+-keep class android.support.v4.view.ViewPager { <init>(...); }
+
+# view res/layout/abs__screen_action_bar.xml #generated:43
+# view res/layout/abs__screen_action_bar_overlay.xml #generated:26
+# view res/layout/abs__screen_simple.xml #generated:32
+# view res/layout/abs__screen_simple_overlay_action_mode.xml #generated:27
+# view xlarge\res/layout-xlarge/abs__screen_action_bar.xml #generated:43
+# view xlarge\res/layout-xlarge/abs__screen_action_bar_overlay.xml #generated:24
+-keep class com.actionbarsherlock.internal.nineoldandroids.widget.NineFrameLayout { <init>(...); }
+
+# view large\res/layout-large/abs__action_mode_close_item.xml #generated:17
+# view res/layout/abs__action_mode_close_item.xml #generated:17
+-keep class com.actionbarsherlock.internal.nineoldandroids.widget.NineLinearLayout { <init>(...); }
+
+# view res/layout/abs__action_menu_item_layout.xml #generated:17
+-keep class com.actionbarsherlock.internal.view.menu.ActionMenuItemView { <init>(...); }
+
+# view res/layout/abs__action_menu_layout.xml #generated:17
+-keep class com.actionbarsherlock.internal.view.menu.ActionMenuView { <init>(...); }
+
+# view res/layout/abs__list_menu_item_layout.xml #generated:17
+# view res/layout/abs__popup_menu_item_layout.xml #generated:17
+-keep class com.actionbarsherlock.internal.view.menu.ListMenuItemView { <init>(...); }
+
+# view res/layout/abs__screen_action_bar.xml #generated:26
+# view res/layout/abs__screen_action_bar.xml #generated:50
+# view res/layout/abs__screen_action_bar_overlay.xml #generated:29
+# view res/layout/abs__screen_action_bar_overlay.xml #generated:52
+# view xlarge\res/layout-xlarge/abs__screen_action_bar.xml #generated:26
+# view xlarge\res/layout-xlarge/abs__screen_action_bar_overlay.xml #generated:27
+-keep class com.actionbarsherlock.internal.widget.ActionBarContainer { <init>(...); }
+
+# view res/layout/abs__action_mode_bar.xml #generated:19
+# view res/layout/abs__screen_action_bar.xml #generated:36
+# view res/layout/abs__screen_action_bar_overlay.xml #generated:40
+# view xlarge\res/layout-xlarge/abs__screen_action_bar.xml #generated:36
+# view xlarge\res/layout-xlarge/abs__screen_action_bar_overlay.xml #generated:37
+-keep class com.actionbarsherlock.internal.widget.ActionBarContextView { <init>(...); }
+
+# view res/layout/abs__screen_action_bar.xml #generated:31
+# view res/layout/abs__screen_action_bar_overlay.xml #generated:35
+# view xlarge\res/layout-xlarge/abs__screen_action_bar.xml #generated:31
+# view xlarge\res/layout-xlarge/abs__screen_action_bar_overlay.xml #generated:32
+-keep class com.actionbarsherlock.internal.widget.ActionBarView { <init>(...); }
+
+# view res/layout/abs__action_bar_home.xml #generated:17
+-keep class com.actionbarsherlock.internal.widget.ActionBarView$HomeView { <init>(...); }
+
+# view res/layout/abs__action_menu_item_layout.xml #generated:40
+-keep class com.actionbarsherlock.internal.widget.CapitalizingButton { <init>(...); }
+
+# view res/layout/abs__dialog_title_holo.xml #generated:23
+-keep class com.actionbarsherlock.internal.widget.FakeDialogPhoneWindow { <init>(...); }
+
+# view res/layout/abs__action_bar_tab_bar_view.xml #generated:3
+# view res/layout/abs__activity_chooser_view.xml #generated:19
+-keep class com.actionbarsherlock.internal.widget.IcsLinearLayout { <init>(...); }
+
+# view res/layout/abs__action_bar_tab.xml #generated:3
+-keep class com.actionbarsherlock.internal.widget.ScrollingTabContainerView$TabView { <init>(...); }
+
+# view res/layout/abs__search_view.xml #generated:84
+-keep class com.actionbarsherlock.widget.SearchView$SearchAutoComplete { <init>(...); }
+
+# view AndroidManifest.xml #generated:46
+-keep class com.andrew.apollo.ApolloApplication { <init>(...); }
+
+# view AndroidManifest.xml #generated:223
+-keep class com.andrew.apollo.MediaButtonIntentReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:230
+-keep class com.andrew.apollo.MusicPlaybackService { <init>(...); }
+
+# view AndroidManifest.xml #generated:176
+-keep class com.andrew.apollo.appwidgets.AppWidgetLarge { <init>(...); }
+
+# view AndroidManifest.xml #generated:190
+-keep class com.andrew.apollo.appwidgets.AppWidgetLargeAlternate { <init>(...); }
+
+# view AndroidManifest.xml #generated:163
+-keep class com.andrew.apollo.appwidgets.AppWidgetSmall { <init>(...); }
+
+# view AndroidManifest.xml #generated:204
+-keep class com.andrew.apollo.appwidgets.RecentWidgetProvider { <init>(...); }
+
+# view AndroidManifest.xml #generated:218
+-keep class com.andrew.apollo.appwidgets.RecentWidgetService { <init>(...); }
+
+# view res/layout/list_base.xml #generated:35
+-keep class com.andrew.apollo.dragdrop.DragSortListView { <init>(...); }
+
+# view AndroidManifest.xml #generated:74
+-keep class com.andrew.apollo.ui.activities.AudioPlayerActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:61
+-keep class com.andrew.apollo.ui.activities.HomeActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:123
+-keep class com.andrew.apollo.ui.activities.ProfileActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:139
+-keep class com.andrew.apollo.ui.activities.SearchActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:154
+-keep class com.andrew.apollo.ui.activities.SettingsActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:127
+-keep class com.andrew.apollo.ui.activities.ShortcutActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:159
+-keep class com.andrew.apollo.ui.activities.ThemesActivity { <init>(...); }
+
+# view res/layout/profile_tab.xml #generated:17
+-keep class com.andrew.apollo.widgets.CarouselTab { <init>(...); }
+
+# view res/layout/color_scheme_dialog.xml #generated:22
+-keep class com.andrew.apollo.widgets.ColorPickerView { <init>(...); }
+
+# view res/layout/list_item_detailed.xml #generated:23
+# view res/layout/list_item_detailed.xml #generated:29
+# view res/layout/list_item_detailed_no_background.xml #generated:23
+# view res/layout/list_item_detailed_no_background.xml #generated:29
+# view res/layout/profile_tab.xml #generated:27
+-keep class com.andrew.apollo.widgets.LayoutSuppressingImageView { <init>(...); }
+
+# view res/layout/audio_player_controls.xml #generated:53
+# view res/layout/bottom_action_bar.xml #generated:79
+-keep class com.andrew.apollo.widgets.PlayPauseButton { <init>(...); }
+
+# view res/layout/profile_tab_carousel.xml #generated:17
+-keep class com.andrew.apollo.widgets.ProfileTabCarousel { <init>(...); }
+
+# view res/layout/audio_player_controls.xml #generated:83
+# view res/layout/bottom_action_bar.xml #generated:91
+-keep class com.andrew.apollo.widgets.RepeatButton { <init>(...); }
+
+# view res/layout/audio_player_controls.xml #generated:39
+# view res/layout/audio_player_controls.xml #generated:69
+# view res/layout/bottom_action_bar.xml #generated:75
+# view res/layout/bottom_action_bar.xml #generated:83
+-keep class com.andrew.apollo.widgets.RepeatingImageButton { <init>(...); }
+
+# view res/layout/audio_player_controls.xml #generated:24
+# view res/layout/bottom_action_bar.xml #generated:87
+-keep class com.andrew.apollo.widgets.ShuffleButton { <init>(...); }
+
+# view land\res/layout-land/activity_player_base.xml #generated:125
+# view land\res/layout-land/activity_player_base.xml #generated:132
+# view land\res/layout-land/activity_player_base.xml #generated:32
+# view res/layout/activity_player_base.xml #generated:101
+# view res/layout/activity_player_base.xml #generated:78
+# view res/layout/activity_player_base.xml #generated:85
+# view res/layout/bottom_action_bar.xml #generated:38
+# view res/layout/list_item_normal.xml #generated:25
+# view res/layout/profile_tab.xml #generated:36
+# view res/layout/square_image_view.xml #generated:22
+-keep class com.andrew.apollo.widgets.SquareImageView { <init>(...); }
+
+# view res/layout/square_image_view.xml #generated:17
+-keep class com.andrew.apollo.widgets.SquareView { <init>(...); }
+
+# view res/layout/bottom_action_bar.xml #generated:17
+-keep class com.andrew.apollo.widgets.theme.BottomActionBar { <init>(...); }
+
+# view res/layout/colorstrip.xml #generated:17
+# view res/layout/profile_tab.xml #generated:61
+-keep class com.andrew.apollo.widgets.theme.Colorstrip { <init>(...); }
+
+# view land\res/layout-land/activity_player_base.xml #generated:17
+# view res/layout/activity_base.xml #generated:22
+# view res/layout/activity_player_base.xml #generated:17
+# view res/layout/activity_profile_base.xml #generated:17
+-keep class com.andrew.apollo.widgets.theme.ThemeableFrameLayout { <init>(...); }
+
+# view land\res/layout-land/activity_player_base.xml #generated:162
+# view res/layout/activity_player_base.xml #generated:179
+-keep class com.andrew.apollo.widgets.theme.ThemeableSeekBar { <init>(...); }
+
+# view land\res/layout-land/activity_player_base.xml #generated:107
+# view land\res/layout-land/activity_player_base.xml #generated:140
+# view land\res/layout-land/activity_player_base.xml #generated:151
+# view land\res/layout-land/activity_player_base.xml #generated:96
+# view res/layout/activity_player_base.xml #generated:157
+# view res/layout/activity_player_base.xml #generated:168
+# view res/layout/activity_player_base.xml #generated:50
+# view res/layout/activity_player_base.xml #generated:60
+# view res/layout/bottom_action_bar.xml #generated:53
+# view res/layout/bottom_action_bar.xml #generated:58
+# view res/layout/grid_items_normal.xml #generated:33
+# view res/layout/grid_items_normal.xml #generated:44
+# view res/layout/list_item_detailed.xml #generated:45
+# view res/layout/list_item_detailed.xml #generated:56
+# view res/layout/list_item_detailed.xml #generated:67
+# view res/layout/list_item_detailed_no_background.xml #generated:45
+# view res/layout/list_item_detailed_no_background.xml #generated:56
+# view res/layout/list_item_detailed_no_background.xml #generated:67
+# view res/layout/list_item_normal.xml #generated:43
+# view res/layout/list_item_normal.xml #generated:53
+# view res/layout/list_item_simple.xml #generated:26
+# view res/layout/list_item_simple.xml #generated:36
+# view res/layout/list_item_simple.xml #generated:46
+# view res/layout/lyrics_base.xml #generated:28
+-keep class com.andrew.apollo.widgets.theme.ThemeableTextView { <init>(...); }
+
+# view res/layout/fragment_music_browser_phone.xml #generated:26
+-keep class com.andrew.apollo.widgets.theme.ThemeableTitlePageIndicator { <init>(...); }
+
