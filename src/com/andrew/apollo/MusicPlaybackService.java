@@ -2463,10 +2463,10 @@ public class MusicPlaybackService extends Service {
             }
             player.setOnCompletionListener(this);
             player.setOnErrorListener(this);
-            final Intent mIntent = new Intent(AudioEffect.ACTION_OPEN_AUDIO_EFFECT_CONTROL_SESSION);
-            mIntent.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, getAudioSessionId());
-            mIntent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, mService.get().getPackageName());
-            mService.get().sendBroadcast(mIntent);
+            final Intent intent = new Intent(AudioEffect.ACTION_OPEN_AUDIO_EFFECT_CONTROL_SESSION);
+            intent.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, getAudioSessionId());
+            intent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, mService.get().getPackageName());
+            mService.get().sendBroadcast(intent);
             return true;
         }
 

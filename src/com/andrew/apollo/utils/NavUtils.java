@@ -13,6 +13,7 @@ package com.andrew.apollo.utils;
 
 import android.app.Activity;
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
@@ -89,10 +90,10 @@ public final class NavUtils {
         try {
             final Intent effects = new Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL);
             effects.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, MusicUtils.getCurrentAudioId());
-            context.startActivity(effects);
+            context.startActivityForResult(effects, 0);
             // Make sure the notification starts
             MusicUtils.startBackgroundService(context);
-        } catch (final Exception notFound) {
+        } catch (final ActivityNotFoundException e) {
             Crouton.makeText(context, context.getString(R.string.no_effects_for_you),
                     Crouton.STYLE_ALERT);
         }
